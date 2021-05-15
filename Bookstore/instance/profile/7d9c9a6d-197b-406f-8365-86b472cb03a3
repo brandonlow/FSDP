@@ -1,0 +1,82 @@
+from flask import Blueprint, session, redirect, request, abort, render_template, url_for
+import os
+import shelve
+from data import Database
+from data.user import User, TableUsers
+
+endpoint = Blueprint("auth", __name__)
+
+@endpoint.route('/login', methods=["GET"])
+def get_login():
+    return render_template('login.html')
+
+
+@endpoint.route('/login', methods=["POST"])
+def post_login():
+    form = request.form
+
+    #   Test incoming data is correct
+    #   else abort 400
+
+    with shelve.open('storage.db') as db:
+
+        # try:
+        for x in db["users"]:
+            if (form["email"] == x.email):
+                if (form["password"] == x.password):
+                    session["user"] = {
+                        "email": x.email,
+                        "username": x.username,
+                        "password": x.password
+                    }
+                    return (redirect(url_for('common.home')))
+        # except:
+        #     abort(500)
+    return render_template('login.html')
+
+
+@endpoint.route('/register', methods=["GET"])
+def get_register():
+    return render_template('register.html')
+
+
+@endpoint.route('/register', methods=["POST"])
+def post_register():
+    form = request.form
+    with Database() as db:
+        table  = db.table(TableUsers)
+        table.list()# to get everything for user table
+        result = table.select(query={
+            "where": {
+                "username": form["username"]
+            }
+        })
+
+        if len(result) > 0:
+            return abort(409)
+        else:
+            table.insert(User(username=form["username"], email=form["email"], password=form["password"]))
+            table.commit()
+            return redirect('/')
+    # with shelve.open('storage.db') as db:
+    #     try:
+    #         users = db["users"]
+    #     except:
+    #         users = []
+    #     for x in users:
+    #         if (x.username == user.username):
+    #             abort(400)
+    #
+    #     users.append(user)
+    #     db["users"] = users
+    #     session["user"] = {
+    #         "email": user.email,
+    #         "username": user.username,
+    #         "password": user.password
+    #     }
+
+
+@endpoint.route('/logout', methods=["GET", "POST"])
+def logout():
+    session["user"] = None
+    return redirect(url_for('common.home'))

@@ -1,0 +1,24 @@
+.content {
+	z-index        : 1;
+	display        : flex;
+	align-items    : center;
+	justify-content: center;
+
+	.app-name {
+		margin-top    : 0px;
+		padding-bottom: 10px;
+		font-size     : 32px;
+	}
+
+	.form {
+		padding: 40px;
+		// background: map-get($theme, 'background');
+		max-width: 500px;
+		// box-shadow: 0 0 20px #ddd;
+
+		// input:-webkit-autofill {
+		// 	box-shadow        : 0 0 0 30px #ddd inset;
+		// 	-webkit-box-shadow: 0 0 0 30px #ddd inset;
+		// }
+	}
+}

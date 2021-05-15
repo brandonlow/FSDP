@@ -1,0 +1,43 @@
+{% extends 'layouts/admin_base.html' %}
+{% from 'macro/form.html' import form_field %}
+{% set pageTitle = "Admin: Manage-Feedback" %}
+
+{% block pageCSS %}
+{% endblock pageCSS %}
+
+{% block pageJS %}
+
+{% endblock pageJS %}
+
+{% block pageContent %}
+<div class="container-fluid">
+    <form class="col-md-4 needs-validation"
+		  method="POST"
+		  action="/admin/manage-feedback/update/{{uuid}}"
+		  enctype="multipart/form-data">
+		<!-- Ensure that the form has the csrf token, this is automatically hidden -->
+		<!-- by FlaskForm -->
+		{{ form.csrf_token }}
+		<div class="text-center">
+			<h2 class="app-name">Reply To Message</h2>
+		</div>
+
+		<div class="col">
+			Sender's Email: {{email}}
+			<br>
+			Sender's Message: {{message}}
+			<br>
+            {{ form.reply.label }} {{ form.reply(size=20) }}
+		</div>
+
+		<div class="col">
+			<button
+					type="submit"
+					class="btn btn-primary waves-effect"
+					style="width: 100%;">
+				Update Reply
+			</button>
+		</div>
+    </form>
+</div>
+{% endblock pageContent %}

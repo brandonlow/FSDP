@@ -1,0 +1,62 @@
+{% extends 'layouts/admin_base.html' %}
+{% set pageTitle = "Admin: Manage-Feedback" %}
+
+{% block pageCSS %}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="/public/css/admin.css">
+{% endblock pageCSS %}
+
+{% block pageJS %}
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+{% endblock pageJS %}
+
+{% block pageContent %}
+    <div class="container-fluid">
+	    <hr>
+	    <hr>
+        <h2>Manage Feedbacks</h2>
+	    <table
+		    class="table-dark"
+		    id="table-feedbacks"
+		    data-show-columns="true"
+		    data-show-columns-toggle-all="true"
+		    data-show-refresh="true"
+		    data-pagination="true"
+		    data-page-list="[10, 25, 50, 100, all]"
+		    data-show-footer="true"
+		    data-toggle="table"
+		    data-id-field="uuid"
+		    data-url="/admin/manage-feedback/list">
+		    <thead>
+		    <tr>
+			    <th data-field="uuid">FeedbackID</th>
+			    <th data-field="email"        data-sortable="true">Email</th>
+			    <th data-field="message"   data-sortable="true">Message</th>
+				<th data-field="reply"   data-sortable="true">Reply</th>
+			    <th data-field="dateCreated" data-sortable="true">Date Created</th>
+			    <th data-field="dateUpdated" data-sortable="true">Date Updated</th>
+			    <th data-formatter="render_actions">Actions</th>
+		    </tr>
+		    </thead>
+	    </table>
+    </div>
+
+    <script>
+	    function render_actions(index, row) {
+		    return `
+			    <div class="row" style="max-width: fit-content;">
+				    <a class="btn-floating col" href="/admin/manage-feedback/detail/${row.uuid}"
+					    style="max-width: fit-content;"
+					    data-toggle="tooltip" title="Post Reply">
+					    <i class="fas fa-edit" style="color: white;"></i>
+				    </a>
+				    <a class="btn-floating col" href="/admin/manage-feedback/delete/${row.uuid}"
+					    style="max-width: fit-content;"
+					    data-toggle="tooltip" title="Delete feedback">
+					    <i class="fas fa-trash" style="color: white;"></i>
+				    </a>
+			    </div>
+		    `;
+	    }
+    </script>
+{% endblock pageContent %}

@@ -1,0 +1,84 @@
+
+<header>
+    <div class="main-menu">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="/"><img src="/public/images/logo.png" alt="logo"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="navbar-item  ">
+                            <a href="/" class="nav-link">Home</a>
+                        </li>
+                        <li class="navbar-item">
+                            <a href="/shop" class="nav-link">Shop</a>
+                        </li>
+                        <li class="navbar-item">
+                            <a href="/about" class="nav-link">About</a>
+                        </li>
+                        <li class="navbar-item">
+                            <a href="/faq" class="nav-link">FAQ</a>
+                        </li>
+                        <li class="navbar-item">
+                            <a href="/feedback" class="nav-link">Feedback</a>
+                        </li>
+
+                        {% if session["user"] %}
+                            {% if session["user"]["username"] != "Admin" %}
+                            <div class="dropdown show">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none;">
+                                    <li class="navbar-item" style="height: 1px; color: #252525;" > Welcome {{session["user"]["username"]}} </li>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="text-align: left;">
+                                <a class="dropdown-item" href="/userprofile" style="color: #ff9700;">Profile</a>
+                                <a class="dropdown-item" href="{{ url_for('auth.logout') }}" style="text-decoration: none; color: #ff9700;"> Log out </a>
+                                </div>
+                            </div>
+                            {% else  %}
+                            <div class="dropdown show">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none;">
+                                    <li class="navbar-item" style="height: 1px; color: #252525;"> Welcome Admin </li>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="text-align: left;">
+                                <a class="dropdown-item" href="/admin/dashboard" style="color: #ff9700;">Management</a>
+                                <a class="dropdown-item" href="{{ url_for('auth.logout') }}" style="text-decoration: none; color: #ff9700;"> Log out </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% else %}
+                            <li class="navbar-item">
+                                <a href="/auth/login" class="nav-link">Login</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- {% if session["user"] %}
+                        <li class="navbar-item"> Welcome {{session["user"]["username"]}} </li>
+                        <li class="navbar">
+                            <a href="{{ url_for('auth.logout') }}">
+                                <button style="background: #ff9700;">Log out</button>
+                            </a>
+                        </li>
+                        {% else %}
+                            <li class="navbar-item">
+                                <a href="/auth/login" class="nav-link">Login</a>
+                            </li>
+                        {% endif %} -->
+
+
+                    </ul>
+                    <div class="cart my-2 my-lg-0">
+                        <span>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <span class="quntity">3</span>
+                    </div>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search here..." aria-label="Search">
+                        <span class="fa fa-search"></span>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>

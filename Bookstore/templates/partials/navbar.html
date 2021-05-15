@@ -1,0 +1,96 @@
+{% set session_user_uuid   = session.get('user.uuid') %}
+{% set session_user_name   = session.get('user.name') %}
+{% set session_user_role   = session.get('user.role') %}
+{% set session_user_avatar = session.get('user.avatar') %}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+	<button class="navbar-toggler" type="button"
+			data-toggle="collapse"
+			data-target="#nav-top"
+			aria-expanded="false"
+			aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="nav-top">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<li class="nav-item">
+				<img src="/public/images/logo2.png" alt="img">
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/admin/dashboard">Dashboard</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/admin/management-user">User</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/admin/management-product">Product</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/admin/management-product">Transaction</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/admin/management-feedback">Feedback</a>
+			</li>
+		</ul>
+
+		{% include "partials/navbar-right.html" %}
+	</div>
+</nav>
+<!--   &lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--    <nav id="sidebar">-->
+<!-- 					<li>-->
+<!--                        <a href="#">Home 1</a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="#">Home 2</a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="#">Home 3</a>-->
+<!--                    </li>-->
+<!--    </nav>-->
+
+    <!-- Page Content -->
+    <div id="content">
+        <!-- We'll fill this with dummy content -->
+    </div>
+<!--<div class="side-nav">-->
+<!--    <div class="logo">-->
+<!--        <i class="fa fa-tachometer"></i>-->
+<!--        <span>Brand</span>-->
+<!--    </div>-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li>-->
+<!--                <a href="#">-->
+<!--                    <span><i class="fa fa-user"></i></span>-->
+<!--                    <span>Users</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="#">-->
+<!--                    <span><i class="fa fa-envelope"></i></span>-->
+<!--                    <span>Messages</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="active">-->
+<!--                <a href="#">-->
+<!--                    <span><i class="fa fa-bar-chart"></i></span>-->
+<!--                    <span>Analytics</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="#">-->
+<!--                    <span><i class="fa fa-credit-card-alt"></i></span>-->
+<!--                    <span>Payments</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
+<!--<div class="main-content">-->
+<!--</div>-->
+
