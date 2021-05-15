@@ -1,67 +1,89 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zxx">
 
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content=''>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title Tag  -->
+    <title>Eshop - eCommerce HTML5 Template.</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <!-- Web Font -->
+    <link
+        href="https://fonts.googleapis.com//new/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"
+        rel="stylesheet">
 
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="/css/style.css">
+    <!-- StyleSheet -->
 
-	<!--For Bootstrap datepicker-->
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-		integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous">
-		</script>
-	<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-	<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/new/css/bootstrap.css">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="/new/css/magnific-popup.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/new/css/font-awesome./new/css">
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="/new/css/jquery.fancybox.min.css">
+    <!-- Themify Icons -->
+    <link rel="stylesheet" href="/new/css/themify-icons.css">
+    <!-- Nice Select /new/css -->
+    <link rel="stylesheet" href="/new/css/niceselect.css">
+    <!-- Animate /new/css -->
+    <link rel="stylesheet" href="/new/css/animate.css">
+    <!-- Flex Slider /new/css -->
+    <link rel="stylesheet" href="/new/css/flex-slider.min.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="/new/css/owl-carousel.css">
+    <!-- Slicknav -->
+    <link rel="stylesheet" href="/new/css/slicknav.min.css">
 
-	{{!--Font Awesome icons --}}
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
-		integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-	{{!--Google fonts Icon--}}
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Eshop StyleSheet -->
+    <link rel="stylesheet" href="/new/css/reset.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/new/css/responsive.css">
 
-	{{!-- Lightbox --}}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css"
-		integrity="sha256-HAaDW5o2+LelybUhfuk0Zh2Vdk8Y2W2UeKmbaXhalfA=" crossorigin="anonymous" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"
-		integrity="sha256-Y1rRlwTzT5K5hhCBfAFWABD4cU13QGuRN6P5apfWzVs=" crossorigin="anonymous"></script>
 
-	<title>VidJot - The Video Collection Jotter</title>
+
 </head>
-
 <body>
-	{{>_navbar}}
-	<div class="container">
-		{{> _flashmsg}}
-		{{> _msg}} {{!-- views/partials/_msg.handlebars --}}
-		{{> _errors}} {{!-- views/partials/_errors.handlebars --}}
-		{{{body}}}
-		
-	</div>
-
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="/js/main.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-		crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-confirmation2/dist/bootstrap-confirmation.min.js"></script>
-	<script>
-		$('[data-toggle=confirmation]').confirmation({
-			rootSelector: '[data-toggle=confirmation]',
-		});
-	</script>
-
+    {{> _navbar}}
+    {{> _content}}
+    {{> _footer}}
+    <!-- Jquery -->
+    <script src="/new/js/jquery.min.js"></script>
+    <script src="/new/js/jquery-migrate-3.0.0.js"></script>
+    <script src="/new/js/jquery-ui.min.js"></script>
+    <!-- Popper /new/js -->
+    <script src="/new/js/popper.min./new/js"></script>
+    <!-- Bootstrap /new/js -->
+    <script src="/new/js/bootstrap.min.js"></script>
+    <!-- Color /new/js -->
+    <script src="/new/js/colors.js"></script>
+    <!-- Slicknav /new/js -->
+    <script src="/new/js/slicknav.min.js"></script>
+    <!-- Owl Carousel /new/js -->
+    <script src="/new/js/owl-carousel.js"></script>
+    <!-- Magnific Popup /new/js -->
+    <script src="/new/js/magnific-popup.js"></script>
+    <!-- Waypoints /new/js -->
+    <script src="/new/js/waypoints.min.js"></script>
+    <!-- Countdown /new/js -->
+    <script src="/new/js/finalcountdown.min.js"></script>
+    <!-- Nice Select /new/js -->
+    <script src="/new/js/nicesellect.js"></script>
+    <!-- Flex Slider /new/js -->
+    <script src="/new/js/flex-slider.js"></script>
+    <!-- ScrollUp /new/js -->
+    <script src="/new/js/scrollup.js"></script>
+    <!-- Onepage Nav /new/js -->
+    <script src="/new/js/onepage-nav.min.js"></script>
+    <!-- Easing /new/js -->
+    <script src="/new/js/easing.js"></script>
+    <!-- Active /new/js -->
+    <script src="/new/js/active.js"></script>
 </body>
 
 </html>
