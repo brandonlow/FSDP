@@ -8,14 +8,18 @@ router.get('/', (req, res) => {
 	res.render('index.handlebars') // renders views/index.handlebars
 });
 router.get('/showlogin', (req, res) => {
-	res.render('',{layout:"../user/login",show:show});
+	res.render('user/login');
 });
 router.get('/showprofile',(req,res)=>{
-	res.render('user/profile')
-})
+	let error_msg = 'PLease login to your account';
+	res.render('index',{error_msg:error_msg})
+});
 
 router.get('/showregister', (req, res) => {
-	res.render('user/register');
+	res.render('user/register')
+});
+router.get('/showforget',(req,res) => {
+	res.render('user/forget')
 });
 // Logout User
 router.get('/logout', (req, res) => {

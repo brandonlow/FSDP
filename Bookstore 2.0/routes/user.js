@@ -2,6 +2,10 @@ const express = require('express');
 const { route } = require('./main');
 const router = express.Router();
 
+
+router.get('/showprofilesuccess',(req,res)=>{
+	res.render('/user/profile')
+});
 router.post('/register', (req, res) => {
     let errors = []
     let success_msg = "";
