@@ -30,6 +30,16 @@ router.get('/logout', (req, res) => {
 // 	const version="1.0.1"
 
 // }
+router.get('/showcontact',(req,res)=>{
+	res.render('contact')
+});
+router.get('/showcart',(req,res)=>{
+	res.render('cart')
+});
+
+router.get('/showcheckout',(req,res)=>{
+	res.render('checkout')
+});
 router.get('/about', (req, res) => {
 	let error="This is an error in erros.handlebars";
 	const author = 'Denzel Washington';
