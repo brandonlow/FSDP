@@ -6,6 +6,8 @@ router.get('/index',(req,res)=> {
     res.render('admin',{admin:value})   
 });
 
+
+
 module.exports=router;
 
 

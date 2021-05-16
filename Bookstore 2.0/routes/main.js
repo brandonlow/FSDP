@@ -5,7 +5,7 @@ const alertMessage = require('../helpers/messenger');
 
 router.get('/', (req, res) => {
 	const title = 'Video Jotter';
-	res.render('index', { title: title }) // renders views/index.handlebars
+	res.render('index.handlebars') // renders views/index.handlebars
 });
 router.get('/showlogin', (req, res) => {
 	res.render('user/login');
