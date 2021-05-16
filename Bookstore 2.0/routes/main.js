@@ -4,16 +4,12 @@ const alertMessage = require('../helpers/messenger');
 
 
 router.get('/', (req, res) => {
-	const title = 'Bookstore';
-	res.render('index.handlebars') // renders views/index.handlebars
+	const title = 'Video Jotter';
+	res.render('index', { title: title }) // renders views/index.handlebars
 });
 router.get('/showlogin', (req, res) => {
-	res.render('',{layout:"../user/login",show:show});
+	res.render('user/login');
 });
-router.get('/showprofile',(req,res)=>{
-	res.render('user/profile')
-})
-
 router.get('/showregister', (req, res) => {
 	res.render('user/register');
 });
