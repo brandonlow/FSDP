@@ -30,6 +30,9 @@ router.get('/logout', (req, res) => {
 // 	const version="1.0.1"
 
 // }
+router.get('/showproduct', (req, res) => {
+	res.render('product');
+})
 router.get('/showcontact',(req,res)=>{
 	res.render('contact')
 });
