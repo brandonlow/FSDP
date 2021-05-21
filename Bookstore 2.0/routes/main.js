@@ -66,4 +66,8 @@ router.get('/about', (req, res) => {
 	})
 });
 
+router.get('/showfeedback',(req,res)=>{
+	res.render('feedback')
+});
+
 module.exports = router;
