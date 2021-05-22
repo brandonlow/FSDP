@@ -10,6 +10,12 @@ router.get('/userinfo',(req,res)=>{
 router.get('/tablelist',(req,res)=>{
     res.render('', {layout: "table"})
 });
+router.get('/producttable',(req,res)=>{
+    res.render('', {layout: "producttable"})
+});
+router.get('/addproduct',(req,res)=>{
+    res.render('', {layout: "addproduct"})
+});
 
 
 

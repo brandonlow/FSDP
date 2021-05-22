@@ -39,7 +39,7 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li>
                         <a class="nav-link" href="./userinfo">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>User Profile</p>
@@ -51,7 +51,7 @@
                             <p>Table List</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="nav-item active">
                         <a class="nav-link" href="./producttable">
                             <i class="nc-icon nc-notes"></i>
                             <p>Product Table</p>
@@ -93,7 +93,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#pablo"> User </a>
+                    <a class="navbar-brand" href="#pablo"> Table list </a>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                         aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -166,95 +166,50 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Edit Profile</h4>
+                                    <h4 class="card-title">Add New Product</h4>
                                 </div>
                                 <div class="card-body">
                                     <form>
                                         <div class="row">
-                                            <div class="col-md-5 pr-1">
-                                                <div class="form-group">
-                                                    <label>Company (disabled)</label>
-                                                    <input type="text" class="form-control" disabled=""
-                                                        placeholder="Company" value="Creative Code Inc.">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 px-1">
-                                                <div class="form-group">
-                                                    <label>Username</label>
-                                                    <input type="text" class="form-control" placeholder="Username"
-                                                        value="michael23">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 pl-1">
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control" placeholder="Email">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-6 pr-1">
                                                 <div class="form-group">
-                                                    <label>First Name</label>
-                                                    <input type="text" class="form-control" placeholder="Company"
-                                                        value="Mike">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 pl-1">
-                                                <div class="form-group">
-                                                    <label>Last Name</label>
-                                                    <input type="text" class="form-control" placeholder="Last Name"
-                                                        value="Andrew">
+                                                    <label>Title</label>
+                                                    <input type="text" name="title" class="form-control" placeholder="Enter title">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-5 pr-1">
                                                 <div class="form-group">
-                                                    <label>Address</label>
-                                                    <input type="text" class="form-control" placeholder="Home Address"
-                                                        value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                                                    <label>Author</label>
+                                                    <input type="text" name="author" class="form-control" placeholder="Enter author's name">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4 pr-1">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>City</label>
-                                                    <input type="text" class="form-control" placeholder="City"
-                                                        value="Mike">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group">
-                                                    <label>Country</label>
-                                                    <input type="text" class="form-control" placeholder="Country"
-                                                        value="Andrew">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 pl-1">
-                                                <div class="form-group">
-                                                    <label>Postal Code</label>
-                                                    <input type="number" class="form-control" placeholder="ZIP Code">
+                                                    <label>Price ($)</label>
+                                                    <input type="number" name="price" class="form-control" placeholder="Enter price">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-11 pr-1">
                                                 <div class="form-group">
-                                                    <label>About Me</label>
-                                                    <textarea rows="4" cols="80" class="form-control"
-                                                        placeholder="Here can be your description"
-                                                        value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
+                                                    <label>URL</label>
+                                                    <input type="text" name="url" class="form-control" placeholder="Enter e-book URL">
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-info btn-fill pull-right">Update
-                                            Profile</button>
+                                        <button type="submit" class="btn btn-info btn-fill pull-right">Add Product</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>
                             </div>
+                            <form action="./producttable">
+                                <button class="btn btn-warning btn-fill">Cancel</button>
+                            </form>
                         </div>
                         <div class="col-md-4">
                             <div class="card card-user">
