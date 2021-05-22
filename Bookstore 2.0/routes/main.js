@@ -66,4 +66,12 @@ router.get('/about', (req, res) => {
 	})
 });
 
+router.get('/showfeedback',(req,res)=>{
+	res.render('feedback')
+});
+
+router.get('/showreviews',(req,res)=>{
+	res.render('reviews')
+});
+
 module.exports = router;
