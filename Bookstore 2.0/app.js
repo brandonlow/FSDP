@@ -11,10 +11,16 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const FlashMessenger = require('flash-messenger');
-// Bring in database connection
-const vidjotDB = require('./config/DBConnection');
-// Connects to MySQL database
-vidjotDB.setUpDB(false); // To set up database with new tables set (true)
+
+// // Bring in database connection
+// const bookstoreDB = require('./config/DBConnection');
+// // Connects to MySQL database
+// bookstoreDB.setUpDB(false); // To set up database with new tables set (true)
+
+// // Library to use MySQL to store session objects
+// const MySQLStore = require('express-mysql-session');
+// const db = require('./config/db'); // db.js config file
+
 /*
 * Loads routes file main.js in routes directory. The main.js determines which function
 * will be called based on the HTTP request and URL.
@@ -61,8 +67,20 @@ app.use(cookieParser());
 
 // To store session information. By default it is stored as a cookie on browser
 app.use(session({
-	key: 'vidjot_session',
-	secret: 'tojiv',
+	key: 'bookstore_session',
+	secret: 'storebook',
+	// store: new MySQLStore({
+	// 	host: db.host,
+	// 	port: 3306,
+	// 	user: db.username,
+	// 	password: db.password,
+	// 	database: db.database,
+	// 	clearExpired: true,
+	// 	// How frequently expired sessions will be cleared; milliseconds:
+	// 	checkExpirationInterval: 900000,
+	// 	// The maximum age of a valid session; milliseconds:
+	// 	expiration: 900000,
+	// }),
 	resave: false,
 	saveUninitialized: false,
 }));

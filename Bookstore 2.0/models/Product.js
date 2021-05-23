@@ -3,15 +3,21 @@
 // /* Creates a user(s) table in MySQL Database.
 // Note that Sequelize automatically pleuralizes the entity name as the table name
 // */
-// const User = db.define('user', {
-//     name: {
+// const Product = db.define('product', {
+//     title: {
 //         type: Sequelize.STRING
 //     },
-//     email: {
+//     author: {
 //         type: Sequelize.STRING
 //     },
-//     password: {
+//     price: {
 //         type: Sequelize.STRING
 //     },
+//     dateAdded: {
+//         type: Sequelize.DATE
+//     },
+//     url: {
+//         type: Sequelize.STRING
+//     }
 // });
-// module.exports = User;
+// module.exports = Product;
