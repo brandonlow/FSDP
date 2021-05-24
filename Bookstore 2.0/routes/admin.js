@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/index',(req,res)=>{
-    res.render('', {layout: "admin"})
+    res.render('', {layout: "dashboard"})
 });
 router.get('/userinfo',(req,res)=>{
     res.render('', {layout: "userinfo"})

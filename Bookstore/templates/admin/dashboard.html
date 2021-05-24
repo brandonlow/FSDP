@@ -103,31 +103,20 @@
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col text-center">
-            <button type="button" onclick="remove1()">Delete first</button>
-            <button type="button" onclick="remove2()">Delete second</button>
-            <button type="button" onclick="remove3()">Delete third</button>
-            <button type="button" onclick="remove4()">Delete fourth</button>
-        </div>
-    </div>
-</div>
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <div class="col text-center">-->
+<!--            <button type="button" onclick="remove1()">Delete first</button>-->
+<!--            <button type="button" onclick="remove2()">Delete second</button>-->
+<!--            <button type="button" onclick="remove3()">Delete third</button>-->
+<!--            <button type="button" onclick="remove4()">Delete fourth</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <script>
     const data=JSON.parse(document.getElementById("data").getAttribute("data-stuff"));
     console.log(data);
-    function remove1(){
-        myChart.destroy();
-    }
-    function remove2(){
-        myChart2.destroy();
-    }
-    function remove3(){
-        myChart3.destroy();
-    }
-    function remove4(){
-        myChart4.destroy();
-    }
+
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
