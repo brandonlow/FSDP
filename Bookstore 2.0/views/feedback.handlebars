@@ -36,15 +36,12 @@
 										
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
-												<label>Gender<span>*</span></label>
-
-
-												<fieldset id="setD">
-													<input id="setD_male" type="radio" name="setD_gender">
-													<label for="setD_male">Male</label>
-													<input id="setD_female" type="radio" name="setD_gender">
-													<label for="setD_female">Female</label>
-												</fieldset>
+												<select class="form-select" aria-label="Default select example">
+												<option selected>Select your gender</option>
+												<option value="1">Male</option>
+												<option value="2">Female</option>
+												<option value="3">Other</option>
+												</select>
 											</div>
 										</div>
 
@@ -70,24 +67,36 @@
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>Do you think there can be any improvements to the system?<span>*</span></label>
-												<input name="company_name" type="text" placeholder="Enter here ">
+												<div class="form-group">
+												<select class="form-select" aria-label="Default select example">
+												<option selected>Select your option</option>
+												<option value="1">Yes</option>
+												<option value="2">No</option>
+												</div>
+												
+												</select>
+											</div>
 											</div>	
 										</div>
 
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
-												<label>Was the system easy to use?<span>*</span></label>
+												<label>Was the system easy to use on scale 1-5?<span>*</span></label>
 
-
-												<fieldset id="setD">
-													<input id="setD_yes" type="radio" name="setD_ans">
-													<label for="setD_yes">yes/label>
-													<input id="setD_no" type="radio" name="setD_ans">
-													<label for="setD_no">no</label>
-												</fieldset>
-												<label>if not, whats the reason?</label>
-												<input name="company_name" type="text" placeholder="Enter here ">
+												<div class="form-group">
+												<select class="form-select" aria-label="Default select example">
+												<option selected>Select your option</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												</div>
 											</div>	
+										</div>
+
+										<div class="col-lg-6 col-12">
+										
 										</div>
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
@@ -99,7 +108,7 @@
 
 										<div class="col-12">
 											<div class="form-group button">
-												<button type="submit" class="btn ">Send Message</button>
+												<button type="submit" class="btn ">Send</button>
 											</div>
 										</div>
 									</div>
