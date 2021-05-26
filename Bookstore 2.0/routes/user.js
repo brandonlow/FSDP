@@ -1,7 +1,7 @@
 const express = require('express');
 const { route } = require('./main');
 const router = express.Router();
-const User = require('../models/User');
+// const User = require('../models/User');
 const alertMessage = require('../helpers/messenger');
 
 
@@ -57,8 +57,11 @@ router.post('/register', (req, res) => {
 });
 
 
-router.get('/showloginsuccess',(req,res)=>{
+router.get('/',(req,res)=>{
 	res.render('/user/login')
+});
+router.get('/showadmin',(req,res)=>{
+	res.render('')
 });
 
 module.exports = router;
