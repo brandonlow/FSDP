@@ -11,15 +11,21 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const FlashMessenger = require('flash-messenger');
+const passport = require('passport');
 
 // // Bring in database connection
-// const bookstoreDB = require('./config/DBConnection');
+const bookstoreDB = require('./config/DBConnection');
 // // Connects to MySQL database
-// bookstoreDB.setUpDB(false); // To set up database with new tables set (true)
+bookstoreDB.setUpDB(false); // To set up database with new tables set (true)
+
+
+const authenticate = require('./config/passport');
+authenticate.localStrategy(passport);
 
 // // Library to use MySQL to store session objects
-// const MySQLStore = require('express-mysql-session');
-// const db = require('./config/db'); // db.js config file
+const MySQLStore = require('express-mysql-session');
+const db = require('./config/db'); // db.js config file
+
 
 /*
 * Loads routes file main.js in routes directory. The main.js determines which function
@@ -28,6 +34,7 @@ const FlashMessenger = require('flash-messenger');
 const mainRoute = require('./routes/main');
 const adminRoute = require('./routes/admin');
 const userRoute = require('./routes/user');
+
 
 /*
 * Creates an Express server - Express is a web application framework for creating web applications
@@ -45,6 +52,7 @@ const app = express();
 * 3. 'defaultLayout' specifies the main.handlebars file under views/layouts as the main template
 *
 * */
+
 app.engine('handlebars', exphbs({
 	defaultLayout: 'main' // Specify default template views/layout/main.handlebar 
 }));
@@ -69,24 +77,37 @@ app.use(cookieParser());
 app.use(session({
 	key: 'bookstore_session',
 	secret: 'storebook',
-	// store: new MySQLStore({
-	// 	host: db.host,
-	// 	port: 3306,
-	// 	user: db.username,
-	// 	password: db.password,
-	// 	database: db.database,
-	// 	clearExpired: true,
-	// 	// How frequently expired sessions will be cleared; milliseconds:
-	// 	checkExpirationInterval: 900000,
-	// 	// The maximum age of a valid session; milliseconds:
-	// 	expiration: 900000,
-	// }),
+	store: new MySQLStore({
+		host: db.host,
+		port: 3306,
+		user: db.username,
+		password: db.password,
+		database: db.database,
+		clearExpired: true,
+		// How frequently expired sessions will be cleared; milliseconds:
+		checkExpirationInterval: 900000,
+		// The maximum age of a valid session; milliseconds:
+		expiration: 900000,
+	}),
 	resave: false,
 	saveUninitialized: false,
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
 app.use(FlashMessenger.middleware);
+
+
+app.use(function(req, res, next){
+	res.locals.success_msg = req.flash('success_msg');
+	res.locals.error_msg = req.flash('error_msg');
+	res.locals.error = req.flash('error');
+	res.locals.user = req.user || null;
+	next();
+	});
+	
 
 // Place to define global variables - not used in practical 1
 app.use(function (req, res, next) {

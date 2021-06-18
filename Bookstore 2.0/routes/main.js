@@ -1,6 +1,10 @@
 const express = require('express');
+const { session } = require('passport');
+const passport = require('passport');
+const { database } = require('../config/db');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger');
+const User = require('../models/User');
 
 
 router.get('/', (req, res) => {
@@ -12,6 +16,16 @@ router.get('/showlogin', (req, res) => {
 router.get('/showprofile',(req,res)=>{
 	let error_msg = 'PLease login to your account';
 	res.render('index',{error_msg:error_msg})
+});
+
+router.get('/showprofilesuccess',(req,res)=>{
+	User.findOne({
+		where:{id:req.user.id}
+	}).then((users) => {
+		res.render('user/profile', {
+			users: users
+		});
+	}).catch(err => console.log(err));
 });
 
 router.get('/showregister', (req, res) => {
@@ -77,4 +91,13 @@ router.get('/showabout',(req,res)=>{
 	res.render('about')
 });
 
+router.get('/success', (req, res) => {
+	User.findOne({
+		where:{id:req.user.id}
+	}).then((users) => {
+		res.render('index', {
+			users: users
+		});
+	}).catch(err => console.log(err));
+});
 module.exports = router;

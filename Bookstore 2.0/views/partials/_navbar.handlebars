@@ -31,9 +31,18 @@
 						<div class="right-content">
 							<ul class="list-main">
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
+								{{#if users}}
+								<li><i class="ti-user"></i> <a href="/showprofilesuccess">My account</a></li>
+								{{else}}
 								<li><i class="ti-user"></i> <a href="/showprofile">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="/showlogin">Login</a></li>
+								{{/if}}
+								{{#if users}}
+								<li>Welcome {{users.name}}</li>
+								<li><i class="ti-power-off"></i><a href="/">Logout</a></li>
+								{{else}}
+								<li><i class="ti-import"></i><a href="/showlogin">Login</a></li>
 								<li><i class="ti-power-on"></i><a href="/admin/index">Test admin</a></li>
+								{{/if}}
 							</ul>
 						</div>
 						<!-- End Top Right -->
