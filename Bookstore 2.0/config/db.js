@@ -4,6 +4,7 @@ module.exports = {
     username: 'bookstore',
     password: 'bookstore'
 }
+//use this
 // Library to use MySQL to store session objects
 
 // module.exports = {
