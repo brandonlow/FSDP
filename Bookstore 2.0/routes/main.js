@@ -4,6 +4,7 @@ const passport = require('passport');
 const { database } = require('../config/db');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger');
+// const Admin = require('../models/admin');
 const User = require('../models/User');
 
 
@@ -18,12 +19,11 @@ router.get('/showprofile',(req,res)=>{
 	res.render('index',{error_msg:error_msg})
 });
 
-router.get('/showprofilesuccess',(req,res)=>{
+router.get('/account',(req,res)=>{
 	User.findOne({
 		where:{id:req.user.id}
-	}).then((users) => {
+	}).then(() => {
 		res.render('user/profile', {
-			users: users
 		});
 	}).catch(err => console.log(err));
 });
@@ -39,11 +39,7 @@ router.get('/logout', (req, res) => {
 	req.logout();
 	res.redirect('/');
 });
-// router.get('/about'),(req,res)=>{
-// 	const author="koh lay yen"
-// 	const version="1.0.1"
 
-// }
 router.get('/showproduct', (req, res) => {
 	res.render('product');
 })
@@ -94,9 +90,8 @@ router.get('/showabout',(req,res)=>{
 router.get('/success', (req, res) => {
 	User.findOne({
 		where:{id:req.user.id}
-	}).then((users) => {
+	}).then(() => {
 		res.render('index', {
-			users: users
 		});
 	}).catch(err => console.log(err));
 });

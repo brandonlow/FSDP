@@ -22,10 +22,12 @@ bookstoreDB.setUpDB(false); // To set up database with new tables set (true)
 const authenticate = require('./config/passport');
 authenticate.localStrategy(passport);
 
+// const authenticate2 = require('./config/passport2');
+// authenticate2.localStrategy(passport);
+
 // // Library to use MySQL to store session objects
 const MySQLStore = require('express-mysql-session');
 const db = require('./config/db'); // db.js config file
-
 
 /*
 * Loads routes file main.js in routes directory. The main.js determines which function

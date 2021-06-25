@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="zxx">
-
+<html lang="en">
 <head>
     <!-- Meta Tag -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name='copyright' content=''>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Title Tag  -->
     <title>Bookstore</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
     <!-- Web Font -->
-    <link
+    {{!-- <link
         href="https://fonts.googleapis.com//new/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"> --}}
 
     <!-- StyleSheet -->
 
@@ -24,7 +22,7 @@
     <!-- Magnific Popup -->
     <link rel="stylesheet" href="/new/css/magnific-popup.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/new/css/font-awesome./new/css">
+    {{!-- <link rel="stylesheet" href="/new/css/font-awesome./new/css"> --}}
     <!-- Fancybox -->
     <link rel="stylesheet" href="/new/css/jquery.fancybox.min.css">
     <!-- Themify Icons -->
@@ -42,50 +40,53 @@
 
     <!-- Eshop StyleSheet -->
     <link rel="stylesheet" href="/new/css/reset.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/new/css/style.css">
     <link rel="stylesheet" href="/new/css/responsive.css">
 
-	<link rel="icon" type="image/png" href="/new3/images/icons/favicon.ico"/>
+    <link rel="icon" type="image/png" href="/new3/images/icons/favicon.ico" />
 
-	<link rel="stylesheet" type="text/css" href="/new3/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/new3/vendor/bootstrap/css/bootstrap.min.css">
 
-	<link rel="stylesheet" type="text/css" href="/new3/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/new3/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 
-	<link rel="stylesheet" type="text/css" href="/new3/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="/new3/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
 
-	<link rel="stylesheet" type="text/css" href="/new3/vendor/animate/animate.css">
-	
-	<link rel="stylesheet" type="text/css" href="/new3/vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="/new3/vendor/animate/animate.css">
 
-	<link rel="stylesheet" type="text/css" href="/new3/vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="/new3/vendor/css-hamburgers/hamburgers.min.css">
 
-	<link rel="stylesheet" type="text/css" href="/new3/vendor/select2/select2.min.css">
-	
-	<link rel="stylesheet" type="text/css" href="/new3/vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="/new3/vendor/animsition/css/animsition.min.css">
 
-	<link rel="stylesheet" type="text/css" href="/new3/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/new3/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/new3/vendor/select2/select2.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/new3/vendor/daterangepicker/daterangepicker.css">
+
+    <link rel="stylesheet" type="text/css" href="/new3/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/new3/css/main.css">
 
 
 
 </head>
-<body class='js'>
-    {{>_msg}}
-    {{> _errors}}
+
+<body>
     {{> _navbar}}
-    {{> _flashmsg}}
-    {{{body}}}
+    <div>
+        {{> _flashmsg}}
+        {{> _msg}} {{!-- views/partials/_msg.handlebars --}}
+        {{> _errors}} {{!-- views/partials/_errors.handlebars --}}
+        {{{body}}}
+    </div>
     {{> _footer}}
     <!-- Jquery -->
     <script src="/new/js/jquery.min.js"></script>
     <script src="/new/js/jquery-migrate-3.0.0.js"></script>
     <script src="/new/js/jquery-ui.min.js"></script>
     <!-- Popper /new/js -->
-    <script src="/new/js/popper.min./new/js"></script>
+    {{!-- <script src="/new/js/popper.min./new/js"></script> --}}
     <!-- Bootstrap /new/js -->
     <script src="/new/js/bootstrap.min.js"></script>
     <!-- Color /new/js -->
-    <script src="/new/js/colors.js"></script>
+    {{!-- <script src="/new/js/colors.js"></script> --}}
     <!-- Slicknav /new/js -->
     <script src="/new/js/slicknav.min.js"></script>
     <!-- Owl Carousel /new/js -->
@@ -110,22 +111,21 @@
     <script src="/new/js/active.js"></script>
 
 
-    
-	<script src="/new3/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/new3/vendor/jquery/jquery-3.2.1.min.js"></script>
 
-	<script src="/new3/vendor/animsition/js/animsition.min.js"></script>
+    <script src="/new3/vendor/animsition/js/animsition.min.js"></script>
 
-	<script src="/new3/vendor/bootstrap/js/popper.js"></script>
-	<script src="/new3/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/new3/vendor/bootstrap/js/popper.js"></script>
+    <script src="/new3/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<script src="/new3/vendor/select2/select2.min.js"></script>
+    <script src="/new3/vendor/select2/select2.min.js"></script>
 
-	<script src="/new3/vendor/daterangepicker/moment.min.js"></script>
-	<script src="/new3/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="/new3/vendor/daterangepicker/moment.min.js"></script>
+    <script src="/new3/vendor/daterangepicker/daterangepicker.js"></script>
 
-	<script src="/new3/vendor/countdowntime/countdowntime.js"></script>
+    <script src="/new3/vendor/countdowntime/countdowntime.js"></script>
 
-	<script src="/new3/js/main.js"></script>
+    <script src="/new3/js/main.js"></script>
 </body>
 
 </html>
