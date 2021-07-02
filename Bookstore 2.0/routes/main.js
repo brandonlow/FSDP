@@ -44,8 +44,34 @@ router.get('/showproduct', (req, res) => {
 	res.render('product');
 })
 router.get('/showcontact',(req,res)=>{
+
+
+	contact.authenticate('local', {
+		successRedirect: '/success',
+		failureRedirect: '/showcontact',					// Route to /login URL
+		failureFlash: true
+		/*
+		* Setting the failureFlash option to true instructs Passport to flash an  error message
+		* using the message given by the strategy's verify callback, if any. When a failure occurs
+		* passport passes the message object as error
+		* */
+	})(req, res, next);
 	res.render('contact')
+
 });
+router.get('/showcontact/success',(req,res)=>{
+
+
+});
+
+
+
+router.post('/showcontact', (req, res, next) => {
+	
+});
+
+
+
 router.get('/showcart',(req,res)=>{
 	res.render('cart')
 });
@@ -79,6 +105,9 @@ router.get('/about', (req, res) => {
 router.get('/showfeedback',(req,res)=>{
 	res.render('feedback')
 });
+
+
+
 
 router.get('/showreviews',(req,res)=>{
 	res.render('reviews')

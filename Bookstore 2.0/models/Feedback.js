@@ -7,13 +7,16 @@ const User = db.define('feedback', {
     name: {
         type: Sequelize.STRING
     },
-    feedback: {
+    subject: {
+        type: Sequelize.STRING
+    },
+    email: {
         type: Sequelize.STRING
     },
     phone: {
         type: Sequelize.STRING
     },
-    option: {
+    message: {
         type: Sequelize.STRING
     },
     
