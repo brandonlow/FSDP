@@ -6,6 +6,7 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger');
 // const Admin = require('../models/admin');
 const User = require('../models/User');
+const Feedback = require('../models/Feedback');
 
 
 router.get('/', (req, res) => {
@@ -94,5 +95,12 @@ router.get('/success', (req, res) => {
 		res.render('index', {
 		});
 	}).catch(err => console.log(err));
+});
+
+router.get('/showadd', (req, res) => {
+	res.render('admin/add');
+});
+router.get('/showadminlogin', (req, res) => {
+	res.render('admin/login');
 });
 module.exports = router;

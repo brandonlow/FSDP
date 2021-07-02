@@ -10,7 +10,7 @@ function localStrategy(passport) {
         User.findOne({ where: { email: email } })
             .then(user => {
                 if (!user) {
-                    return done(null, false, { message: 'Incorrect username or password!' });
+                    return done(null, false, { message: 'Incorrect email or password!' });
                 }
                 // Match password
                 bcrypt.compare(password, user.password, (err, isMatch) => {
