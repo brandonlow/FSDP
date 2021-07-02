@@ -7,6 +7,7 @@ const passport = require('passport');
 const alertMessage = require('../helpers/messenger');
 const { session } = require('passport');
 const Admin = require('../models/Admin');
+const contact =  require('..user/showcontact');
 
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
@@ -25,6 +26,19 @@ router.post('/login', (req, res, next) => {
 		* */
 	})(req, res, next);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.post('/register', (req, res) => {
 	let errors = [];
@@ -171,5 +185,7 @@ router.post('/update', (req, res) => {
 router.get('/showadmin', (req, res) => {
 	res.render('')
 });
+
+
 
 module.exports = router;
