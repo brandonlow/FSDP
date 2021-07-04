@@ -6,15 +6,16 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Add New Product</h4>
+                                    <h4 class="card-title">Update Product</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/admin/addproduct" method="POST">
+                                    <form action="/admin/updateproduct/{{product.id}}?_method=PUT" method="POST">
+                                        <input type="hidden" name="_method" value="PUT">
                                         <div class="row">
                                             <div class="col-md-6 pr-1">
                                                 <div class="form-group">
                                                     <label>Title</label>
-                                                    <input type="text" name="title" class="form-control" placeholder="Enter title">
+                                                    <input type="text" name="title" class="form-control" placeholder="Enter title" value={{product.title}}>
                                                 </div>
                                             </div>
                                         </div>
@@ -22,7 +23,7 @@
                                             <div class="col-md-5 pr-1">
                                                 <div class="form-group">
                                                     <label>Author</label>
-                                                    <input type="text" name="author" class="form-control" placeholder="Enter author's name">
+                                                    <input type="text" name="author" class="form-control" placeholder="Enter author's name" value={{product.author}}>
                                                 </div>
                                             </div>
                                         </div>
@@ -30,7 +31,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Price ($)</label>
-                                                    <input type="number" name="price" class="form-control" placeholder="Enter price">
+                                                    <input type="number" name="price" class="form-control" placeholder="Enter price" value={{product.price}}>
                                                 </div>
                                             </div>
                                         </div>
@@ -38,16 +39,16 @@
                                             <div class="col-md-11 pr-1">
                                                 <div class="form-group">
                                                     <label>URL</label>
-                                                    <input type="text" name="url" class="form-control" placeholder="Enter e-book URL">
+                                                    <input type="text" name="url" class="form-control" placeholder="Enter e-book URL" value={{product.url}}>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-info btn-fill pull-right">Add Product</button>
+                                        <button type="submit" class="btn btn-info btn-fill pull-right">Update Product</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>
                             </div>
-                            <form action="./producttable">
+                            <form action="../producttable">
                                 <button class="btn btn-warning btn-fill">Cancel</button>
                             </form>
                         </div>

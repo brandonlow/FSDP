@@ -1,8 +1,8 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
 <div class="content">
-    {{#if users}}
     <div class="container-fluid">
+        {{#if users}}
         <div class="row">
             <div class="col-md-12">
                 <div class="card strpied-tabled-with-hover">
@@ -34,9 +34,9 @@
                 </div>
             </div>
         </div>
+        {{else}}
+        <h2>No user found in table</h2>
+        {{/if}}
     </div>
 </div>
-{{else}}
-    <h2>No user found in table</h2>
-{{/if}}
 {{>_adminfooter}}
