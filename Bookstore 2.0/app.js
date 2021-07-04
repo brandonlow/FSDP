@@ -37,7 +37,6 @@ const mainRoute = require('./routes/main');
 const adminRoute = require('./routes/admin');
 const userRoute = require('./routes/user');
 
-
 /*
 * Creates an Express server - Express is a web application framework for creating web applications
 * in Node JS.
@@ -56,7 +55,15 @@ const app = express();
 * */
 
 app.engine('handlebars', exphbs({
-	defaultLayout: 'main' // Specify default template views/layout/main.handlebar 
+	defaultLayout: 'main',
+	 // Specify default template views/layout/main.handlebar
+	 helpers: {
+
+		ifEqual:  function (a, b, options) {
+			if (a == b) { return options.fn(this); }
+			return options.inverse(this);
+	}
+} 
 }));
 app.set('view engine', 'handlebars');
 

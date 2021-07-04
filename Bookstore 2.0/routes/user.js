@@ -7,6 +7,7 @@ const passport = require('passport');
 const alertMessage = require('../helpers/messenger');
 const { session } = require('passport');
 const Admin = require('../models/Admin');
+const contact =  require('..user/showcontact');
 
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
@@ -25,6 +26,19 @@ router.post('/login', (req, res, next) => {
 		* */
 	})(req, res, next);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.post('/register', (req, res) => {
 	let errors = [];
@@ -55,25 +69,6 @@ router.post('/register', (req, res) => {
 			password2
 		});
 	} else {
-		if (name == 'admin') {
-			bcrypt.genSalt(10, (err, salt) => {
-				bcrypt.hash(password, salt, (err, hash) => {
-					if (err) throw err;
-					password = hash;
-					// Create new admin record
-					Admin.create({
-						name: name,
-						email: email,
-						password: password
-					}).then(admin => {
-						alertMessage(res, 'success', admin.name + ' added. Please login', 'fas fa-sign-in-alt', true);
-						res.redirect('/showLogin');
-					})
-						.catch(err => console.log(err));
-				})
-			});
-		}
-		else{
 		User.findOne({
 			where: { email }
 		})
@@ -89,6 +84,7 @@ router.post('/register', (req, res) => {
 						password2
 					});
 				} else {
+					
 					// Generate salt hashed password
 					bcrypt.genSalt(10, (err, salt) => {
 						bcrypt.hash(password, salt, (err, hash) => {
@@ -110,31 +106,31 @@ router.post('/register', (req, res) => {
 
 				}
 			});
-		}
+		
 	}
 });
 router.post('/update', (req, res) => {
 	let errors = [];
 	let { name, email, password, password1, password2 } = req.body;
-	var pass = false;
-	if (pass) {
-		bcrypt.compare(password, req.user.password, (err, isMatch) => {
-			if (err) throw err;
-			if (isMatch) {
-				pass = true;
-				console.log(pass);
-			} else {
-				pass = false;
-				console.log(pass);
-			}
-		})
-	}
-	if (pass == false) {
-		errors.push({ text: 'Wrong current password' });
-	}
-	if (password1 != password2) {
-		errors.push({ text: 'password do not match' });
-	}
+	// var pass = false;
+	// if (pass) {
+	// 	bcrypt.compare(password, req.user.password, (err, isMatch) => {
+	// 		if (err) throw err;
+	// 		if (isMatch) {
+	// 			pass = true;
+	// 			console.log(pass);
+	// 		} else {
+	// 			pass = false;
+	// 			console.log(pass);
+	// 		}
+	// 	})
+	// }
+	// if (pass == false) {
+	// 	errors.push({ text: 'Wrong current password' });
+	// }
+	// if (password1 != password2) {
+	// 	errors.push({ text: 'password do not match' });
+	// }
 	if (errors.length > 0) {
 		res.render('user/Profile', {
 			User,
@@ -147,12 +143,12 @@ router.post('/update', (req, res) => {
 		});
 	}
 	else {
-		console.log(pass)
+		// console.log(pass)
 		User.findOne({
 			where: { id: req.user.id }
 		})
 			.then(user => {
-				if (user.email == email) {
+				if (user && user.email!=email) {
 					res.render('user/Profile', {
 						error: user.email + ' already used!',
 						name,
@@ -189,5 +185,7 @@ router.post('/update', (req, res) => {
 router.get('/showadmin', (req, res) => {
 	res.render('')
 });
+
+
 
 module.exports = router;
