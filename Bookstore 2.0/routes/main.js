@@ -6,7 +6,6 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger');
 // const Admin = require('../models/admin');
 const User = require('../models/User');
-const Feedback = require('../models/Feedback');
 
 
 router.get('/', (req, res) => {
@@ -45,34 +44,8 @@ router.get('/showproduct', (req, res) => {
 	res.render('product');
 })
 router.get('/showcontact',(req,res)=>{
-
-
-	contact.authenticate('local', {
-		successRedirect: '/success',
-		failureRedirect: '/showcontact',					// Route to /login URL
-		failureFlash: true
-		/*
-		* Setting the failureFlash option to true instructs Passport to flash an  error message
-		* using the message given by the strategy's verify callback, if any. When a failure occurs
-		* passport passes the message object as error
-		* */
-	})(req, res, next);
 	res.render('contact')
-
 });
-router.get('/showcontact/success',(req,res)=>{
-
-
-});
-
-
-
-router.post('/showcontact', (req, res, next) => {
-	
-});
-
-
-
 router.get('/showcart',(req,res)=>{
 	res.render('cart')
 });
@@ -107,9 +80,6 @@ router.get('/showfeedback',(req,res)=>{
 	res.render('feedback')
 });
 
-
-
-
 router.get('/showreviews',(req,res)=>{
 	res.render('reviews')
 });
@@ -124,12 +94,5 @@ router.get('/success', (req, res) => {
 		res.render('index', {
 		});
 	}).catch(err => console.log(err));
-});
-
-router.get('/showadd', (req, res) => {
-	res.render('admin/add');
-});
-router.get('/showadminlogin', (req, res) => {
-	res.render('admin/login');
 });
 module.exports = router;

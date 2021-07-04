@@ -31,18 +31,23 @@
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
 								{{#if user}}
 								<li><i class="ti-user"></i> <a href="/account">My account</a></li>
+								{{else}}
+								<li><i class="ti-user"></i> <a href="/showprofile">My account</a></li>
+								{{/if}}
+								{{#if user}}
 								<li>Welcome {{user.name}}</li>
 								<li><i class="ti-power-off"></i><a href="/logout">Logout</a></li>
 								{{else}}
-								<li><i class="ti-user"></i> <a href="/showprofile">My account</a></li>
 								<li><i class="ti-import"></i><a href="/showlogin">Login</a></li>
 								<li><i class="ti-power-on"></i><a href="/admin/index">Test admin</a></li>
 								{{/if}}
-								{{#ifEqual user.email "admin@gmail.com"}}
-								<li><a href="/showadd"><i class="ti-plus"></i></a></li>
-								<li><i class="ti-import"></i><a href="/showadminlogin">Login</a></li>
-								{{/ifEqual}}
-								
+								{{#if admin}}
+								<li><i class="ti-user"></i> <a href="/account">My account</a></li>
+								{{/if}}
+								{{#if admin}}
+								<li>Welcome {{admin.name}}</li>
+								<li><i class="ti-power-off"></i><a href="/logout">Logout</a></li>
+								{{/if}}
 							</ul>
 						</div>
 						<!-- End Top Right -->

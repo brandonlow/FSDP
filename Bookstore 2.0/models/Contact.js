@@ -18,7 +18,4 @@ const User = db.define('contact', {
     },
     
 });
-
-
-
-module.exports = Contact;
+module.exports = User;
