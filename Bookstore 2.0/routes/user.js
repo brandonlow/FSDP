@@ -6,7 +6,9 @@ const User = require('../models/User');
 const passport = require('passport');
 const alertMessage = require('../helpers/messenger');
 const { session } = require('passport');
-const Admin = require('../models/Admin');
+const contact = require('../models/contact');
+const Feedback=require('../models/Feedback');
+
 
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
@@ -190,4 +192,60 @@ router.get('/showadmin', (req, res) => {
 	res.render('')
 });
 
+router.post('/contact', (req, res) => {
+
+    let { name, subject, email, phone, message } = req.body;
+    try {
+        contact.create({
+            name,
+            subject,
+            email,
+            phone,
+            message
+        })
+        var nodemailer = require('nodemailer');
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bookstoretestpage@gmail.com',
+                pass: 'Bookst0reTestPage11'
+            }
+        });
+
+        var mailOptions = {
+            from: 'bookstoretestpage@gmail.com',
+            to: email,
+            subject: 'Verification',
+            html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+        alertMessage(res, 'success', "Sucessfully sent.", " ", false);
+
+    }
+    catch {
+        alertMessage(res, 'danger', "System failure, please try again", " ", false);
+
+    }
+
+    res.redirect('/showcontact')
+
+});
+router.post('/feedback', (req, res) => {
+    let {name, email, feedback, options} = req.body;
+    Feedback.create({
+        name,
+        email,
+        feedback,
+        options
+    })
+    res.render('index')
+});
 module.exports = router;

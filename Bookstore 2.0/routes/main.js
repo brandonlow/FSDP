@@ -6,6 +6,8 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger');
 // const Admin = require('../models/admin');
 const User = require('../models/User');
+const Feedback = require('../models/Feedback');
+const Admin = require('../models/Admin');
 
 
 router.get('/', (req, res) => {
@@ -92,6 +94,22 @@ router.get('/success', (req, res) => {
 		where:{id:req.user.id}
 	}).then(() => {
 		res.render('index', {
+		});
+	}).catch(err => console.log(err));
+});
+
+router.get('/showadd', (req, res) => {
+	res.render('admin/add');
+});
+router.get('/showadminlogin', (req, res) => {
+	res.render('admin/login');
+});
+router.get('/adminsuccess', (req, res) => {
+	Admin.findOne({
+		where:{name}
+	}).then(() => {
+		res.render('index', {
+			name:name
 		});
 	}).catch(err => console.log(err));
 });

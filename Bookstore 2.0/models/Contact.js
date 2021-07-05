@@ -3,19 +3,25 @@ const db = require('../config/DBConfig');
 /* Creates a user(s) table in MySQL Database.
 Note that Sequelize automatically pleuralizes the entity name as the table name
 */
-const User = db.define('contact', {
+const contact = db.define('contact', {
     name: {
         type: Sequelize.STRING
     },
-    feedback: {
+    subject:{
         type: Sequelize.STRING
     },
+    email:{
+        type: Sequelize.STRING
+    },
+
     phone: {
         type: Sequelize.STRING
     },
-    option: {
+    message: {
         type: Sequelize.STRING
-    },
-    
+    }
+
 });
-module.exports = User;
+
+
+module.exports = contact;
