@@ -17,6 +17,7 @@
 </head>
 
 <body>
+
     <div class="wrapper">
         <div class="sidebar" data-image="/new2/img/sidebar-5.jpg">
             <!--
@@ -25,46 +26,60 @@
     -->
             <div class="sidebar-wrapper">
                 <div class="logo">
-                    <a href="/admin/index" class="simple-text">
+                    <a href="/admin/" class="simple-text">
                         Admin Page
                     </a>
                 </div>
                 <ul class="nav">
                     <li>
-                        <a class="nav-link" href="./index">
+                        <a class="nav-link" href="/admin/dashboard">
+                        {{!-- <a class="nav-link" href="/admin/dashboard/{{admin.id}}"> --}}
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./userinfo">
+                        <a class="nav-link" href="/admin/userinfo">
+                        {{!-- <a class="nav-link" href="/admin/userinfo/{{admin.id}}"> --}}
                             <i class="nc-icon nc-circle-09"></i>
                             <p>User Profile</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./tablelist">
+                        {{!-- <a class="nav-link" href="/admin/usertablelist/{{admin.id}}"> --}}
+                        <a class="nav-link" href="/admin/usertablelist">
                             <i class="nc-icon nc-notes"></i>
-                            <p>User/Admin Table</p>
+                            <p>User Table</p>
                         </a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="./producttable">
+                    <li>
+                        {{!-- <a class="nav-link" href="/admin/admintablelist/{{admin.id}}"> --}}
+                        <a class="nav-link" href="/admin/admintablelist">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Admin Table</p>
+                        </a>
+                    </li>
+                    <li>
+                        {{!-- <a class="nav-link" href="/admin/producttable/{{admin.id}}"> --}}
+                        <a class="nav-link" href="/admin/producttable">
                             <i class="nc-icon nc-notes"></i>
                             <p>Product Table</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./notifications.html">
-                            <i class="nc-icon nc-bell-55"></i>
-                            <p>Notifications</p>
+                        <a class="nav-link" href="./feedbacktable">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Feedback Table</p>
                         </a>
                     </li>
                     <li class="nav-item active active-pro">
-                        <a class="nav-link active" href="../">
+                        {{!-- <a class="nav-link active" href="/admin/{{admin.id}}"> --}}
+                        <a class="nav-link active" href="/admin/">
                             <p>Back to main page</p>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
+   
+        

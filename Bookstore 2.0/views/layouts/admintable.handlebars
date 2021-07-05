@@ -1,0 +1,51 @@
+{{>_sidenav}}
+{{>_adminnavbar}}
+{{>_flashmsg}}
+<div class="content">
+  
+    <div class="container-fluid">
+        {{#if admins}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card strpied-tabled-with-hover">
+                    <div class="card-header ">
+                        <h4 class="card-title">Admin Table</h4>
+                        {{!-- <p class="card-category">Edit Here</p> --}}
+                    </div>
+                    <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Action</th>
+                                {{!-- <th>Action</th> --}}
+                                
+                            </thead>
+                       
+                            {{#each admins}}
+                            <tbody>
+                                <tr>
+                                    <td>{{id}}</td>
+                                    <td>{{name}} </td>
+                                    <td>{{email}}</td>
+                                    <td>{{password}}</td>
+                                    <td><a href="/admin/admintablelist/edit/{{id}}">update</a></td>
+                                    
+                                    {{!-- <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></td> --}}
+                                </tr>
+                                </tbody>
+                            {{/each}}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{else}}
+<h2>No admin found</h2>
+{{/if}}
+    </div>
+</div>
+
+{{>_adminfooter}}

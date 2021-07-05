@@ -1,13 +1,16 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
+{{>_flashmsg}}
 <div class="content">
-    {{#if users}}
+  
     <div class="container-fluid">
+        {{#if users}}
         <div class="row">
+
             <div class="col-md-12">
                 <div class="card strpied-tabled-with-hover">
                     <div class="card-header ">
-                        <h4 class="card-title">User/Admin Table</h4>
+                        <h4 class="card-title">User Table</h4>
                         {{!-- <p class="card-category">Edit Here</p> --}}
                     </div>
                     <div class="card-body table-full-width table-responsive">
@@ -17,6 +20,8 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Password</th>
+                                <th>Action</th>
+                                <th>Action</th>
                             </thead>
                             {{#each users}}
                             <tbody>
@@ -25,7 +30,8 @@
                                     <td>{{name}} </td>
                                     <td>{{email}}</td>
                                     <td>{{password}}</td>
-
+                                    <td><a href="/admin/usertablelist/edit/{{id}}">Update</a></td>
+                                    <td><a href="/admin/usertablelist/delete/{{id}}">Delete</a></td>
                                 </tr>
                                 </tbody>
                             {{/each}}
@@ -34,9 +40,10 @@
                 </div>
             </div>
         </div>
+        {{else}}
+ <h2>No user found in table</h2>
+{{/if}}
     </div>
 </div>
-{{else}}
-    <h2>No user found in table</h2>
-{{/if}}
+
 {{>_adminfooter}}

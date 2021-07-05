@@ -18,8 +18,8 @@
 						<!-- Top Left -->
 						<div class="top-left">
 							<ul class="list-main">
-								<li><i class="ti-headphone-alt"></i> +060 (800) 801-582</li>
-								<li><i class="ti-email"></i> support@shophub.com</li>
+								<li><i class="ti-headphone-alt"></i> +65 666666666</li>
+								<li><i class="ti-email"></i> support@bookstore.com</li>
 							</ul>
 						</div>
 						<!--/ End Top Left -->
@@ -29,6 +29,13 @@
 						<div class="right-content">
 							<ul class="list-main">
 								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
+								{{#if admin}}
+								<li><i class="ti-user"></i> <a href="/account">My account</a></li>
+								<li>Welcome {{admin.name}}</li>
+								{{!-- <li><a href="/admin/dashboard/{{admin.id}}"><i class="ti-dashboard"></i>Administrator</a></li> --}}
+								<li><a href="/admin/dashboard"><i class="ti-dashboard"></i>Administrator</a></li>
+								<li><i class="ti-power-off"></i><a href="/logout">Logout</a></li>
+								{{else}}
 								{{#if user}}
 								<li><i class="ti-user"></i> <a href="/account">My account</a></li>
 								{{else}}
@@ -39,15 +46,13 @@
 								<li><i class="ti-power-off"></i><a href="/logout">Logout</a></li>
 								{{else}}
 								<li><i class="ti-import"></i><a href="/showlogin">Login</a></li>
-								<li><i class="ti-power-on"></i><a href="/admin/index">Test admin</a></li>
 								{{/if}}
-								{{#if admin}}
-								<li><i class="ti-user"></i> <a href="/account">My account</a></li>
+								{{#ifEqual user.email "admin@gmail.com"}}
+								<li><a href="/showadd"><i class="ti-plus"></i></a></li>
+								<li><i class="ti-import"></i><a href="/showadminlogin">Login</a></li>
+								{{/ifEqual}}
 								{{/if}}
-								{{#if admin}}
-								<li>Welcome {{admin.name}}</li>
-								<li><i class="ti-power-off"></i><a href="/logout">Logout</a></li>
-								{{/if}}
+								
 							</ul>
 						</div>
 						<!-- End Top Right -->
@@ -226,6 +231,29 @@
 						<div class="col-lg-9 col-12">
 							<div class="menu-area">
 								<!-- Main Menu -->
+								{{#if admin}}
+									<nav class="navbar navbar-expand-lg">
+									<div class="navbar-collapse">
+										<div class="nav-inner">
+											<ul class="nav main-menu menu navbar-nav">
+												<li><a href="/admin/">Home</a></li>
+												<li><a href="/admin/showproduct">Product</a></li>
+												<li><a href="/admin/showreviews">Reviews</a></li>
+												<li><a href="#">Shop<i class="ti-angle-down"></i><span
+															class="new">New</span></a>
+													<ul class="dropdown">
+														<li><a href="/admin/showcart">Cart</a></li>
+														<li><a href="/admin/showcheckout">Checkout</a></li>
+													</ul>
+												</li>
+												<li><a href="/admin/showfeedback">Feedback</a></li>
+												<li><a href="/admin/showcontact">Contact Us</a></li>
+												<li><a href="/admin/showabout">About</a></li>
+											</ul>
+										</div>
+									</div>
+								</nav>
+								{{else}}
 								<nav class="navbar navbar-expand-lg">
 									<div class="navbar-collapse">
 										<div class="nav-inner">
@@ -247,6 +275,7 @@
 										</div>
 									</div>
 								</nav>
+								{{/if}}
 								<!--/ End Main Menu -->
 							</div>
 						</div>
