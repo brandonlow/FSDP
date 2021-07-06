@@ -5,17 +5,89 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const passport = require('passport');
 const alertMessage = require('../helpers/messenger');
+const alertMessage2 = require('../helpers/messenger2');
 const { session } = require('passport');
 const contact = require('../models/contact');
 const Feedback=require('../models/Feedback');
+const Admin=require('../models/Admin');
 
 
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
 });
+router.post('/add', (req, res) => {
+	let errors = [];
+
+	// Retrieves fields from register page from request body
+	let { name, email, password, password2 } = req.body;
+	// Checks if both passwords entered are the same
+	if (password !== password2) {
+		errors.push({ text: 'Passwords do not match' });
+	}
+
+	// Checks that password length is more than 4
+	if (password.length < 4) {
+		errors.push({ text: 'Password must be at least 4 characters' });
+	}
+
+	/*
+	 If there is any error with password mismatch or size, then there must be
+	 more than one error message in the errors array, hence its length must be more than one.
+	 In that case, render register.handlebars with error messages.
+	 */
+	if (errors.length > 0) {
+		res.render('user/register', {
+			errors,
+			name,
+			email,
+			password,
+			password2
+		});
+	} else {
+		Admin.findOne({
+			where: { email }
+		})
+			.then(admin => {
+				if (admin) {
+					// If user is found, that means email given has already been registered
+					//req.flash('error_msg', user.name + ' already registered');
+					res.render('admin/add', {
+						error: admin.email + ' already added',
+						name,
+						email,
+						password,
+						password2
+					});
+				} else {
+
+					// Generate salt hashed password
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(password, salt, (err, hash) => {
+							if (err) throw err;
+							password = hash;
+							// Create new user record
+							Admin.create({
+								name,
+								email,
+								password
+							})
+								.then(admin => {
+									alertMessage(res, 'success', admin.name + ' added successfully', 'fas fa-sign-in-alt', true);
+									res.redirect('/showadd');
+								})
+								.catch(err => console.log(err));
+						})
+					});
+
+				}
+			});
+
+	}
+});
 
 // Login Form POST => /user/login
 router.post('/login', (req, res, next) => {
+	
 	passport.authenticate('local', {
 		successRedirect: '/success',
 		failureRedirect: '/showLogin',					// Route to /login URL

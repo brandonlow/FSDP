@@ -113,4 +113,5 @@ router.get('/adminsuccess', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 });
+
 module.exports = router;

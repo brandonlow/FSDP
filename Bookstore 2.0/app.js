@@ -120,6 +120,7 @@ app.use(function(req, res, next){
 
 // Place to define global variables - not used in practical 1
 app.use(function (req, res, next) {
+	res.locals.admin = req.admin;
 	next();
 });
 

@@ -5,10 +5,11 @@ const Admin=require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const alertMessage = require('../helpers/messenger');
 const { error } = require('flash-messenger/Alert');
-const admin = require('../models/Admin');
+
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback=require('../models/Feedback');
+const admin = require('../models/Admin');
 // let password='1234'
 // bcrypt.genSalt(10, (err, salt) => {
 // 	bcrypt.hash(password, salt, (err, hash) => {
@@ -23,110 +24,51 @@ const Feedback=require('../models/Feedback');
 // 		})
 // 	})
 // });
-router.post('/add', (req, res) => {
-	let errors = [];
 
-	// Retrieves fields from register page from request body
-	let { name, email, password, password2 } = req.body;
-	// Checks if both passwords entered are the same
-	if (password !== password2) {
-		errors.push({ text: 'Passwords do not match' });
-	}
-
-	// Checks that password length is more than 4
-	if (password.length < 4) {
-		errors.push({ text: 'Password must be at least 4 characters' });
-	}
-
-	/*
-	 If there is any error with password mismatch or size, then there must be
-	 more than one error message in the errors array, hence its length must be more than one.
-	 In that case, render register.handlebars with error messages.
-	 */
-	if (errors.length > 0) {
-		res.render('user/register', {
-			errors,
-			name,
-			email,
-			password,
-			password2
-		});
-	} else {
-		Admin.findOne({
-			where: { email }
-		})
-			.then(admin => {
-				if (admin) {
-					// If user is found, that means email given has already been registered
-					//req.flash('error_msg', user.name + ' already registered');
-					res.render('admin/add', {
-						error: admin.email + ' already registered',
-						name,
-						email,
-						password,
-						password2
-					});
-				} else {
-
-					// Generate salt hashed password
-					bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(password, salt, (err, hash) => {
-							if (err) throw err;
-							password = hash;
-							// Create new user record
-							Admin.create({
-								name,
-								email,
-								password
-							})
-								.then(admin => {
-									alertMessage(res, 'success', admin.name + ' added successfully', 'fas fa-sign-in-alt', true);
-									res.redirect('/showadd');
-								})
-								.catch(err => console.log(err));
-						})
-					});
-
-				}
-			});
-
-	}
-});
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })
-		.then(admin => {
-			if (!admin) {
-				res.render('', {
-					error: 'Incorrect email or password',
+		.then(admins => {
+			if (!admins) {
+				res.render('admin/login', {
+					error: 'Only super admin account allowed',
 					email,
 					password
 				});
-			}
-			// Match password
-			bcrypt.compare(password, admin.password, (err, isMatch) => {
+			}	
+			
+			bcrypt.compare(password, admins.password, (err, isMatch) => {
 				if (err) throw err;
 				if (isMatch) {
-					console.log(isMatch);
-					res.render('index', { admin: admin, user: null });
+					req.session.admin={id:admins.id}
+					res.redirect('/admin/dashboard');
 				} else {
 					alertMessage(res, 'danger', 'Incorrect password!', 'fas fa-sign-in-alt', true);
 					res.redirect('/showadminlogin');
 				}
 			})
 		})
+		
 });
 router.get('/', (req, res) => {
-	res.render('index')
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
+		res.render('index', {
+			admin:admin
+		})
+	});
 });
 router.get('/showproduct', (req, res) => {
-
-	res.render('product')
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
+	res.render('product',{admin:admin})
+	});
 });
 router.get('/showreviews', (req, res) => {
-
-	res.render('reviews')
-
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
+	res.render('reviews',{admin:admin})
+	});
 });
 router.get('/showcart', (req, res) => {
 
@@ -137,28 +79,31 @@ router.get('/showcheckout', (req, res) => {
 	res.render('checkout',)
 });
 router.get('/showfeedback', (req, res) => {
-	// Admin.findOne({
-	// 	where: { id: req.params.id }
-	// }).then(admin => {
-	res.render('feedback')
-	// });
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
+	res.render('feedback',{admin:admin,user:null})
+	});
 });
 router.get('/showabout', (req, res) => {
-
-	res.render('about', { admin: admin, user: null })
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
+		res.render('about', { admin: admin, user: null })
+	});
 });
 router.get('/dashboard', (req, res) => {
-	// Admin.findOne({
-	// 	where: { id: req.params.id }
-	// }).then(admin => {
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
 	User.findAll({
 	}).then((users) => {
 		res.render('', {
 			layout: 'dashboard',
-			users: users
+			admin:admin,
+			users:users
 		})
 	});
 });
+});
+
 router.get('/userinfo', (req, res) => {
 	res.render('', {
 		layout: "userinfo",
@@ -166,155 +111,48 @@ router.get('/userinfo', (req, res) => {
 	});
 });
 router.get('/usertablelist', (req, res) => {
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
 	User.findAll({
 		raw: true
 	}).then((users) => {
 		res.render('', {
             layout:"usertable",
-			users: users
+			users: users,
+			admin:admin
 		})
 	});
+}).catch(err => console.log(err));
 });
 router.get('/admintablelist', (req, res) => {
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
 	Admin.findAll({
 		raw:true
 	}).then((admins) => {
 		res.render('', {
 			layout: 'admintable',
-			admins:admins
+			admins:admins,
+			admin:admin
 		})
 	});
+}).catch(err => console.log(err));
 });
 router.get('/producttable', (req, res) => {
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
 	Product.findAll({
         raw: true
     }).then((products) => {
         res.render('', {
             layout:"producttable",
-            products: products
+            products: products,
+			admin:admin
         });
+	});
     }).catch(err => console.log(err));
 });
 
-
-
-
-
-// router.get('/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/showproduct/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/showreviews/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/showcart/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/showcheckout/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/showfeedback/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/showabout/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 		res.render('index', {admin:admin,user: null })
-// 	});
-// });
-// router.get('/dashboard/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 	User.findAll({
-// 	}).then((users) => {
-// 		res.render('', {
-// 			layout: 'dashboard',
-// 			users: users,
-// 			id:req.params.id,
-// 			admin:admin
-// 		});
-// 	}).catch(err => console.log(err));
-// });
-// });
-// router.get('/userinfo/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {res.render('', {
-// 		layout: "userinfo",
-// 		admin:admin
-// 	});
-// });
-// });
-// router.get('/usertablelist/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 	User.findAll({
-// 		raw: true
-// 	}).then((users) => {
-
-// 		res.render('', {
-// 			layout: "usertable",
-// 			users: users,
-// 			admin:admin,
-// 			newid:admin.id
-
-// 		});
-// 	}).catch(err => console.log(err));
-// });
-// });
-// router.get('/admintablelist/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 	Admin.findAll({
-// 		raw: true
-// 	}).then((admins) => {
-// 		res.render('', {
-// 			layout: "admintable",
-// 			admin:admin,
-// 			admins:admins,
-// 			newid:req.params.id
-// 		});
-// 	}).catch(err => console.log(err));
-// });
-
-// });
-// router.get('/producttable/:id', (req, res) => {
-// 	Admin.findOne({
-// 		where: { id: req.params.id }
-// 	}).then(admin => {
-// 	res.render('', { layout: "producttable",admin:admin })
-// });
-// });
 router.get('/showaddproduct', (req, res) => {
 	res.render('', { layout: "addproduct" })
 });
@@ -369,9 +207,6 @@ router.get('/deleteproduct/:id', (req, res) => {
     }).catch(err => console.log(err));
 });
 router.get('/usertablelist/delete/:id', (req, res) => {
-	// Admin.findOne({
-	// 	where: { id: adminid }
-	// }).then(admin => {
 	User.destroy({
 		where: { id: req.params.id }
 	}).then(deleteuser => {
@@ -396,8 +231,7 @@ router.get('/admintablelist/edit/:id', (req, res) => {
 router.post('/admintablelist/update/:id', (req, res) => {
 	let errors = [];
 	let { name, email, password, password1, password2 } = req.body;
-	// var pass = false;
-	// if (pass) {
+
 	// 	bcrypt.compare(password, req.user.password, (err, isMatch) => {
 	// 		if (err) throw err;
 	// 		if (isMatch) {
@@ -468,6 +302,8 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	}
 });
 router.get('/usertablelist/edit/:id', (req, res) => {
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
 	User.findOne({
 		where: {
 			id: req.params.id
@@ -475,8 +311,10 @@ router.get('/usertablelist/edit/:id', (req, res) => {
 	}).then((user) => {
 		res.render('', {
 			layout:'updateuser',
-			user:user
+			user:user,
+			admin:admin
 		});
+	});
 	}).catch(err => console.log(err)); 
 
 });
@@ -565,13 +403,17 @@ router.get('/admintablelist/delete/:id1', (req, res) => {
 	});
 });
 router.get('/feedbacktable', (req, res) => {
+	Admin.findOne({where:req.session.admin
+	}).then((admin) => {
     Feedback.findAll({
         raw: true
     }).then((feedbacks) => {
         res.render('', {
             layout: "feedbacktable",
-            feedbacks: feedbacks
+            feedbacks: feedbacks,
+			admin:admin
         });
+	});
     }).catch(err => console.log(err));
 });
 

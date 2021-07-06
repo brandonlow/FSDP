@@ -32,8 +32,9 @@
                                     <td>{{email}}</td>
                                     <td>{{password}}</td>
                                     <td><a href="/admin/admintablelist/edit/{{id}}">update</a></td>
-                                    
-                                    {{!-- <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></td> --}}
+                                    {{#ifEqual admin.email 'superadmin@gmail.com'}}
+                                    <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></td>
+                                    {{/if}}
                                 </tr>
                                 </tbody>
                             {{/each}}
