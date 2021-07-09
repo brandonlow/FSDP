@@ -97,6 +97,7 @@ app.use(session({
 		checkExpirationInterval: 900000,
 		// The maximum age of a valid session; milliseconds:
 		expiration: 900000,
+	
 	}),
 	resave: false,
 	saveUninitialized: false,
@@ -133,6 +134,7 @@ app.use('/', mainRoute); // mainRoute is declared to point to routes/main.js
 // This route maps the root URL to any path defined in main.js
 app.use('/admin', adminRoute);
 app.use('/user', userRoute); // Add this line
+
 
 
 /*

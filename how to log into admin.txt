@@ -1,9 +1,9 @@
-1)Add user superadmin@gmail.com
+1)Add user superuser@gmail.com
 -Superuser is for creating admin account and gain access to login page for all admins but only superadmin should be able to access this account
 2)Add User subuser@gmail.com
 -For the purpose of allowing admins to login through the subuser account so that admins do not have superadmin rights
 
-Message:Please login to superadmin@gmail.com after creating and add your admin accounts
+Message: create and add your admin accounts at the superuser account
 	Wether you want continue from here or log into subuser dosent matter 
 	cause it does not affect your work unless you have to sperate rights between the super admin or normal admin   
 	Continue by loging into subuser@gmail.com to continue your admin work

@@ -50,14 +50,6 @@ router.post('/login', (req, res) => {
 		})
 		
 });
-router.get('/', (req, res) => {
-	Admin.findOne({where:req.session.admin
-	}).then((admin) => {
-		res.render('index', {
-			admin:admin
-		})
-	});
-});
 router.get('/showproduct', (req, res) => {
 	Admin.findOne({where:req.session.admin
 	}).then((admin) => {
