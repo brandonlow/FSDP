@@ -31,16 +31,14 @@ router.post('/login', (req, res) => {
 		.then(admins => {
 			if (!admins) {
 				res.render('admin/login', {
-					error: 'Only super admin account allowed',
-					email,
-					password
+					error: 'Only admin account allowed'
 				});
 			}	
 			
 			bcrypt.compare(password, admins.password, (err, isMatch) => {
 				if (err) throw err;
 				if (isMatch) {
-					req.session.admin={id:admins.id}
+					req.session.admin=admins.id
 					res.redirect('/admin/dashboard');
 				} else {
 					alertMessage(res, 'danger', 'Incorrect password!', 'fas fa-sign-in-alt', true);
@@ -83,7 +81,7 @@ router.get('/showabout', (req, res) => {
 	});
 });
 router.get('/dashboard', (req, res) => {
-	Admin.findOne({where:req.session.admin
+	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
 	User.findAll({
 	}).then((users) => {
@@ -103,7 +101,7 @@ router.get('/userinfo', (req, res) => {
 	});
 });
 router.get('/usertablelist', (req, res) => {
-	Admin.findOne({where:req.session.admin
+	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
 	User.findAll({
 		raw: true
@@ -117,7 +115,7 @@ router.get('/usertablelist', (req, res) => {
 }).catch(err => console.log(err));
 });
 router.get('/admintablelist', (req, res) => {
-	Admin.findOne({where:req.session.admin
+	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
 	Admin.findAll({
 		raw:true
@@ -131,7 +129,7 @@ router.get('/admintablelist', (req, res) => {
 }).catch(err => console.log(err));
 });
 router.get('/producttable', (req, res) => {
-	Admin.findOne({where:req.session.admin
+	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
 	Product.findAll({
         raw: true
@@ -224,23 +222,14 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	let errors = [];
 	let { name, email, password, password1, password2 } = req.body;
 
-	// 	bcrypt.compare(password, req.user.password, (err, isMatch) => {
-	// 		if (err) throw err;
-	// 		if (isMatch) {
-	// 			pass = true;
-	// 			console.log(pass);
-	// 		} else {
-	// 			pass = false;
-	// 			console.log(pass);
-	// 		}
-	// 	})
-	// }
-	// if (pass == false) {
-	// 	errors.push({ text: 'Wrong current password' });
-	// }
-	// if (password1 != password2) {
-	// 	errors.push({ text: 'password do not match' });
-	// }
+	bcrypt.compare(password, req.user.password, (err, isMatch) => {
+		if (!isMatch) {
+			res.render('user/profile',{error:'Wrong current password'})
+		}
+	})
+	if (password1 != password2) {
+		errors.push({ text: 'password do not match' });
+	}
 	if (errors.length > 0) {
 		res.render('', {
 			layout:'update',
@@ -294,7 +283,7 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	}
 });
 router.get('/usertablelist/edit/:id', (req, res) => {
-	Admin.findOne({where:req.session.admin
+	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
 	User.findOne({
 		where: {
@@ -395,7 +384,7 @@ router.get('/admintablelist/delete/:id1', (req, res) => {
 	});
 });
 router.get('/feedbacktable', (req, res) => {
-	Admin.findOne({where:req.session.admin
+	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
     Feedback.findAll({
         raw: true

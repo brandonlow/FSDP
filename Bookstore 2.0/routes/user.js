@@ -8,8 +8,8 @@ const alertMessage = require('../helpers/messenger');
 const alertMessage2 = require('../helpers/messenger2');
 const { session } = require('passport');
 const contact = require('../models/contact');
-const Feedback=require('../models/Feedback');
-const Admin=require('../models/Admin');
+const Feedback = require('../models/Feedback');
+const Admin = require('../models/Admin');
 
 
 router.get('/showprofilesuccess', (req, res) => {
@@ -87,7 +87,7 @@ router.post('/add', (req, res) => {
 
 // Login Form POST => /user/login
 router.post('/login', (req, res, next) => {
-	
+
 	passport.authenticate('local', {
 		successRedirect: '/success',
 		failureRedirect: '/showLogin',					// Route to /login URL
@@ -147,65 +147,55 @@ router.post('/register', (req, res) => {
 				})
 			});
 		}
-		else{
-		User.findOne({
-			where: { email }
-		})
-			.then(user => {
-				if (user) {
-					// If user is found, that means email given has already been registered
-					//req.flash('error_msg', user.name + ' already registered');
-					res.render('user/register', {
-						error: user.email + ' already registered',
-						name,
-						email,
-						password,
-						password2
-					});
-				} else {
-					// Generate salt hashed password
-					bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(password, salt, (err, hash) => {
-							if (err) throw err;
-							password = hash;
-							// Create new user record
-							User.create({
-								name,
-								email,
-								password
-							})
-								.then(user => {
-									alertMessage(res, 'success', user.name + ' added. Please login', 'fas fa-sign-in-alt', true);
-									res.redirect('/showLogin');
+		else {
+			User.findOne({
+				where: { email }
+			})
+				.then(user => {
+					if (user) {
+						// If user is found, that means email given has already been registered
+						//req.flash('error_msg', user.name + ' already registered');
+						res.render('user/register', {
+							error: user.email + ' already registered',
+							name,
+							email,
+							password,
+							password2
+						});
+					} else {
+						// Generate salt hashed password
+						bcrypt.genSalt(10, (err, salt) => {
+							bcrypt.hash(password, salt, (err, hash) => {
+								if (err) throw err;
+								password = hash;
+								// Create new user record
+								User.create({
+									name,
+									email,
+									password
 								})
-								.catch(err => console.log(err));
-						})
-					});
+									.then(user => {
+										alertMessage(res, 'success', user.name + ' added. Please login', 'fas fa-sign-in-alt', true);
+										res.redirect('/showLogin');
+									})
+									.catch(err => console.log(err));
+							})
+						});
 
-				}
-			});
+					}
+				});
 		}
 	}
 });
 router.post('/update', (req, res) => {
 	let errors = [];
 	let { name, email, password, password1, password2 } = req.body;
-	var pass = false;
-	if (pass) {
-		bcrypt.compare(password, req.user.password, (err, isMatch) => {
-			if (err) throw err;
-			if (isMatch) {
-				pass = true;
-				console.log(pass);
-			} else {
-				pass = false;
-				console.log(pass);
-			}
-		})
-	}
-	if (pass == false) {
-		errors.push({ text: 'Wrong current password' });
-	}
+
+	bcrypt.compare(password, req.user.password, (err, isMatch) => {
+		if (!isMatch) {
+			res.render('user/profile',{error:'Wrong current password'})
+		}
+	})
 	if (password1 != password2) {
 		errors.push({ text: 'password do not match' });
 	}
@@ -221,7 +211,6 @@ router.post('/update', (req, res) => {
 		});
 	}
 	else {
-		console.log(pass)
 		User.findOne({
 			where: { id: req.user.id }
 		})
@@ -266,58 +255,58 @@ router.get('/showadmin', (req, res) => {
 
 router.post('/contact', (req, res) => {
 
-    let { name, subject, email, phone, message } = req.body;
-    try {
-        contact.create({
-            name,
-            subject,
-            email,
-            phone,
-            message
-        })
-        var nodemailer = require('nodemailer');
+	let { name, subject, email, phone, message } = req.body;
+	try {
+		contact.create({
+			name,
+			subject,
+			email,
+			phone,
+			message
+		})
+		var nodemailer = require('nodemailer');
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'bookstoretestpage@gmail.com',
-                pass: 'Bookst0reTestPage11'
-            }
-        });
+		var transporter = nodemailer.createTransport({
+			service: 'gmail',
+			auth: {
+				user: 'bookstoretestpage@gmail.com',
+				pass: 'Bookst0reTestPage11'
+			}
+		});
 
-        var mailOptions = {
-            from: 'bookstoretestpage@gmail.com',
-            to: email,
-            subject: 'Verification',
-            html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
-        };
+		var mailOptions = {
+			from: 'bookstoretestpage@gmail.com',
+			to: email,
+			subject: 'Verification',
+			html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
+		};
 
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
-        alertMessage(res, 'success', "Sucessfully sent.", " ", false);
+		transporter.sendMail(mailOptions, function (error, info) {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('Email sent: ' + info.response);
+			}
+		});
+		alertMessage(res, 'success', "Sucessfully sent.", " ", false);
 
-    }
-    catch {
-        alertMessage(res, 'danger', "System failure, please try again", " ", false);
+	}
+	catch {
+		alertMessage(res, 'danger', "System failure, please try again", " ", false);
 
-    }
+	}
 
-    res.redirect('/showcontact')
+	res.redirect('/showcontact')
 
 });
 router.post('/feedback', (req, res) => {
-    let {name, email, feedback, options} = req.body;
-    Feedback.create({
-        name,
-        email,
-        feedback,
-        options
-    })
-    res.render('index')
+	let { name, email, feedback, options } = req.body;
+	Feedback.create({
+		name,
+		email,
+		feedback,
+		options
+	})
+	res.render('index')
 });
 module.exports = router;
