@@ -9,21 +9,6 @@ const { error } = require('flash-messenger/Alert');
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback=require('../models/Feedback');
-const admin = require('../models/Admin');
-// let password='1234'
-// bcrypt.genSalt(10, (err, salt) => {
-// 	bcrypt.hash(password, salt, (err, hash) => {
-// 		if (err) throw err;
-// 		password = hash;
-// 		// Create new user record
-// 		Admin.create({
-// 			name:'admin',
-// 			email:'admin2@gmail.com',
-// 			password
-			
-// 		})
-// 	})
-// });
 
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
@@ -47,38 +32,6 @@ router.post('/login', (req, res) => {
 			})
 		})
 		
-});
-router.get('/showproduct', (req, res) => {
-	Admin.findOne({where:req.session.admin
-	}).then((admin) => {
-	res.render('product',{admin:admin})
-	});
-});
-router.get('/showreviews', (req, res) => {
-	Admin.findOne({where:req.session.admin
-	}).then((admin) => {
-	res.render('reviews',{admin:admin})
-	});
-});
-router.get('/showcart', (req, res) => {
-
-	res.render('index')
-});
-router.get('/showcheckout', (req, res) => {
-
-	res.render('checkout',)
-});
-router.get('/showfeedback', (req, res) => {
-	Admin.findOne({where:req.session.admin
-	}).then((admin) => {
-	res.render('feedback',{admin:admin,user:null})
-	});
-});
-router.get('/showabout', (req, res) => {
-	Admin.findOne({where:req.session.admin
-	}).then((admin) => {
-		res.render('about', { admin: admin, user: null })
-	});
 });
 router.get('/dashboard', (req, res) => {
 	Admin.findOne({where:{id:req.session.admin}
@@ -182,8 +135,6 @@ router.put('/updateproduct/:id', (req, res) => {
     id: req.params.id
     }
     }).then(() => {
-    // After saving, redirect to router.get(/listVideos...) to retrieve all updated
-    // videos
     res.redirect('../producttable');
     }).catch(err => console.log(err));
 });
@@ -224,7 +175,7 @@ router.post('/admintablelist/update/:id', (req, res) => {
 
 	bcrypt.compare(password, req.user.password, (err, isMatch) => {
 		if (!isMatch) {
-			res.render('user/profile',{error:'Wrong current password'})
+			res.render('update',{error:'Wrong current password'})
 		}
 	})
 	if (password1 != password2) {
@@ -233,12 +184,7 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	if (errors.length > 0) {
 		res.render('', {
 			layout:'update',
-			errors,
-			name,
-			email,
-			password,
-			password1,
-			password2
+			errors
 		});
 	}
 	else {
@@ -250,12 +196,7 @@ router.post('/admintablelist/update/:id', (req, res) => {
 				if (admin && admin.email==email) {
 					res.render('', {
 						layout:'update',
-						error: admin.email + ' already used!',
-						name,
-						email,
-						password,
-						password1,
-						password2
+						error: admin.email + ' already used!'
 					});
 				}
 
@@ -302,34 +243,14 @@ router.get('/usertablelist/edit/:id', (req, res) => {
 router.post('/usertablelist/update/:id', (req, res) => {
 	let errors = [];
 	let { name, email, password, password1, password2 } = req.body;
-	// var pass = false;
-	// if (pass) {
-	// 	bcrypt.compare(password, req.user.password, (err, isMatch) => {
-	// 		if (err) throw err;
-	// 		if (isMatch) {
-	// 			pass = true;
-	// 			console.log(pass);
-	// 		} else {
-	// 			pass = false;
-	// 			console.log(pass);
-	// 		}
-	// 	})
-	// }
-	// if (pass == false) {
-	// 	errors.push({ text: 'Wrong current password' });
-	// }
-	// if (password1 != password2) {
-	// 	errors.push({ text: 'password do not match' });
-	// }
+
+	if (password1 != password2) {
+		errors.push({ text: 'password do not match' });
+	}
 	if (errors.length > 0) {
 		res.render('', {
 			layout:'updateuser',
-			errors,
-			name,
-			email,
-			password,
-			password1,
-			password2
+			errors
 		});
 	}
 	else {
@@ -338,15 +259,15 @@ router.post('/usertablelist/update/:id', (req, res) => {
 			where: { id: req.params.id }
 		})
 			.then(user => {
+				bcrypt.compare(password,user.password, (err, isMatch) => {
+					if (!isMatch) {
+						res.render('',{layout:'updateuser',error:'Wrong current password'});
+					}
+				})
 				if (user && user.email==email) {
 					res.render('', {
 						layout:'updateuser',
-						error: user.email + ' already used!',
-						name,
-						email,
-						password,
-						password1,
-						password2
+						error: user.email + ' already used!'
 					});
 				}
 
@@ -364,9 +285,8 @@ router.post('/usertablelist/update/:id', (req, res) => {
 									id: req.params.id
 								}
 							}).then(() => {
-								console.log(password);
 								alertMessage2(res, 'success', user.name + ' updated successfully', 'ti-reload  ', true)
-								res.redirect('/admin/usertablelist/:id');
+								res.redirect('/admin/usertablelist');
 							}).catch(err => console.log(err));
 						})
 					});

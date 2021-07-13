@@ -122,32 +122,9 @@ router.post('/register', (req, res) => {
 	 */
 	if (errors.length > 0) {
 		res.render('user/register', {
-			errors,
-			name,
-			email,
-			password,
-			password2
+			errors
 		});
 	} else {
-		if (name == 'admin') {
-			bcrypt.genSalt(10, (err, salt) => {
-				bcrypt.hash(password, salt, (err, hash) => {
-					if (err) throw err;
-					password = hash;
-					// Create new admin record
-					Admin.create({
-						name: name,
-						email: email,
-						password: password
-					}).then(admin => {
-						alertMessage(res, 'success', admin.name + ' added. Please login', 'fas fa-sign-in-alt', true);
-						res.redirect('/showLogin');
-					})
-						.catch(err => console.log(err));
-				})
-			});
-		}
-		else {
 			User.findOne({
 				where: { email }
 			})
@@ -156,11 +133,7 @@ router.post('/register', (req, res) => {
 						// If user is found, that means email given has already been registered
 						//req.flash('error_msg', user.name + ' already registered');
 						res.render('user/register', {
-							error: user.email + ' already registered',
-							name,
-							email,
-							password,
-							password2
+							error: user.email + ' already registered'
 						});
 					} else {
 						// Generate salt hashed password
@@ -184,7 +157,7 @@ router.post('/register', (req, res) => {
 
 					}
 				});
-		}
+		
 	}
 });
 router.post('/update', (req, res) => {
@@ -203,11 +176,7 @@ router.post('/update', (req, res) => {
 		res.render('user/Profile', {
 			User,
 			errors,
-			name,
-			email,
-			password,
-			password1,
-			password2
+
 		});
 	}
 	else {
@@ -217,12 +186,7 @@ router.post('/update', (req, res) => {
 			.then(user => {
 				if (user.email == email) {
 					res.render('user/Profile', {
-						error: user.email + ' already used!',
-						name,
-						email,
-						password,
-						password1,
-						password2
+						error: user.email + ' already used!'
 					});
 				}
 
