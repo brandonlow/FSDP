@@ -14,6 +14,8 @@
                     </div>
                     <div class="card-body table-full-width table-responsive">
                         <table class="table table-hover table-striped">
+
+                            {{#if superadmin}}
                             <thead>
                                 <th>User ID</th>
                                 <th>Username</th>
@@ -23,8 +25,7 @@
                                 <th>Action</th>
 
                             </thead>
-                            {{#if admin}}
-                            {{#ifEqual admin.email "superadmin@gmail.com" }}
+
                             {{#each admins}}
                             <tbody>
                                 <tr>
@@ -34,11 +35,18 @@
                                     <td>{{password}}</td>
                                     <td><a href="/admin/admintablelist/edit/{{id}}">update</a></td>
                                     <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></td>
-
                                 </tr>
                             </tbody>
                             {{/each}}
+
                             {{else}}
+                            <thead>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Action</th>
+                            </thead>
                             {{#each admins}}
                             <tbody>
                                 <tr>
@@ -47,14 +55,9 @@
                                     <td>{{email}}</td>
                                     <td>{{password}}</td>
                                     <td><a href="/admin/admintablelist/edit/{{id}}">update</a></td>
-                                    <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></td>
-
                                 </tr>
                             </tbody>
                             {{/each}}
-                            {{/if}}
-                            {{else}}
-                            <h2>No admin found</h2>
                             {{/if}}
                         </table>
                     </div>

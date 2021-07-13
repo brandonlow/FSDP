@@ -9,6 +9,7 @@ const { error } = require('flash-messenger/Alert');
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback=require('../models/Feedback');
+const { helpers } = require('handlebars');
 
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
@@ -73,14 +74,21 @@ router.get('/admintablelist', (req, res) => {
 	Admin.findAll({
 		raw:true
 	}).then((admins) => {
+		if (admin.email=='superadmin@gmail.com'){
+			res.render('',{layout:'admintable',admins:admins,admin:admin,superadmin:admin})
+		}
+		else{
 		res.render('', {
 			layout: 'admintable',
 			admins:admins,
 			admin:admin
 		})
+	}
 	});
+
 }).catch(err => console.log(err));
 });
+
 router.get('/producttable', (req, res) => {
 	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
@@ -300,7 +308,6 @@ router.get('/admintablelist/delete/:id1', (req, res) => {
 	}).then(deleteuser => {
 		alertMessage2(res, 'success','Admin deleted successfully!', 'ti-trash', true);
 		res.redirect('/admin/admintablelist');
-
 	});
 });
 router.get('/feedbacktable', (req, res) => {
