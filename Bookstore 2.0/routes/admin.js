@@ -5,7 +5,7 @@ const Admin=require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const alertMessage = require('../helpers/messenger');
 const { error } = require('flash-messenger/Alert');
-
+const Contact = require('../models/Contact');
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback=require('../models/Feedback');
@@ -231,6 +231,58 @@ router.post('/admintablelist/update/:id', (req, res) => {
 			});
 	}
 });
+//router.get('/contacttable', (req, res) => {
+	// 	Admin.findOne({where:req.session.admin
+	// 	}).then((admin) => {
+	// 	var Contact =  Contact.findAll({
+	//         raw: true
+	//     }).then((contact) => {
+	//         res.render('', {
+	//             layout:"contacttable",
+	//             Contact:contact,
+	// 			admin:admin
+	//         });
+	// 	});
+	//     }).catch(err => console.log(err));
+	// });
+	
+	
+
+	
+	
+	router.get('/contacttable', async(req, res) => {
+		try {
+			var admin =await Admin.findOne({ where: {'id': req.session.admin}});
+			console.log(req.session.admin);
+		
+			var contact = await Contact.findAll();
+		
+			res.render('', {
+				layout:"contacttable",
+				Contact:contact,
+				admin:admin
+			});	
+		} catch (error) {
+			console.log(error);
+		}
+	})
+	// router.get('/producttable', (req, res) => {
+	// 	Admin.findOne({where:{id:req.session.admin}
+	// 	}).then((admin) => {
+	// 	Product.findAll({
+	// 		raw: true
+	// 	}).then((products) => {
+	// 		res.render('', {
+	// 			layout:"producttable",
+	// 			products: products,
+	// 			admin:admin
+	// 		});
+	// 	});
+	// 	}).catch(err => console.log(err));
+	// });
+	
+
+
 router.get('/usertablelist/edit/:id', (req, res) => {
 	Admin.findOne({where:{id:req.session.admin}
 	}).then((admin) => {
