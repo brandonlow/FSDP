@@ -252,6 +252,7 @@ router.post('/admintablelist/update/:id', (req, res) => {
 			}
 		}).then(() => {
 			res.redirect('../contacttable');
+		}).catch(err => console.log(err));
 	});
 	
 	// router.get('/respondcontacttable/:id', (req, res) => {
