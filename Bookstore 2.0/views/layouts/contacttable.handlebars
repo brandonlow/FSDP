@@ -22,6 +22,18 @@
                             </thead>
                             {{#each Contact}}
                             <tbody>
+
+                                <script type="text/javascript">
+                                function DSalert(){
+                                 var agree=confirm("Do you want to Delete the work? ")
+                                 if (agree)
+                                        return true ;
+                                else
+                                    return false ;
+                            
+                                
+                                }
+                                </script>
                                 <tr>
                                     <td>{{id}}</td>
                                     <td>{{name}}</td>
@@ -29,7 +41,9 @@
                                     <td>{{email}}</td>
                                     <td>{{phone}}</td>
                                     <td>{{message}}</td> 
-                                    <button>Delete</button>
+                                    <td><a href="./respondcontacttable/{{id}}">Respond</a></td>
+                                    <td onclick ="DSalert()"><a href="./deletecontacttable/{{id}}">Delete</a></td>
+
                                 </tr>
                                 </tbody>
                             {{/each}}

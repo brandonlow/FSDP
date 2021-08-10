@@ -245,8 +245,24 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	// 	});
 	//     }).catch(err => console.log(err));
 	// });
+	router.get('/deletecontacttable/:id', (req, res) => {
+		Contact.destroy({
+			where: {
+				id: req.params.id
+			}
+		}).then(() => {
+			res.redirect('../contacttable');
+	});
 	
-	
+	// router.get('/respondcontacttable/:id', (req, res) => {
+	// 	Contact.destroy({
+	// 		where: {
+	// 			id: req.params.id
+	// 		}
+	// 	}).then(() => {
+	// 		res.redirect('../contacttable');
+	// 	}).catch(err => console.log(err));
+	// });
 
 	
 	
@@ -266,6 +282,8 @@ router.post('/admintablelist/update/:id', (req, res) => {
 			console.log(error);
 		}
 	})
+
+	
 	// router.get('/producttable', (req, res) => {
 	// 	Admin.findOne({where:{id:req.session.admin}
 	// 	}).then((admin) => {
