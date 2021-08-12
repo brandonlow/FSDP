@@ -10,9 +10,7 @@ const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
 const { helpers } = require('handlebars');
-const { password } = require('../config/db');
 
-var admin1 = Admin.create({ name: 'hello', email: 'a@gmail.com', password: '1234' });
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })
