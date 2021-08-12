@@ -98,20 +98,8 @@ router.get('/success', (req, res) => {
 	}).catch(err => console.log(err));
 });
 
-router.get('/showadd', (req, res) => {
-	res.render('admin/add');
-});
 router.get('/showadminlogin', (req, res) => {
 	res.render('admin/login');
-});
-router.get('/adminsuccess', (req, res) => {
-	Admin.findOne({
-		where:{name}
-	}).then(() => {
-		res.render('index', {
-			name:name
-		});
-	}).catch(err => console.log(err));
 });
 
 module.exports = router;

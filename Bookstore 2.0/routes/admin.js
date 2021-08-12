@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const Admin=require('../models/Admin');
+const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const alertMessage = require('../helpers/messenger');
 const { error } = require('flash-messenger/Alert');
 const Contact = require('../models/Contact');
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
-const Feedback=require('../models/Feedback');
+const Feedback = require('../models/Feedback');
 const { helpers } = require('handlebars');
+const { password } = require('../config/db');
 
+var admin1 = Admin.create({ name: 'hello', email: 'a@gmail.com', password: '1234' });
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })
@@ -19,12 +21,11 @@ router.post('/login', (req, res) => {
 				res.render('admin/login', {
 					error: 'Only admin account allowed'
 				});
-			}	
-			
+			}
 			bcrypt.compare(password, admins.password, (err, isMatch) => {
 				if (err) throw err;
 				if (isMatch) {
-					req.session.admin=admins.id
+					req.session.admin = admins.id
 					res.redirect('/admin/dashboard');
 				} else {
 					alertMessage(res, 'danger', 'Incorrect password!', 'fas fa-sign-in-alt', true);
@@ -32,20 +33,91 @@ router.post('/login', (req, res) => {
 				}
 			})
 		})
-		
+
 });
-router.get('/dashboard', (req, res) => {
-	Admin.findOne({where:{id:req.session.admin}
+router.get('/showproduct', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
 	}).then((admin) => {
-	User.findAll({
-	}).then((users) => {
-		res.render('', {
-			layout: 'dashboard',
-			admin:admin,
-			users:users
-		})
-	});
+		res.render('product', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
 });
+router.get('/showcontact', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('contact', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/showcart', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('cart', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
+router.get('/showcheckout', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('checkout', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
+router.get('/showfeedback', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('feedback', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
+
+router.get('/showreviews', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('reviews', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
+router.get('/showabout', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('about', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
+router.get('/dashboard', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		User.findAll({
+			raw: true
+		}).then((users) => {
+			res.render('', {
+				layout: 'dashboard',
+				admin: admin,
+				users: users
+			})
+		});
+	}).catch(err => console.log(err));
 });
 
 router.get('/userinfo', (req, res) => {
@@ -55,127 +127,142 @@ router.get('/userinfo', (req, res) => {
 	});
 });
 router.get('/usertablelist', (req, res) => {
-	Admin.findOne({where:{id:req.session.admin}
+	Admin.findOne({
+		where: { id: req.session.admin }
 	}).then((admin) => {
-	User.findAll({
-		raw: true
-	}).then((users) => {
-		res.render('', {
-            layout:"usertable",
-			users: users,
-			admin:admin
-		})
-	});
-}).catch(err => console.log(err));
+		User.findAll({
+			raw: true
+		}).then((users) => {
+			res.render('', {
+				layout: "usertable",
+				users: users,
+				admin: admin
+			})
+		});
+	}).catch(err => console.log(err));
 });
 router.get('/admintablelist', (req, res) => {
-	Admin.findOne({where:{id:req.session.admin}
+	Admin.findOne({
+		where: { id: req.session.admin }
 	}).then((admin) => {
-	Admin.findAll({
-		raw:true
-	}).then((admins) => {
-		if (admin.email=='superadmin@gmail.com'){
-			res.render('',{layout:'admintable',admins:admins,admin:admin,superadmin:admin})
-		}
-		else{
-		res.render('', {
-			layout: 'admintable',
-			admins:admins,
-			admin:admin
-		})
-	}
-	});
+		Admin.findAll({
+			raw: true
+		}).then((admins) => {
+			if (admin.email == 'superadmin@gmail.com') {
+				res.render('', { layout: 'admintable', admin: admin, admins: admins, superadmin: admin })
+			}
+			else {
+				res.render('', {
+					layout: 'admintable',
+					admins: admins,
+					admin: admin
+				})
+			}
+		});
 
-}).catch(err => console.log(err));
+	}).catch(err => console.log(err));
 });
-
-router.get('/producttable', (req, res) => {
-	Admin.findOne({where:{id:req.session.admin}
+router.get('/showadd', (req, res) => {
+	Admin.findOne({
+		where: {
+			id: req.session.admin
+		}
 	}).then((admin) => {
-	Product.findAll({
-        raw: true
-    }).then((products) => {
-        res.render('', {
-            layout:"producttable",
-            products: products,
-			admin:admin
-        });
-	});
-    }).catch(err => console.log(err));
+		res.render('', {
+			layout: 'add',
+			admin: admin, superadmin: admin
+		});
+	}).catch(err => console.log(err));
+
+});
+router.get('/producttable', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		Product.findAll({
+			raw: true
+		}).then((products) => {
+			res.render('', {
+				layout: "producttable",
+				products: products,
+				admin: admin
+			});
+		});
+	}).catch(err => console.log(err));
 });
 
 router.get('/showaddproduct', (req, res) => {
 	res.render('', { layout: "addproduct" })
 });
-router.post('/addproduct',(req,res)=>{
-    let { title, author, price, url } = req.body;
-    let dateAdded = new Date();
-    Product.create({
-        title,
-        author,
-        price,
-        dateAdded,
-        url
-    })
-    res.redirect('./producttable');
+router.post('/addproduct', (req, res) => {
+	let { title, author, price, url } = req.body;
+	let dateAdded = new Date();
+	Product.create({
+		title,
+		author,
+		price,
+		dateAdded,
+		url
+	})
+	res.redirect('./producttable');
 });
-router.get('/showupdateproduct/:id',(req,res)=>{
-    Product.findOne({
-        where: {
-        id: req.params.id
-        }
-        }).then((product) => {
-            res.render('', {
-                layout:"updateproduct",
-                product: product
-            });
-    }).catch(err => console.log(err));
+router.get('/showupdateproduct/:id', (req, res) => {
+	Product.findOne({
+		where: {
+			id: req.params.id
+		}
+	}).then((product) => {
+		res.render('', {
+			layout: "updateproduct",
+			product: product
+		});
+	}).catch(err => console.log(err));
 });
 router.put('/updateproduct/:id', (req, res) => {
-    let { title, author, price, url } = req.body;
-    Product.update({
-        title: title,
-        author: author,
-        price: price,
-        url: url
-    }, {
-    where: {
-    id: req.params.id
-    }
-    }).then(() => {
-    res.redirect('../producttable');
-    }).catch(err => console.log(err));
+	let { title, author, price, url } = req.body;
+	Product.update({
+		title: title,
+		author: author,
+		price: price,
+		url: url
+	}, {
+		where: {
+			id: req.params.id
+		}
+	}).then(() => {
+		res.redirect('../producttable');
+	}).catch(err => console.log(err));
 });
 router.get('/deleteproduct/:id', (req, res) => {
-    Product.destroy({
-        where: {
-            id: req.params.id
-        }
-    }).then(() => {
-        res.redirect('../producttable');
-    }).catch(err => console.log(err));
+	Product.destroy({
+		where: {
+			id: req.params.id
+		}
+	}).then(() => {
+		res.redirect('../producttable');
+	}).catch(err => console.log(err));
 });
 router.get('/usertablelist/delete/:id', (req, res) => {
 	User.destroy({
 		where: { id: req.params.id }
 	}).then(deleteuser => {
-		alertMessage2(res, 'success','User deleted successfully!', 'fas fa-trash', true);
+		alertMessage2(res, 'success', 'User deleted successfully!', 'ti-trash', true);
 		res.redirect('/admin/usertablelist');
 	});
 });
 
 router.get('/admintablelist/edit/:id', (req, res) => {
-		Admin.findOne({
-			where: {
-				id: req.params.id
-			}
-		}).then((admin) => {
-			res.render('', {
-				layout:'update', 
-				admin:admin
-			});
-		}).catch(err => console.log(err)); 
-	
+	Admin.findOne({
+		where: {
+			id: req.params.id
+		}
+	}).then((admin) => {
+		res.render('', {
+			layout: 'updateadmin',
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+
 });
 router.post('/admintablelist/update/:id', (req, res) => {
 	let errors = [];
@@ -183,7 +270,7 @@ router.post('/admintablelist/update/:id', (req, res) => {
 
 	bcrypt.compare(password, req.user.password, (err, isMatch) => {
 		if (!isMatch) {
-			res.render('update',{error:'Wrong current password'})
+			res.render('updateadmin', { error: 'Wrong current password' })
 		}
 	})
 	if (password1 != password2) {
@@ -191,19 +278,18 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	}
 	if (errors.length > 0) {
 		res.render('', {
-			layout:'update',
+			layout: 'updateadmin',
 			errors
 		});
 	}
 	else {
-		// console.log(pass)
 		Admin.findOne({
 			where: { id: req.params.id }
 		})
 			.then(admin => {
-				if (admin && admin.email==email) {
+				if (admin && admin.email == email) {
 					res.render('', {
-						layout:'update',
+						layout: 'updateadmin',
 						error: admin.email + ' already used!'
 					});
 				}
@@ -303,20 +389,21 @@ router.post('/admintablelist/update/:id', (req, res) => {
 
 
 router.get('/usertablelist/edit/:id', (req, res) => {
-	Admin.findOne({where:{id:req.session.admin}
+	Admin.findOne({
+		where: { id: req.session.admin }
 	}).then((admin) => {
-	User.findOne({
-		where: {
-			id: req.params.id
-		}
-	}).then((user) => {
-		res.render('', {
-			layout:'updateuser',
-			user:user,
-			admin:admin
+		User.findOne({
+			where: {
+				id: req.params.id
+			}
+		}).then((user) => {
+			res.render('', {
+				layout: 'updateuser',
+				user: user,
+				admin: admin
+			});
 		});
-	});
-	}).catch(err => console.log(err)); 
+	}).catch(err => console.log(err));
 
 });
 router.post('/usertablelist/update/:id', (req, res) => {
@@ -328,24 +415,23 @@ router.post('/usertablelist/update/:id', (req, res) => {
 	}
 	if (errors.length > 0) {
 		res.render('', {
-			layout:'updateuser',
+			layout: 'updateuser',
 			errors
 		});
 	}
 	else {
-		
 		User.findOne({
 			where: { id: req.params.id }
 		})
 			.then(user => {
-				bcrypt.compare(password,user.password, (err, isMatch) => {
+				bcrypt.compare(password, user.password, (err, isMatch) => {
 					if (!isMatch) {
-						res.render('',{layout:'updateuser',error:'Wrong current password'});
+						res.render('', { layout: 'updateuser', error: 'Wrong current password' });
 					}
 				})
-				if (user && user.email==email) {
+				if (user && user.email == email) {
 					res.render('', {
-						layout:'updateuser',
+						layout: 'updateuser',
 						error: user.email + ' already used!'
 					});
 				}
@@ -377,25 +463,95 @@ router.get('/admintablelist/delete/:id1', (req, res) => {
 	Admin.destroy({
 		where: { id: req.params.id1 }
 	}).then(deleteuser => {
-		alertMessage2(res, 'success','Admin deleted successfully!', 'ti-trash', true);
+		alertMessage2(res, 'success', 'Admin deleted successfully!', 'ti-trash', true);
 		res.redirect('/admin/admintablelist');
-	});
+	}).catch(err => console.log(err));
 });
 router.get('/feedbacktable', (req, res) => {
-	Admin.findOne({where:{id:req.session.admin}
+	Admin.findOne({
+		where: { id: req.session.admin }
 	}).then((admin) => {
-    Feedback.findAll({
-        raw: true
-    }).then((feedbacks) => {
-        res.render('', {
-            layout: "feedbacktable",
-            feedbacks: feedbacks,
-			admin:admin
-        });
-	});
-    }).catch(err => console.log(err));
+		Feedback.findAll({
+			raw: true
+		}).then((feedbacks) => {
+			res.render('', {
+				layout: "feedbacktable",
+				feedbacks: feedbacks,
+				admin: admin
+			});
+		});
+	}).catch(err => console.log(err));
 });
 
+router.post('/add', (req, res) => {
+	let errors = [];
+	let { name, email, password, password2 } = req.body;
+	if (password !== password2) {
+		errors.push({ text: 'Passwords do not match' });
+	}
+	if (password.length < 4) {
+		errors.push({ text: 'Password must be at least 4 characters' });
+	}
+	if (errors.length > 0) {
+		res.render('', {
+			layout: 'add',
+			errors,
+			name,
+			email,
+			password,
+			password2
+		});
+	} else {
+		Admin.findOne({
+			where: { email }
+		})
+			.then(admin => {
+				if (admin) {
+					res.render('', {
+						layout: 'add',
+						error: admin.email + ' already added',
+						name,
+						email,
+						password,
+						password2
+					});
+				} else {
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(password, salt, (err, hash) => {
+							if (err) throw err;
+							password = hash;
+							Admin.create({
+								name,
+								email,
+								password
+							})
+								.then(admin => {
+									alertMessage2(res, 'success', admin.name + ' added successfully', 'fas fa-sign-in-alt', true);
+									res.redirect('/admin/admintablelist');
+								})
+								.catch(err => console.log(err));
+						})
+					});
+
+				}
+			});
+
+	}
+});
+router.get('/success', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('index', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
+router.get('/logout', (req, res) => {
+	req.session.destroy()
+	res.redirect('/');
+});
 module.exports = router;
 
 

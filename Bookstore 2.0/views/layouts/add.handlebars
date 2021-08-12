@@ -1,20 +1,20 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
-
-{{#if user}}
- <div class="card-body">
+{{>_flashmsg}}
+{{> _errors}}
+<div class="card-body">
             <div class="e-profile">
 <div class="tab-content pt-3">
        <div class="tab-pane active">
                    
-                  <form class="form" method="post" action="/admin/usertablelist/update/{{user.id}}">
+                  <form class="form" method="post" action="/admin/add">
                     <div class="row">
                       <div class="col">
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
-                              <label>User Name</label>
-                              <input class="form-control" type="text" name="name" value="" placeholder="{{user.name}}">
+                              <label>Admin Name</label>
+                              <input class="form-control" type="text" name="name" value="" placeholder="" required>
                             </div>
                           </div>
                         </div>
@@ -22,7 +22,7 @@
                           <div class="col">
                             <div class="form-group">
                               <label>Email</label>
-                              <input class="form-control" type="email" name="email" value="" placeholder="{{user.email}}" >
+                              <input class="form-control" type="email" name="email" value="" placeholder="" required >
                             </div>
                           </div>
                         </div>
@@ -30,11 +30,11 @@
                     </div>
                     <div class="row">
                       <div class="col-12 col-sm-6 mb-3">
-                        <div class="mb-2"><b>Change Password</b></div>
+                        <div class="mb-2"><b>New Password</b></div>
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
-                              <label>Current Password</label>
+                              <label>Password</label>
                               <input class="form-control" type="password" name="password" placeholder="••••••" required>
                             </div>
                           </div>
@@ -42,26 +42,23 @@
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
-                              <label>New Password</label>
-                              <input class="form-control" type="password1" name="password1" placeholder="••••••" required>
+                              <label>Confirm Password</label>
+                              <input class="form-control" type="password2" name="password2" placeholder="••••••" required>
                             </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="form-group">
-                              <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
-                              <input class="form-control" type="password2" name="password2" placeholder="••••••" required></div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <div class="row">
                       <div class="col d-flex justify-content-end">
-                        <button class="btn btn-primary" type="submit">Update</button>
+                        <button class="btn btn-primary" type="submit">Add</button>
                      
                       </div>
-              <a href="/admin/usertablelist" class="btn btn-primary">Cancel</a>
+              <a href="/admin/admintablelist" class="btn btn-primary">Cancel</a>
                     </div>
                   </form>
 
@@ -69,6 +66,5 @@
 </div>
 </div>
  </div>
- {{/if}}
 
 {{>_adminfooter}}

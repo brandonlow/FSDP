@@ -11,6 +11,7 @@ const admin = db.define('admin', {
         type: Sequelize.STRING
     },
     password: {
+
         type: Sequelize.STRING
     },
 });

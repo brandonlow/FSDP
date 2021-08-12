@@ -2,7 +2,6 @@
 {{>_adminnavbar}}
 {{>_flashmsg}}
 <div class="content">
-  
     <div class="container-fluid">
         {{#if users}}
         <div class="row">
@@ -31,7 +30,8 @@
                                     <td>{{email}}</td>
                                     <td>{{password}}</td>
                                     <td><a href="/admin/usertablelist/edit/{{id}}">Update</a></td>
-                                    <td><a href="/admin/usertablelist/delete/{{id}}">Delete</a></td>
+                                    <td> <a href="/admin/usertablelist/delete/{{id}}"
+                                            onclick="return confirm('Are you sure you want to delete {{name}}?');">Delete</a>
                                 </tr>
                                 </tbody>
                             {{/each}}
