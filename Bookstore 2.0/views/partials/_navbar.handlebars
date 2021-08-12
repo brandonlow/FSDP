@@ -44,7 +44,8 @@
 							<li><i class="ti-power-off"></i><a href="/logout">Logout</a></li>
 							{{else}}
 							<li><i class="ti-user"></i> <a href="/showprofile">My account</a></li>
-							<li><i class="ti-import"></i><a href="/showlogin">Login</a></li>
+							<li><i class="ti-id-badge"></i><a href="/showregister">Register</a></li>
+							<li><i class="ti-unlock"></i><a href="/showlogin">Login</a></li>
 							{{/if}}
 							{{#ifEqual user.email "superuser@gmail.com"}}
 							<li><i class="ti-dashboard"></i><a href="/showadminlogin">Login To Admin</a></li>
