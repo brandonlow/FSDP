@@ -5,15 +5,80 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const passport = require('passport');
 const alertMessage = require('../helpers/messenger');
-const alertMessage2 = require('../helpers/messenger2');
 const { session } = require('passport');
 const contact = require('../models/contact');
 const Feedback = require('../models/Feedback');
 const Admin = require('../models/Admin');
-
+const sgMail = require('@sendgrid/mail');
+const sgMailApiKey='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';
+sgMail.setApiKey(sgMailApiKey);
+var otpGenerator = require('otp-generator');
+const newotp=otpGenerator.generate(6, { upperCase: false, specialChars: false });
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
 });
+router.post('/forget', (req, res) => {
+	let {email}=req.body;
+	User.findOne({where:{email:email}}).then(user=>{
+		if (user){
+			sgMail.send({
+				to:email,
+				from:'bookstorehelpline@gmail.com',
+				subject:'Reset password bookstore',
+				text:'Dear Sir/Madam <br> Your email Otp:<b>'+newotp+'</b><br> please Enter this otp to reset your password.',
+				html:'<p>Dear Sir/Madam <br><br> Your email Otp:<b>'+newotp+'</b><br> Please enter this otp to reset your password.</p>',
+			}).then(()=>{
+			alertMessage(res, 'success', 'Email' + ' sent. Please check your email for otp', 'fas fa-sign-in-alt', true);
+			res.render('otp',{forgetuser:user});
+		})
+		.catch((error) => {
+		  console.error(error)
+		})
+	}
+		else{
+			alertMessage(res, 'danger', ''+'Email Not Found!', 'fas fa-sign-in-alt', true);
+			res.redirect('/showforget');
+		}
+	});
+});
+router.post('/forget/:id',async(req,res)=>{
+	let {otp}=req.body;
+	var forgetuser=await User.findOne({where:{id:req.params.id}});
+	if(otp==newotp){
+		alertMessage(res, 'success', '' + 'Success! Change your password here.', 'fas fa-sign-in-alt', true);
+		res.render('changepassword',{forgetuser:forgetuser});
+	}
+	else{
+		alertMessage(res, 'danger', '' + 'Wrong OTP Entered', 'fas fa-sign-in-alt', true);
+		res.render('otp',{forgetuser:forgetuser});
+	}
+});
+router.post('/forget/change/:id',async(req,res)=>{
+	let {password,password2}=req.body;
+	var forgetuser=await User.findOne({where:{id:req.params.id}});
+	if (password==password2){
+		bcrypt.genSalt(10, (err, salt) => {
+			bcrypt.hash(password, salt, (err, hash) => {
+				if (err) throw err;
+				password = hash;
+				User.update({
+					password:password
+				},{
+					where:{id:req.params.id}
+				}).then(() => {
+						alertMessage(res, 'success', 'Updated' + ' new password.Please try to log in again.', 'fas fa-sign-in-alt', true);
+						res.redirect('/showLogin');
+					})
+					.catch(err => console.log(err));
+			})
+		});
+	}
+	else{
+		alertMessage(res, 'danger', '' + 'Password do not match', 'fas fa-sign-in-alt', true);
+		res.render('changepassword',{forgetuser:forgetuser});
+	}
+});
+
 
 // Login Form POST => /user/login
 router.post('/login', (req, res, next) => {
@@ -119,7 +184,6 @@ router.post('/update', (req, res) => {
 						error: user.email + ' already used!'
 					});
 				}
-
 				else {
 					bcrypt.genSalt(10, (err, salt) => {
 						bcrypt.hash(password1, salt, (err, hash) => {

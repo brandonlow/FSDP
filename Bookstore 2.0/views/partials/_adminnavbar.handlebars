@@ -7,8 +7,7 @@
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
                                 {{#if admin}}
-                                
-                                {{admin.name}}
+                                <b>{{admin.name}}</b>
                                  <a class="nav-link" href="#">
                                 Admin
                                 </a>
@@ -16,9 +15,8 @@
                                 {{!-- <a href="/showadd"><i class="ti-plus"></i></a> --}}
                             </li>
                             
-                          
                             <li class="nav-item">
-                                <a class="nav-link" href="/success">
+                                <a class="nav-link" href="/admin/logout">
                                     <span class="no-icon">Log out</span>
                                 </a>
                             </li>

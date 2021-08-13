@@ -11,6 +11,26 @@ const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
 const { helpers } = require('handlebars');
 
+
+var newname='dl'
+var newemail='superadmin@gmail.com'
+var newpassword='1234'
+var newrole='superadmin'
+
+bcrypt.genSalt(10, (err, salt) => {
+	bcrypt.hash(newpassword, salt, (err, hash) => {
+		if (err) throw err;
+		newpassword = hash;
+		Admin.create({
+			name: newname,
+			email: newemail,
+			password:newpassword,
+			role:newrole
+		})
+	})
+});
+
+
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })
@@ -146,7 +166,7 @@ router.get('/admintablelist', (req, res) => {
 		Admin.findAll({
 			raw: true
 		}).then((admins) => {
-			if (admin.email == 'superadmin@gmail.com') {
+			if (admin.role=="superadmin") {
 				res.render('', { layout: 'admintable', admin: admin, admins: admins, superadmin: admin })
 			}
 			else {
@@ -483,7 +503,7 @@ router.get('/feedbacktable', (req, res) => {
 
 router.post('/add', (req, res) => {
 	let errors = [];
-	let { name, email, password, password2 } = req.body;
+	let { name, email, password, password2,role} = req.body;
 	if (password !== password2) {
 		errors.push({ text: 'Passwords do not match' });
 	}
@@ -493,11 +513,7 @@ router.post('/add', (req, res) => {
 	if (errors.length > 0) {
 		res.render('', {
 			layout: 'add',
-			errors,
-			name,
-			email,
-			password,
-			password2
+			errors
 		});
 	} else {
 		Admin.findOne({
@@ -508,10 +524,6 @@ router.post('/add', (req, res) => {
 					res.render('', {
 						layout: 'add',
 						error: admin.email + ' already added',
-						name,
-						email,
-						password,
-						password2
 					});
 				} else {
 					bcrypt.genSalt(10, (err, salt) => {
@@ -521,7 +533,8 @@ router.post('/add', (req, res) => {
 							Admin.create({
 								name,
 								email,
-								password
+								password,
+								role
 							})
 								.then(admin => {
 									alertMessage2(res, 'success', admin.name + ' added successfully', 'fas fa-sign-in-alt', true);
@@ -533,7 +546,6 @@ router.post('/add', (req, res) => {
 
 				}
 			});
-
 	}
 });
 router.get('/success', (req, res) => {
@@ -547,9 +559,10 @@ router.get('/success', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-	req.session.destroy()
+	req.session.destroy();
 	res.redirect('/');
 });
+
 module.exports = router;
 
 

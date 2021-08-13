@@ -26,6 +26,7 @@
                                 <th>User ID</th>
                                 <th>Username</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th>Password</th>
                                 <th>Action</th>
                                 <th>Action</th>
@@ -39,11 +40,14 @@
                                     <td>{{id}}</td>
                                     <td>{{name}} </td>
                                     <td>{{email}}</td>
+                                    <td>{{role}}</td>
                                     <td>{{password}}</td>
+                        
                                     <td><a href="/admin/admintablelist/edit/{{id}}">Update</a></td>
                                     <td> <a href="/admin/admintablelist/delete/{{id}}"
                                             onclick="return confirm('Are you sure you want to delete {{name}}?');">Delete</a>
                                     </td>
+                                    
                                     {{!-- <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></button> --}}
                                 </tr>
                             </tbody>
@@ -54,8 +58,8 @@
                                 <th>User ID</th>
                                 <th>Username</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th>Password</th>
-                                <th>Action</th>
                             </thead>
                             {{#each admins}}
                             <tbody>
@@ -63,8 +67,8 @@
                                     <td>{{id}}</td>
                                     <td>{{name}} </td>
                                     <td>{{email}}</td>
+                                    <td>{{role}}</td>
                                     <td>{{password}}</td>
-                                    <td><a href="/admin/admintablelist/edit/{{id}}">update</a></td>
                                 </tr>
                             </tbody>
                             {{/each}}
@@ -76,9 +80,4 @@
         </div>
     </div>
 </div>
-<script>$('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').trigger('focus')
-
-    })
-</script>
 {{>_adminfooter}}
