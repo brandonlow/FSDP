@@ -83,7 +83,13 @@ router.get('/showfeedback',(req,res)=>{
 });
 
 router.get('/showreviews',(req,res)=>{
-	res.render('reviews')
+    Feedback.findAll({
+        raw: true
+    }).then((feedbacks) => {
+        res.render('reviews', {
+            feedbacks: feedbacks
+        });
+    });
 });
 router.get('/showabout',(req,res)=>{
 	res.render('about')

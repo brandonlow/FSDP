@@ -30,7 +30,6 @@ bcrypt.genSalt(10, (err, salt) => {
 	})
 });
 
-
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })

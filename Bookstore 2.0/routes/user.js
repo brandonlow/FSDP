@@ -258,14 +258,16 @@ router.post('/contact', (req, res) => {
 
 });
 router.post('/feedback', (req, res) => {
-	let { name, email, feedback, options } = req.body;
-	Feedback.create({
-		name,
-		email,
-		feedback,
-		options
-	})
-	res.render('index')
+    let { name, email, feedback, options } = req.body;
+    Feedback.create({
+        name,
+        email,
+        feedback,
+        options
+    });
+    alertMessage(res, 'success', "Feedback sucessfully sent.", " ", true);
+
+    res.render('index')
 });
 
 module.exports = router;
