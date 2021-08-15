@@ -17,6 +17,8 @@ const newotp=otpGenerator.generate(6, { upperCase: false, specialChars: false })
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
 });
+
+
 router.post('/forget', (req, res) => {
 	let {email}=req.body;
 	User.findOne({where:{email:email}}).then(user=>{
@@ -215,6 +217,9 @@ router.post('/contact', (req, res) => {
 
 	let { name, subject, email, phone, message } = req.body;
 	try {
+
+	
+
 		contact.create({
 			name,
 			subject,
@@ -222,30 +227,39 @@ router.post('/contact', (req, res) => {
 			phone,
 			message
 		})
-		var nodemailer = require('nodemailer');
+		// var nodemailer = require('nodemailer');
 
-		var transporter = nodemailer.createTransport({
-			service: 'gmail',
-			auth: {
-				user: 'bookstoretestpage@gmail.com',
-				pass: 'Bookst0reTestPage11'
-			}
-		});
+		sgMail.send({
+			to:email,
+			from:'bookstorehelpline@gmail.com',
+			subject:'Recieved contact',
+			text: 'Reviewing  item you want to contact us about ',
+     		html:"Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff",
+		})
 
-		var mailOptions = {
-			from: 'bookstoretestpage@gmail.com',
-			to: email,
-			subject: 'Verification',
-			html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
-		};
+		// var transporter = nodemailer.createTransport({
+		// 	service: 'gmail',
+		// 	auth: {
+		// 		user: 'bookstoretestpage@gmail.com',
+		// 		pass: 'Bookst0reTestPage11'
+		// 	}
+		// });
 
-		transporter.sendMail(mailOptions, function (error, info) {
-			if (error) {
-				console.log(error);
-			} else {
-				console.log('Email sent: ' + info.response);
-			}
-		});
+
+		// var mailOptions = {
+		// 	from: 'bookstoretestpage@gmail.com',
+		// 	to: email,
+		// 	subject: 'Verification',
+		// 	html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
+		// };
+
+		// transporter.sendMail(mailOptions, function (error, info) {
+		// 	if (error) {
+		// 		console.log(error);
+		// 	} else {
+		// 		console.log('Email sent: ' + info.response);
+		// 	}
+		// });
 		alertMessage(res, 'success', "Sucessfully sent.", " ", false);
 
 	}

@@ -1,6 +1,10 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
+
 <div class="content">
+    {{> _flashmsg}}
+    {{> _msg}} {{!-- views/partials/_msg.handlebars --}}
+    {{> _errors}} {{!-- views/partials/_errors.handlebars --}}
     {{#if Contact}}
     <div class="container-fluid">
         <div class="row">

@@ -1,0 +1,75 @@
+<script src="/new/js/jquery.min.js"></script>
+    <script src="/new/js/jquery-migrate-3.0.0.js"></script>
+    <script src="/new/js/jquery-ui.min.js">
+</script>
+
+{{>_sidenav}}
+{{>_adminnavbar}}
+<div class="content">
+    {{#if Contact}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card strpied-tabled-with-hover" style=" padding:10px;">
+                    <div class="card-header ">
+                        <h4 class="card-title">Respond Contact Table</h4>
+                        {{!-- <p class="card-category">Edit Here</p> form-group --}}
+                    </div>
+                    <form action="/admin/responsecontacttable" method="post" id="respond">
+                        <div class="row">
+
+                            <div class="col-4">
+                                <div class="form-group ">
+                                    <label>To:<span>*</span></label>
+                                    <input name="email" class="form-control " type="name" value="{{Contact.email}}">
+                                    <input name="name" type="hidden" value="{{Contact.name}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Your Subjects<span>*</span></label>
+                                    <input name="subject" class="form-control" type="text" value="{{Contact.subject}}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            {{!-- practical version --}}
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>your message<span>*</span></label>
+                                    <textarea class="form-control" id="response" name="response" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group button">
+                                    <input type="submit" class="btn" value="SendEmail">
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{else}}
+<h2>No Contact found in table</h2>
+{{/if}}
+<script>
+    let submit = false;
+
+    $(window).bind("beforeunload", function(){
+        if (!submit){return" Are you sure you want to leave,any unsaved items can be lost"}  
+        })
+    $("#respond").submit(function(){submit = true})
+
+
+
+</script>
+
+{{>_adminfooter}}
+

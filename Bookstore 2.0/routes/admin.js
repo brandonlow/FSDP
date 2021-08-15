@@ -11,6 +11,10 @@ const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
 const { helpers } = require('handlebars');
 
+const sgMail = require('@sendgrid/mail');
+const sgMailApiKey='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';
+sgMail.setApiKey(sgMailApiKey);
+
 
 var newname='dl'
 var newemail='superadmin@gmail.com'
@@ -29,7 +33,6 @@ bcrypt.genSalt(10, (err, salt) => {
 		})
 	})
 });
-
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })
@@ -52,6 +55,36 @@ router.post('/login', (req, res) => {
 		})
 
 });
+
+// function sendEmail(email){ 
+//     sgMail.setApiKey('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');
+
+// 	//to person using this code, please change the sendgridkey according to your own one! this helps  with consistancy !
+// 	//mykey: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
+//      const message = { 
+//      to: email, 
+//      from: 'bookstorehelpline@gmail.com', 
+//      subject: 'Verify Video Jotter Account', 
+//      text: 'Video Jotter Email Verification',
+//      html:"Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
+//         };
+//      return new Promise((resolve, reject) => { 
+//         sgMail.send(message).then(msg => {
+//             resolve(msg)
+//             console.log(msg)
+//         }).catch(err => {
+//             reject(err)
+//             console.log(err.response.body)
+//         });
+//      });
+
+// }
+// sendEmail(email).then(msg=> {
+
+// }).catch(err => {
+
+
+// });
 router.get('/showproduct', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
@@ -358,17 +391,44 @@ router.post('/admintablelist/update/:id', (req, res) => {
 		}).catch(err => console.log(err));
 	});
 	
-	// router.get('/respondcontacttable/:id', (req, res) => {
-	// 	Contact.destroy({
-	// 		where: {
-	// 			id: req.params.id
-	// 		}
-	// 	}).then(() => {
-	// 		res.redirect('../contacttable');
-	// 	}).catch(err => console.log(err));
-	// });
-
+	router.get('/respondcontacttable/:id', async(req, res) => {
+		// try {
+			var admin =await Admin.findOne({ where: {'id': req.session.admin}});
+			console.log(req.session.admin);
+		
+			var contact = await Contact.findOne({ where: {'id' : req.params.id}});
+		
+			res.render('', {
+				layout:"respondcontacttable",
+				Contact:contact,
+				admin:admin
+			});	
+		// } catch (error) {
+		// 	console.log(error);
+		// }
+	});
 	
+	router.post('/responsecontacttable', async(req, res) => {
+		// let title = req.body.title;
+		let { email , name, subject, response } = req.body; 
+
+		console.log(req.body);
+		sgMail.send({
+			to:email,
+			from:'bookstorehelpline@gmail.com',
+			subject:subject,
+			text:response,
+			
+		}).then(()=>{
+			alertMessage(res, 'success',  ' Email to ' +name+ ' , '+ email+ ' about ' +subject + ' has been sent sucessfully', 'fas fa-sign-in-alt', true);
+			res.redirect('/admin/contacttable');
+		})
+		.catch((error) => {
+		  console.error(error)
+		})
+
+
+	})
 	
 	router.get('/contacttable', async(req, res) => {
 		try {
