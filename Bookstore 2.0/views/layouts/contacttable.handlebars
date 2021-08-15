@@ -24,15 +24,18 @@
                             <tbody>
 
                                 <script type="text/javascript">
-                                function DSalert(){
-                                 var agree=confirm("Do you want to Delete the work? ")
-                                 if (agree)
-                                        return true ;
-                                else
-                                    return false ;
-                            
-                                
-                                }
+                                    function DSalert(id) {
+                                        var agree = confirm("Do you want to Delete the work? ")
+                                        console.log("alert")
+                                        if (agree) { window.location.href = "./deletecontacttable/" + id; }
+
+
+
+                                        //else 
+                                        //return false ;
+
+
+                                    }
                                 </script>
                                 <tr>
                                     <td>{{id}}</td>
@@ -40,12 +43,12 @@
                                     <td>{{subject}} </td>
                                     <td>{{email}}</td>
                                     <td>{{phone}}</td>
-                                    <td>{{message}}</td> 
+                                    <td>{{message}}</td>
                                     <td><a href="./respondcontacttable/{{id}}">Respond</a></td>
-                                    <td onclick ="DSalert()"><a href="./deletecontacttable/{{id}}">Delete</a></td>
+                                    <td onclick="DSalert({{id}})"><a href="javascript:;">Delete</a></td>
 
                                 </tr>
-                                </tbody>
+                            </tbody>
                             {{/each}}
                         </table>
                     </div>
@@ -55,6 +58,6 @@
     </div>
 </div>
 {{else}}
-    <h2>No Contact found in table</h2>
+<h2>No Contact found in table</h2>
 {{/if}}
 {{>_adminfooter}}
