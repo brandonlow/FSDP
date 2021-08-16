@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const sequelize = require('../config/DBConfig');
 const db = require('../config/DBConfig');
 /* Creates a user(s) table in MySQL Database.
 Note that Sequelize automatically pleuralizes the entity name as the table name
@@ -11,7 +12,10 @@ const Product = db.define('product', {
         type: Sequelize.STRING
     },
     category:{
-        type:Sequelize.STRING()
+        type:Sequelize.STRING
+    },
+    qty:{
+        type:Sequelize.INTEGER
     },
     price: {
         type: Sequelize.DECIMAL(10,2)

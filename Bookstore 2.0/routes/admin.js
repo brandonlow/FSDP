@@ -254,11 +254,12 @@ router.get('/showaddproduct', (req, res) => {
 	res.render('', { layout: "addproduct" })
 });
 router.post('/addproduct', (req, res) => {
-	let { title, author,category, price, url } = req.body;
+	let { title, author,category,qty, price, url } = req.body;
 	Product.create({
 		title,
 		author,
 		category,
+		qty,
 		price,
 		url
 	})
@@ -277,10 +278,12 @@ router.get('/showupdateproduct/:id', (req, res) => {
 	}).catch(err => console.log(err));
 });
 router.put('/updateproduct/:id', (req, res) => {
-	let { title, author, price, url } = req.body;
+	let { title, author,category,qty, price, url } = req.body;
 	Product.update({
 		title: title,
 		author: author,
+		category:category,
+		qty:qty,
 		price: price,
 		url: url
 	}, {
