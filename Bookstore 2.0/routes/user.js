@@ -272,12 +272,17 @@ router.post('/contact', (req, res) => {
 
 });
 router.post('/feedback', (req, res) => {
-    let { name, email, feedback, options } = req.body;
+    let { name, feedback, options } = req.body;
+	if (Feedback.count <= 3) {
+		review = true
+	} else {
+		review = false
+	}
     Feedback.create({
         name,
-        email,
         feedback,
-        options
+        options,
+		review
     });
     alertMessage(res, 'success', "Feedback sucessfully sent.", " ", true);
 

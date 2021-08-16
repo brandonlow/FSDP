@@ -7,15 +7,14 @@ const feedback = db.define('feedback', {
     name: {
         type: Sequelize.STRING
     },
-    email: {
-        type: Sequelize.STRING
-    },
     feedback: {
         type: Sequelize.STRING
     },
     options : {
         type: Sequelize.STRING
     },
-
+    review : {
+        type: Sequelize.BOOLEAN
+    }
 });
 module.exports = feedback;
