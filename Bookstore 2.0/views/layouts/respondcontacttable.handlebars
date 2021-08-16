@@ -20,7 +20,7 @@
 
                             <div class="col-4">
                                 <div class="form-group ">
-                                    <label>To:<span>*</span></label>
+                                    <label style="color: black;font-weight: bold;" >To:<span>*</span></label>
                                     <input name="email" class="form-control " type="name" value="{{Contact.email}}">
                                     <input name="name" type="hidden" value="{{Contact.name}}">
                                 </div>
@@ -29,8 +29,17 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label >Your Subjects<span>*</span></label>
+                                    <label style= "color: black;font-weight: bold;">Your Subjects<span>*</span></label>
                                     <input name="subject" class="form-control" type="text" value="{{Contact.subject}}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label style= "color: black;font-weight: bold;" >Users Message<span>*</span></label>
+                                    <input name="message" class="form-control" type="text" value="{{Contact.message}}">
                                 </div>
                             </div>
                         </div>
@@ -38,8 +47,8 @@
                         <div class="row">
                             
                             <div class="col-12">
-                                <div class="form-group">
-                                    <label>your message<span>*</span></label>
+                                <div class="form-group" >
+                                    <label style= "color: black;font-weight: bold;" >your message<span>*</span></label>
                                     <textarea class="form-control" id="response" name="response" rows="10"></textarea>
                                 </div>
                             </div>
@@ -63,7 +72,7 @@
     let submit = false;
 
     $(window).bind("beforeunload", function(){
-        if (!submit){return" Are you sure you want to leave,any unsaved items can be lost"}  
+        if (!submit){return" Changes that you made may not be saved."}  
         })
     $("#respond").submit(function(){submit = true})
 
