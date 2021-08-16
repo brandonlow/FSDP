@@ -538,6 +538,15 @@ router.get('/feedbacktable', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 });
+router.get('/deletefeedbacktable/:id', (req, res) => {
+	Feedback.destroy({
+		where: {
+			id: req.params.id
+		}
+	}).then(() => {
+		res.redirect('../feedbacktable');
+	}).catch(err => console.log(err));
+});
 
 router.post('/add', (req, res) => {
 	let errors = [];

@@ -17,14 +17,24 @@
                                 <th>Name</th>
                                 <th>Feedback</th>
                                 <th>Rating</th>
+                                <th>Date</th>
                             </thead>
                             {{#each feedbacks}}
                             <tbody>
+                                <script type="text/javascript">
+                                    function DSalert(id) {
+                                        var agree = confirm("Do you want to Delete the work? ")
+                                        console.log("alert")
+                                        if (agree) { window.location.href = "./deletefeedbacktable/" + id; }
+                                    }
+                                </script>
                                 <tr>
                                     <td>{{id}}</td>
                                     <td>{{name}} </td>
                                     <td>{{feedback}}</td>
                                     <td>{{options}}</td>
+                                    <td>{{date}}</td>
+                                    <td onclick ="DSalert()"><a href="./deletefeedback/{{id}}">Delete</a></td>
                                 </tr>
                                 </tbody>
                             {{/each}}
