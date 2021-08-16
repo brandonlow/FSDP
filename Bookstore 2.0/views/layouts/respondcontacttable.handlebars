@@ -10,9 +10,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card strpied-tabled-with-hover" style=" padding:10px;">
-                    <div class="card-header ">
-                        <h4 class="card-title">Respond Contact Table</h4>
+                <div class="card strpied-tabled-with-hover" style=" padding:10px;"  >
+                    <div class="card-header" style="background-color:blueviolet;"  >
+                        <h4 class="card-title" style= "color: white;padding:10px;font-size: 30px;"  >Respond Contact Table</h4>
                         {{!-- <p class="card-category">Edit Here</p> form-group --}}
                     </div>
                     <form action="/admin/responsecontacttable" method="post" id="respond">
@@ -29,23 +29,23 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label>Your Subjects<span>*</span></label>
+                                    <label >Your Subjects<span>*</span></label>
                                     <input name="subject" class="form-control" type="text" value="{{Contact.subject}}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
-                            {{!-- practical version --}}
+                            
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>your message<span>*</span></label>
                                     <textarea class="form-control" id="response" name="response" rows="10"></textarea>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="form-group button">
-                                    <input type="submit" class="btn" value="SendEmail">
+                            <div class="col-4">
+                                <div class="form-group button" style=" padding:10px;"    >
+                                    <input type="submit"style= "color: white;background-color:blueviolet;"   class="btn" value="SendEmail">
                                 </div>
                             </div>
 

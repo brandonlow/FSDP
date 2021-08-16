@@ -10,8 +10,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card strpied-tabled-with-hover">
-                    <div class="card-header ">
-                        <h4 class="card-title">Contact Table</h4>
+                    <div class="card-header " style="background-color:blueviolet;" >
+                        <h4 class="card-title" style= "color: white;padding:10px;font-size: 30px;"  >Contact Table</h4>
                         {{!-- <p class="card-category">Edit Here</p> --}}
                     </div>
                     <div class="card-body table-full-width table-responsive">
@@ -49,7 +49,7 @@
                                     <td>{{phone}}</td>
                                     <td>{{message}}</td>
                                     <td><a href="./respondcontacttable/{{id}}">Respond</a></td>
-                                    <td onclick ="DSalert()"><a href="./deletecontacttable/{{id}}">Delete</a></td>
+                                    <td onclick ="DSalert()"><a href="javascript:;">Delete</a></td>
                                 </tr>
                             </tbody>
                             {{/each}}
