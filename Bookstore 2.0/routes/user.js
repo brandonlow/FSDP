@@ -14,10 +14,11 @@ const sgMailApiKey='SG.xdiqNiXjRROyKLBnFzU8Cg.UHU-MmHEIToDFbroWQ-ZD6T6Y50dEcjTEY
 sgMail.setApiKey(sgMailApiKey);
 var otpGenerator = require('otp-generator');
 const newotp=otpGenerator.generate(6, { upperCase: false, specialChars: false });
+
+
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
 });
-
 
 router.post('/forget', (req, res) => {
 	let {email}=req.body;
@@ -173,7 +174,6 @@ router.post('/update', (req, res) => {
 		res.render('user/Profile', {
 			User,
 			errors,
-
 		});
 	}
 	else {
@@ -217,9 +217,6 @@ router.post('/contact', (req, res) => {
 
 	let { name, subject, email, phone, message } = req.body;
 	try {
-
-	
-
 		contact.create({
 			name,
 			subject,
@@ -236,32 +233,7 @@ router.post('/contact', (req, res) => {
 			text: 'Reviewing  item you want to contact us about ',
      		html:"Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff",
 		})
-
-		// var transporter = nodemailer.createTransport({
-		// 	service: 'gmail',
-		// 	auth: {
-		// 		user: 'bookstoretestpage@gmail.com',
-		// 		pass: 'Bookst0reTestPage11'
-		// 	}
-		// });
-
-
-		// var mailOptions = {
-		// 	from: 'bookstoretestpage@gmail.com',
-		// 	to: email,
-		// 	subject: 'Verification',
-		// 	html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
-		// };
-
-		// transporter.sendMail(mailOptions, function (error, info) {
-		// 	if (error) {
-		// 		console.log(error);
-		// 	} else {
-		// 		console.log('Email sent: ' + info.response);
-		// 	}
-		// });
 		alertMessage(res, 'success', "Sucessfully sent.", " ", false);
-
 	}
 	catch {
 		alertMessage(res, 'danger', "System failure, please try again", " ", false);
@@ -272,7 +244,7 @@ router.post('/contact', (req, res) => {
 
 });
 router.post('/feedback', (req, res) => {
-    let { name, feedback, options } = req.body;
+    let { name, feedback, options,review } = req.body;
 	if (Feedback.count <= 3) {
 		review = true
 	} else {

@@ -36,6 +36,8 @@ const db = require('./config/db'); // db.js config file
 const mainRoute = require('./routes/main');
 const adminRoute = require('./routes/admin');
 const userRoute = require('./routes/user');
+const productRoute = require('./routes/product');
+const cartRoute = require('./routes/cart');
 
 /*
 * Creates an Express server - Express is a web application framework for creating web applications
@@ -134,7 +136,8 @@ app.use('/', mainRoute); // mainRoute is declared to point to routes/main.js
 // This route maps the root URL to any path defined in main.js
 app.use('/admin', adminRoute);
 app.use('/user', userRoute); // Add this line
-
+app.use('/product', productRoute);
+app.use('/cart', cartRoute);
 
 
 /*

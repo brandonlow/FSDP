@@ -1,2 +1,2 @@
-select * 
-from bookstore.admins;
+-- select * 
+-- from bookstore.admins;

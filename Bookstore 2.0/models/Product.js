@@ -10,14 +10,14 @@ const Product = db.define('product', {
     author: {
         type: Sequelize.STRING
     },
-    price: {
-        type: Sequelize.STRING
+    category:{
+        type:Sequelize.STRING()
     },
-    dateAdded: {
-        type: Sequelize.DATE
+    price: {
+        type: Sequelize.DECIMAL(10,2)
     },
     url: {
-        type: Sequelize.STRING
-    }
+		type: Sequelize.STRING(512),
+	},
 });
 module.exports = Product;

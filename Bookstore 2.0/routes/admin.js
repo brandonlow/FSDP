@@ -10,6 +10,7 @@ const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
 const { helpers } = require('handlebars');
+const admin = require('../models/Admin');
 
 const sgMail = require('@sendgrid/mail');
 const sgMailApiKey='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';
@@ -20,7 +21,6 @@ var newname='dl'
 var newemail='superadmin@gmail.com'
 var newpassword='1234'
 var newrole='superadmin'
-
 bcrypt.genSalt(10, (err, salt) => {
 	bcrypt.hash(newpassword, salt, (err, hash) => {
 		if (err) throw err;
@@ -33,6 +33,16 @@ bcrypt.genSalt(10, (err, salt) => {
 		})
 	})
 });
+router.get('/',(req,res)=>{
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		res.render('index', {
+			admin: admin
+		});
+	}).catch(err => console.log(err));
+});
+
 router.post('/login', (req, res) => {
 	let { email, password } = req.body
 	Admin.findOne({ where: { email: email } })
@@ -240,18 +250,16 @@ router.get('/producttable', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 });
-
 router.get('/showaddproduct', (req, res) => {
 	res.render('', { layout: "addproduct" })
 });
 router.post('/addproduct', (req, res) => {
-	let { title, author, price, url } = req.body;
-	let dateAdded = new Date();
+	let { title, author,category, price, url } = req.body;
 	Product.create({
 		title,
 		author,
+		category,
 		price,
-		dateAdded,
 		url
 	})
 	res.redirect('./producttable');
@@ -367,29 +375,15 @@ router.post('/admintablelist/update/:id', (req, res) => {
 			});
 	}
 });
-//router.get('/contacttable', (req, res) => {
-	// 	Admin.findOne({where:req.session.admin
-	// 	}).then((admin) => {
-	// 	var Contact =  Contact.findAll({
-	//         raw: true
-	//     }).then((contact) => {
-	//         res.render('', {
-	//             layout:"contacttable",
-	//             Contact:contact,
-	// 			admin:admin
-	//         });
-	// 	});
-	//     }).catch(err => console.log(err));
-	// });
-	router.get('/deletecontacttable/:id', (req, res) => {
-		Contact.destroy({
-			where: {
-				id: req.params.id
-			}
-		}).then(() => {
-			res.redirect('../contacttable');
-		}).catch(err => console.log(err));
-	});
+router.get('/deletecontacttable/:id', (req, res) => {
+	Contact.destroy({
+		where: {
+			id: req.params.id
+		}
+	}).then(() => {
+		res.redirect('../contacttable');
+	}).catch(err => console.log(err));
+});
 	
 	router.get('/respondcontacttable/:id', async(req, res) => {
 		// try {
@@ -431,40 +425,22 @@ router.post('/admintablelist/update/:id', (req, res) => {
 	})
 	
 	router.get('/contacttable', async(req, res) => {
-		try {
-			var admin =await Admin.findOne({ where: {'id': req.session.admin}});
-			console.log(req.session.admin);
-		
-			var contact = await Contact.findAll();
-		
-			res.render('', {
-				layout:"contacttable",
-				Contact:contact,
-				admin:admin
-			});	
-		} catch (error) {
-			console.log(error);
-		}
-	})
+        try {
+            var admin =await Admin.findOne({ where: {'id': req.session.admin}});
+            console.log(req.session.admin);
 
+            var contact = await Contact.findAll();
+
+            res.render('', {
+                layout:"contacttable",
+                Contact:contact,
+                admin:admin
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    })
 	
-	// router.get('/producttable', (req, res) => {
-	// 	Admin.findOne({where:{id:req.session.admin}
-	// 	}).then((admin) => {
-	// 	Product.findAll({
-	// 		raw: true
-	// 	}).then((products) => {
-	// 		res.render('', {
-	// 			layout:"producttable",
-	// 			products: products,
-	// 			admin:admin
-	// 		});
-	// 	});
-	// 	}).catch(err => console.log(err));
-	// });
-	
-
-
 router.get('/usertablelist/edit/:id', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }

@@ -1,51 +1,53 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
-            <div class="content">
-                <div class="container-fluid">
-                    {{#if products}}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-plain table-plain-bg">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Product Table</h4>
-                                </div>
-                                <div class="card-body table-full-width table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <th>ID</th>
-                                            <th>Title</th>
-                                            <th>Author</th>
-                                            <th>Price</th>
-                                            <th>Date Added</th>
-                                            <th>URL</th>
-                                            <th>Action</th>
-                                            <th>Action</th>
-                                        </thead>
-                                        {{#each products}}
-                                        <tbody>
-                                            <tr>
-                                                <td>{{id}}</td>
-                                                <td>{{title}}</td>
-                                                <td>{{author}}</td>
-                                                <td>{{price}}</td>
-                                                <td>{{dateAdded}}</td>
-                                                <td>{{url}}</td>
-                                                <td><a href="./showupdateproduct/{{id}}">Update</a></td>
-                                                <td><a href="./deleteproduct/{{id}}">Delete</a></td>
-                                            </tr>
-                                        </tbody>
-                                        {{/each}}
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+<div class="content">
+    <div class="container-fluid">
+        {{#if products}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain table-plain-bg">
+                    <div class="card-header ">
+                        <h4 class="card-title">Product Table</h4>
                     </div>
-                    {{else}}
-                <h2>No products found in table</h2>
-                {{/if}}
-                <form action="./showaddproduct">
-                <button type="submit" class="btn btn-info btn-fill pull-right">Add New Product</button>
-                </form>
+                    <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>ImageUrl</th>
+                                <th>Action</th>
+                                <th>Action</th>
+                            </thead>
+                            {{#each products}}
+                            <tbody>
+                                <tr>
+                                    <td>{{id}}</td>
+                                    <td>{{title}}</td>
+                                    <td>{{author}}</td>
+                                    <td>{{category}}</td>
+                                    <td>{{price}}</td>
+                                    <td>{{url}}</td>
+                                    <td><a href="./showupdateproduct/{{id}}">Update</a></td>
+                                    <td> <a href="./deleteproduct/{{id}}"
+                                            onclick="return confirm('Are you sure you want to delete {{title}}?');">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            {{/each}}
+                        </table>
+                    </div>
                 </div>
             </div>
+        </div>
+        {{else}}
+        <h2>No products found in table</h2>
+        {{/if}}
+        <form action="./showaddproduct">
+            <button type="submit" class="btn btn-info btn-fill pull-right">Add New Product</button>
+        </form>
+    </div>
+</div>
 {{>_adminfooter}}
