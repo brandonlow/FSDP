@@ -13,8 +13,8 @@ const feedback = db.define('feedback', {
     options : {
         type: Sequelize.STRING
     },
-    review : {
-        type: Sequelize.BOOLEAN
+    date : {
+        type: Sequelize.STRING
     }
 });
 module.exports = feedback;

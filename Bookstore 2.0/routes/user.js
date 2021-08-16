@@ -245,18 +245,18 @@ router.post('/contact', (req, res) => {
 });
 router.post('/feedback', (req, res) => {
     let { name, feedback, options,review } = req.body;
-	if (Feedback.count <= 3) {
-		review = true
-	} else {
-		review = false
-	}
+	n =  new Date();
+	y = n.getFullYear();
+	m = n.getMonth() + 1;
+	d = n.getDate();
+	date = m + "/" + d + "/" + y;
     Feedback.create({
         name,
         feedback,
         options,
-		review
+		date
     });
-    alertMessage(res, 'success', "Feedback sucessfully sent.", " ", true);
+    alertMessage(res, 'success', "We received your feedback. Thank you for your time!", " ", true);
 
     res.render('index')
 });
