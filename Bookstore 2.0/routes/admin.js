@@ -122,7 +122,7 @@ router.get('/showabout', (req, res) => {
 	}).catch(err => console.log(err));
 });
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', async(req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
 	}).then((admin) => {
