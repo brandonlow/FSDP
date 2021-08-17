@@ -363,7 +363,10 @@ router.get('/respondcontacttable/:id', async (req, res) => {
 router.post('/responsecontacttable', async (req, res) => {
 	// let title = req.body.title;
 	let { email, name, subject, response } = req.body;
-	const sgMailApiKey = 'SG.1XV-Y5p8SoKIzA90TPtpYw.kiZUYnvxYFals1vNH8iRd7pd58c8taydsl4HPKeZX';
+	const sgMail = require('@sendgrid/mail');
+
+
+	const sgMailApiKey = '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';
 	sgMail.setApiKey(sgMailApiKey);
 	console.log(req.body);
 	sgMail.send({
@@ -377,7 +380,7 @@ router.post('/responsecontacttable', async (req, res) => {
 		res.redirect('/admin/contacttable');
 	})
 		.catch((error) => {
-			console.error(error)
+			console.error( error.response.body)
 		})
 
 
