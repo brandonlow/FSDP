@@ -9,31 +9,18 @@ const Contact = require('../models/Contact');
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
-const { helpers } = require('handlebars');
-const admin = require('../models/Admin');
-
-const sgMail = require('@sendgrid/mail');
-const sgMailApiKey='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';
-sgMail.setApiKey(sgMailApiKey);
-
-
-var newname='dl'
-var newemail='superadmin@gmail.com'
-var newpassword='1234'
-var newrole='superadmin'
-bcrypt.genSalt(10, (err, salt) => {
-	bcrypt.hash(newpassword, salt, (err, hash) => {
-		if (err) throw err;
-		newpassword = hash;
-		Admin.create({
-			name: newname,
-			email: newemail,
-			password:newpassword,
-			role:newrole
-		})
-	})
+const multer = require('multer');
+const fileStorageEngine = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, './public/img')
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.originalname);
+	}
 });
-router.get('/',(req,res)=>{
+const upload = multer({ storage: fileStorageEngine })
+
+router.get('/', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
 	}).then((admin) => {
@@ -66,35 +53,6 @@ router.post('/login', (req, res) => {
 
 });
 
-// function sendEmail(email){ 
-//     sgMail.setApiKey('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');
-
-// 	//to person using this code, please change the sendgridkey according to your own one! this helps  with consistancy !
-// 	//mykey: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
-//      const message = { 
-//      to: email, 
-//      from: 'bookstorehelpline@gmail.com', 
-//      subject: 'Verify Video Jotter Account', 
-//      text: 'Video Jotter Email Verification',
-//      html:"Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff"
-//         };
-//      return new Promise((resolve, reject) => { 
-//         sgMail.send(message).then(msg => {
-//             resolve(msg)
-//             console.log(msg)
-//         }).catch(err => {
-//             reject(err)
-//             console.log(err.response.body)
-//         });
-//      });
-
-// }
-// sendEmail(email).then(msg=> {
-
-// }).catch(err => {
-
-
-// });
 router.get('/showproduct', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
@@ -208,7 +166,7 @@ router.get('/admintablelist', (req, res) => {
 		Admin.findAll({
 			raw: true
 		}).then((admins) => {
-			if (admin.role=="superadmin") {
+			if (admin.role == "superadmin") {
 				res.render('', { layout: 'admintable', admin: admin, admins: admins, superadmin: admin })
 			}
 			else {
@@ -222,6 +180,7 @@ router.get('/admintablelist', (req, res) => {
 
 	}).catch(err => console.log(err));
 });
+
 router.get('/showadd', (req, res) => {
 	Admin.findOne({
 		where: {
@@ -253,17 +212,21 @@ router.get('/producttable', (req, res) => {
 router.get('/showaddproduct', (req, res) => {
 	res.render('', { layout: "addproduct" })
 });
-router.post('/addproduct', (req, res) => {
-	let { title, author,category,qty, price, url } = req.body;
+router.post('/addproduct', upload.single('image'), (req, res) => {
+
+	let { title, author, category, price, qty, image ,description} = req.body
+	var imagename = req.file.filename
+	console.log(imagename)
 	Product.create({
 		title,
 		author,
 		category,
-		qty,
 		price,
-		url
-	})
-	res.redirect('./producttable');
+		qty,
+		imagename,
+		description
+	}).then(() => { res.redirect('./producttable'); }).catch(err => console.log(err));
+
 });
 router.get('/showupdateproduct/:id', (req, res) => {
 	Product.findOne({
@@ -277,15 +240,17 @@ router.get('/showupdateproduct/:id', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 });
-router.put('/updateproduct/:id', (req, res) => {
-	let { title, author,category,qty, price, url } = req.body;
+router.put('/updateproduct/:id', upload.single('image'), (req, res) => {
+	let { title, author, category, qty, price, image ,description} = req.body;
+	var imagename = req.file.filename
 	Product.update({
 		title: title,
 		author: author,
-		category:category,
-		qty:qty,
+		category: category,
+		qty: qty,
 		price: price,
-		url: url
+		imagename: imagename,
+		description:description
 	}, {
 		where: {
 			id: req.params.id
@@ -317,44 +282,34 @@ router.get('/admintablelist/edit/:id', (req, res) => {
 		where: {
 			id: req.params.id
 		}
-	}).then((admin) => {
+	}).then((currentadmin) => {
 		res.render('', {
 			layout: 'updateadmin',
-			admin: admin
+			currentadmin: currentadmin
 		});
 	}).catch(err => console.log(err));
 
 });
-router.post('/admintablelist/update/:id', (req, res) => {
-	let errors = [];
+router.post('/admintablelist/update/:id', async (req, res) => {
 	let { name, email, password, password1, password2 } = req.body;
-
-	bcrypt.compare(password, req.user.password, (err, isMatch) => {
-		if (!isMatch) {
-			res.render('updateadmin', { error: 'Wrong current password' })
-		}
-	})
-	if (password1 != password2) {
-		errors.push({ text: 'password do not match' });
-	}
-	if (errors.length > 0) {
+	var checkadmin = await Admin.findOne({ where: { email: email } })
+	var currentadmin = await Admin.findOne({ where: { id: req.params.id } })
+	if (checkadmin && currentadmin.email != email) {
 		res.render('', {
 			layout: 'updateadmin',
-			errors
+			error: email + ' already used!',
+			currentadmin: currentadmin
 		});
 	}
 	else {
-		Admin.findOne({
-			where: { id: req.params.id }
-		})
-			.then(admin => {
-				if (admin && admin.email == email) {
-					res.render('', {
-						layout: 'updateadmin',
-						error: admin.email + ' already used!'
-					});
+		bcrypt.compare(password, req.user.password, (err, isMatch) => {
+			if (!isMatch) {
+				res.render('', { layout: 'updateadmin', error: 'Wrong current password', currentadmin: currentadmin });
+			}
+			else {
+				if (password1 != password2) {
+					res.render('', { layout: 'updateadmin', currentadmin: currentadmin, error: 'New and confirm password must be the same' })
 				}
-
 				else {
 					bcrypt.genSalt(10, (err, salt) => {
 						bcrypt.hash(password1, salt, (err, hash) => {
@@ -369,13 +324,16 @@ router.post('/admintablelist/update/:id', (req, res) => {
 									id: req.params.id
 								}
 							}).then(() => {
-								alertMessage2(res, 'success', admin.name + ' updated successfully', 'ti-reload  ', true)
+								alertMessage2(res, 'success', currentadmin.name + ' updated successfully', 'ti-reload  ', true)
 								res.redirect('/admin/admintablelist');
 							}).catch(err => console.log(err));
 						})
 					});
 				}
-			});
+			}
+		})
+
+
 	}
 });
 router.get('/deletecontacttable/:id', (req, res) => {
@@ -387,63 +345,60 @@ router.get('/deletecontacttable/:id', (req, res) => {
 		res.redirect('../contacttable');
 	}).catch(err => console.log(err));
 });
-	
-	router.get('/respondcontacttable/:id', async(req, res) => {
-		// try {
-			var admin =await Admin.findOne({ where: {'id': req.session.admin}});
-			console.log(req.session.admin);
-		
-			var contact = await Contact.findOne({ where: {'id' : req.params.id}});
-		
-			res.render('', {
-				layout:"respondcontacttable",
-				Contact:contact,
-				admin:admin
-			});	
-		// } catch (error) {
-		// 	console.log(error);
-		// }
+
+router.get('/respondcontacttable/:id', async (req, res) => {
+	// try {
+	var admin = await Admin.findOne({ where: { 'id': req.session.admin } });
+	console.log(req.session.admin);
+
+	var contact = await Contact.findOne({ where: { 'id': req.params.id } });
+
+	res.render('', {
+		layout: "respondcontacttable",
+		Contact: contact,
+		admin: admin
 	});
-	
-	router.post('/responsecontacttable', async(req, res) => {
-		// let title = req.body.title;
-		let { email , name, subject, response } = req.body; 
+});
 
-		console.log(req.body);
-		sgMail.send({
-			to:email,
-			from:'bookstorehelpline@gmail.com',
-			subject:subject,
-			text:response,
-			
-		}).then(()=>{
-			alertMessage(res, 'success',  ' Email to ' +name+ ' , '+ email+ ' about ' +subject + ' has been sent sucessfully', 'fas fa-sign-in-alt', true);
-			res.redirect('/admin/contacttable');
-		})
-		.catch((error) => {
-		  console.error(error)
-		})
+router.post('/responsecontacttable', async (req, res) => {
+	// let title = req.body.title;
+	let { email, name, subject, response } = req.body;
+	const sgMailApiKey = 'SG.1XV-Y5p8SoKIzA90TPtpYw.kiZUYnvxYFals1vNH8iRd7pd58c8taydsl4HPKeZX';
+	sgMail.setApiKey(sgMailApiKey);
+	console.log(req.body);
+	sgMail.send({
+		to: email,
+		from: 'bookstorehelpline@gmail.com',
+		subject: subject,
+		text: response,
 
-
+	}).then(() => {
+		alertMessage(res, 'success', ' Email to ' + name + ' , ' + email + ' about ' + subject + ' has been sent sucessfully', 'fas fa-sign-in-alt', true);
+		res.redirect('/admin/contacttable');
 	})
-	
-	router.get('/contacttable', async(req, res) => {
-        try {
-            var admin =await Admin.findOne({ where: {'id': req.session.admin}});
-            console.log(req.session.admin);
+		.catch((error) => {
+			console.error(error)
+		})
 
-            var contact = await Contact.findAll();
 
-            res.render('', {
-                layout:"contacttable",
-                Contact:contact,
-                admin:admin
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    })
-	
+})
+router.get('/contacttable', async (req, res) => {
+	try {
+		var admin = await Admin.findOne({ where: { 'id': req.session.admin } });
+		console.log(req.session.admin);
+
+		var contact = await Contact.findAll();
+
+		res.render('', {
+			layout: "contacttable",
+			Contact: contact,
+			admin: admin
+		});
+	} catch (error) {
+		console.log(error);
+	}
+});
+
 router.get('/usertablelist/edit/:id', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
@@ -462,36 +417,27 @@ router.get('/usertablelist/edit/:id', (req, res) => {
 	}).catch(err => console.log(err));
 
 });
-router.post('/usertablelist/update/:id', (req, res) => {
-	let errors = [];
+router.post('/usertablelist/update/:id', async (req, res) => {
 	let { name, email, password, password1, password2 } = req.body;
-
-	if (password1 != password2) {
-		errors.push({ text: 'password do not match' });
-	}
-	if (errors.length > 0) {
+	var checkuser = await User.findOne({ where: { email } })
+	var user = await User.findOne({ where: { 'id': req.params.id } })
+	if (checkuser && user.email != email) {
 		res.render('', {
 			layout: 'updateuser',
-			errors
+			error: email + ' already used!',
+			user: user
 		});
 	}
 	else {
-		User.findOne({
-			where: { id: req.params.id }
-		})
-			.then(user => {
-				bcrypt.compare(password, user.password, (err, isMatch) => {
-					if (!isMatch) {
-						res.render('', { layout: 'updateuser', error: 'Wrong current password' });
-					}
-				})
-				if (user && user.email == email) {
-					res.render('', {
-						layout: 'updateuser',
-						error: user.email + ' already used!'
-					});
-				}
+		bcrypt.compare(password, user.password, (err, isMatch) => {
+			if (!isMatch) {
+				res.render('', { layout: 'updateuser', error: 'Wrong current password', user: user });
+			}
+			else {
 
+				if (password1 != password2) {
+					res.render('', { layout: 'updateuser', user: user, error: 'New and confirm password must be the same' })
+				}
 				else {
 					bcrypt.genSalt(10, (err, salt) => {
 						bcrypt.hash(password1, salt, (err, hash) => {
@@ -512,7 +458,9 @@ router.post('/usertablelist/update/:id', (req, res) => {
 						})
 					});
 				}
-			});
+			}
+		})
+
 	}
 });
 router.get('/admintablelist/delete/:id1', (req, res) => {
@@ -550,7 +498,7 @@ router.get('/deletefeedbacktable/:id', (req, res) => {
 
 router.post('/add', (req, res) => {
 	let errors = [];
-	let { name, email, password, password2,role} = req.body;
+	let { name, email, password, password2, role } = req.body;
 	if (password !== password2) {
 		errors.push({ text: 'Passwords do not match' });
 	}

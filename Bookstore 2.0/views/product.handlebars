@@ -1,132 +1,286 @@
-{{!-- {{#if products}}
-{{#each products}}
-{{category}}
-{{/each}}
-{{/if}} --}}
-		<div class="product-area section">
-						<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="section-title">
-							<h2>Trending Books</h2>
-						</div>
-					</div>
+<div class="product-area section">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="section-title">
+					<h2>Trending Books</h2>
 				</div>
-				<div class="row">
-					<div class="col-12">
-						<div class="product-info">
-							<div class="nav-main">
-								<!-- Tab Nav -->
-								<ul class="nav nav-tabs" id="myTab" role="tablist">
-									<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#man"
-											role="tab">Adventure</a></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women"
-											role="tab">Horror</a></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kids"
-											role="tab">Kids</a>
-									</li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#accessories"
-											role="tab">Fiction</a></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential"
-											role="tab">Non-Fiction</a></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#prices"
-											role="tab">Prices</a></li>
-								</ul>
-								<!--/ End Tab Nav -->
-							</div>
-							<div class="tab-content" id="myTabContent">
-								<!-- Start Single Tab -->
-								<div class="tab-pane fade show active" id="man" role="tabpanel">
-									<div class="tab-single">
-										<div class="row">
-											{{#each products}}
-											<div class="col-xl-3 col-lg-4 col-md-4 col-12">
-												<div class="single-product">
-													<div class="product-img">
-														<a href="product-details.html">
-															<img class="default-img" src="/images/img4.jpg" alt="#">
-															<img class="hover-img"
-																src="https://via.placeholder.com/550x750" alt="#">
-														</a>
-														<div class="button-head">
-															<div class="product-action">
-																<a data-toggle="modal" data-target="#exampleModal"
-																	title="Quick View" href="#"><i
-																		class=" ti-eye"></i><span>Quick Shop</span></a>
-																<a title="Wishlist" href="#"><i
-																		class=" ti-heart "></i><span>Add
-																		to Wishlist</span></a>
-																<a title="Compare" href="#"><i
-																		class="ti-bar-chart-alt"></i><span>Add to
-																		Compare</span></a>
-															</div>
-															<div class="product-action-2">
-																<a title="Add to cart" href="#">Add to cart</a>
-															</div>
-														</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="product-info">
+					<div class="nav-main">
+						<!-- Tab Nav -->
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item"><a class="nav-link" href="/product/adventure"
+									role="tab">Adventure</a></li>
+							<li class="nav-item"><a class="nav-link" href="/product/horror"
+									role="tab">Horror</a></li>
+							<li class="nav-item"><a class="nav-link" href="/product/kids" role="tab">Kids</a>
+							</li>
+							<li class="nav-item"><a class="nav-link"  href="/product/fiction"
+									role="tab">Fiction</a></li>
+							<li class="nav-item"><a class="nav-link"  href="/product/nonfiction"
+									role="tab">Non-Fiction</a></li>
+							<li class="nav-item"><a class="nav-link"  href="/product/popular" role="tab">Popular</a></li>
+					
+						</ul>
+						<!--/ End Tab Nav -->
+					</div>
+					<div class="tab-content" id="myTabContent">
+						<!-- Start Single Tab -->
+						<div class="tab-pane fade show active" id="man" role="tabpanel">
+							<div class="tab-single">
+								<div class="row">
+								
+									{{#each adventure}}
+									<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+										<div class="single-product">
+											<div class="product-img">
+												<a href="product-details.html">
+													<img class="default-img" src="/img/{{imagename}}" alt="#">
+												</a>
+												<div class="button-head">
+													<div class="product-action">
+														<a data-toggle="modal" data-target="#exampleModal"
+															title="Quick View" href="#"><i
+																class=" ti-eye"></i><span>Quick Shop</span></a>
+														<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
+																to Wishlist</span></a>
+														<a title="Compare" href="#"><i
+																class="ti-bar-chart-alt"></i><span>Add to
+																Compare</span></a>
 													</div>
-													<div class="product-content">
-														<h3><a href="product-details.html">Women Hot Collection</a></h3>
-														<div class="product-price">
-															<span>$29.00</span>
-														</div>
+													<div class="product-action-2">
+														<a title="Add to cart" href="/cart/add-to-cart/{{id}}">Add to cart</a>
 													</div>
 												</div>
 											</div>
-											{{/each}}
-
-										</div>
-									</div>
-								</div>
-
-								<!--/ End Single Tab -->
-								<!-- Start Single Tab -->
-								<div class="tab-pane fade" id="women" role="tabpanel">
-									<div class="tab-single">
-										<div class="row">
-											<div class="col-xl-3 col-lg-4 col-md-4 col-12">
-												<div class="single-product">
-													<div class="product-img">
-														<a href="product-details.html">
-															<img class="default-img"
-																src="https://via.placeholder.com/550x750" alt="#">
-															<img class="hover-img"
-																src="https://via.placeholder.com/550x750" alt="#">
-														</a>
-														<div class="button-head">
-															<div class="product-action">
-																<a data-toggle="modal" data-target="#exampleModal"
-																	title="Quick View" href="#"><i
-																		class=" ti-eye"></i><span>Quick Shop</span></a>
-																<a title="Wishlist" href="#"><i
-																		class=" ti-heart "></i><span>Add
-																		to Wishlist</span></a>
-																<a title="Compare" href="#"><i
-																		class="ti-bar-chart-alt"></i><span>Add to
-																		Compare</span></a>
-															</div>
-															<div class="product-action-2">
-																<a title="Add to cart" href="#">Add to cart</a>
-															</div>
-														</div>
-													</div>
-													<div class="product-content">
-														<h3><a href="product-details.html">Women Hot Collection</a></h3>
-														<div class="product-price">
-															<span>$29.00</span>
-														</div>
-													</div>
+											<div class="product-content">
+												<h3><a href="product-details.html">{{title}}</a></h3>
+												<div class="product-price">
+													<span>${{price}}</span>
 												</div>
 											</div>
-
-
-
-
-
 										</div>
 									</div>
+									{{/each}}
+								
 								</div>
 							</div>
 						</div>
+
+						<!--/ End Single Tab -->
+						<!-- Start Single Tab -->
+
+						<div class="tab-pane fade" id="women" role="tabpanel">
+							<div class="tab-single">
+								<div class="row">
+									
+									{{#each horror}}
+									<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+										<div class="single-product">
+											<div class="product-img">
+												<a href="product-details.html">
+													<img class="default-img" src="/img/{{imagename}}" alt="#">
+												</a>
+												<div class="button-head">
+													<div class="product-action">
+														<a data-toggle="modal" data-target="#exampleModal"
+															title="Quick View" href="#"><i
+																class=" ti-eye"></i><span>Quick Shop</span></a>
+														<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
+																to Wishlist</span></a>
+														<a title="Compare" href="#"><i
+																class="ti-bar-chart-alt"></i><span>Add to
+																Compare</span></a>
+													</div>
+													<div class="product-action-2">
+														<a title="Add to cart" href="#">Add to cart</a>
+													</div>
+												</div>
+											</div>
+											<div class="product-content">
+												<h3><a href="product-details.html">Women Hot Collection</a></h3>
+												<div class="product-price">
+													<span>${{price}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{/each}}
+								
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade show active" id="kids" role="tabpanel">
+							<div class="tab-single">
+								<div class="row">
+									{{#each kids}}
+									<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+										<div class="single-product">
+											<div class="product-img">
+												<a href="product-details.html">
+													<img class="default-img" height='550' width='750' src="/img/{{imagename}}" alt="#">
+								
+												</a>
+												<div class="button-head">
+													<div class="product-action">
+														<a data-toggle="modal" data-target="#exampleModal"
+															title="Quick View" href="#"><i
+																class=" ti-eye"></i><span>Quick Shop</span></a>
+														<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
+																to Wishlist</span></a>
+														<a title="Compare" href="#"><i
+																class="ti-bar-chart-alt"></i><span>Add to
+																Compare</span></a>
+													</div>
+													<div class="product-action-2">
+														<a title="Add to cart" href="#">Add to cart</a>
+													</div>
+												</div>
+											</div>
+											<div class="product-content">
+												<h3><a href="product-details.html">${{title}}</a></h3>
+												<div class="product-price">
+													<span>{{price}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{/each}}
+
+								</div>
+							</div>
+						</div>
+							<div class="tab-pane fade show active" id="accessories" role="tabpanel">
+							<div class="tab-single">
+								<div class="row">
+									{{#each fiction}}
+									<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+										<div class="single-product">
+											<div class="product-img">
+												<a href="product-details.html">
+													<img class="default-img" src="/img/{{imagename}}" alt="#">
+												</a>
+												<div class="button-head">
+													<div class="product-action">
+														<a data-toggle="modal" data-target="#exampleModal"
+															title="Quick View" href="#"><i
+																class=" ti-eye"></i><span>Quick Shop</span></a>
+														<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
+																to Wishlist</span></a>
+														<a title="Compare" href="#"><i
+																class="ti-bar-chart-alt"></i><span>Add to
+																Compare</span></a>
+													</div>
+													<div class="product-action-2">
+														<a title="Add to cart" href="#">Add to cart</a>
+													</div>
+												</div>
+											</div>
+											<div class="product-content">
+												<h3><a href="product-details.html">{{title}}</a></h3>
+												<div class="product-price">
+													<span>${{price}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{/each}}
+									
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade show active" id="essential" role="tabpanel">
+							<div class="tab-single">
+								<div class="row">
+									{{#each nonfiction}}
+									<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+										<div class="single-product">
+											<div class="product-img">
+												<a href="product-details.html">
+													<img class="default-img" src="/img/{{imagename}}" alt="#">
+												</a>
+												<div class="button-head">
+													<div class="product-action">
+														<a data-toggle="modal" data-target="#exampleModal"
+															title="Quick View" href="#"><i
+																class=" ti-eye"></i><span>Quick Shop</span></a>
+														<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
+																to Wishlist</span></a>
+														<a title="Compare" href="#"><i
+																class="ti-bar-chart-alt"></i><span>Add to
+																Compare</span></a>
+													</div>
+													<div class="product-action-2">
+														<a title="Add to cart" href="#">Add to cart</a>
+													</div>
+												</div>
+											</div>
+											<div class="product-content">
+												<h3><a href="product-details.html">{{title}}</a></h3>
+												<div class="product-price">
+													<span>${{price}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{/each}}
+
+								</div>
+							</div>
+						</div>
+							<div class="tab-pane fade show active" id="prices" role="tabpanel">
+							<div class="tab-single">
+								<div class="row">
+									{{#each popular}}
+									<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+										<div class="single-product">
+											<div class="product-img">
+												<a href="product-details.html">
+													<img class="default-img" src="/img/{{imagename}}" alt="#">
+												</a>
+												<div class="button-head">
+													<div class="product-action">
+														<a data-toggle="modal" data-target="#exampleModal"
+															title="Quick View" href="#"><i
+																class=" ti-eye"></i><span>Quick Shop</span></a>
+														<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
+																to Wishlist</span></a>
+														<a title="Compare" href="#"><i
+																class="ti-bar-chart-alt"></i><span>Add to
+																Compare</span></a>
+													</div>
+													<div class="product-action-2">
+														<a title="Add to cart" href="#">Add to cart</a>
+													</div>
+												</div>
+											</div>
+											<div class="product-content">
+												<h3><a href="product-details.html">{{title}}</a></h3>
+												<div class="product-price">
+													<span>${{price}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{/each}}
+
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+	
+		<br>
+		<br>
+		<br>
+		<br>
+	

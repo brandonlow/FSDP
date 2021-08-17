@@ -1,6 +1,7 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
 {{>_flashmsg}}
+
 <div class="content">
     <div class="container-fluid">
         {{#if users}}
@@ -9,32 +10,32 @@
             <div class="col-md-12">
                 <div class="card strpied-tabled-with-hover">
                     <div class="card-header ">
-                        <h4 class="card-title">User Table</h4>
+                        <h3 class="card-title">User Table</h3>
+                        <br>
                         {{!-- <p class="card-category">Edit Here</p> --}}
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped" id="table">
                             <thead>
                                 <th>User ID</th>
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>Password</th>
                                 <th>Action</th>
                                 <th>Action</th>
                             </thead>
-                            {{#each users}}
+                          
                             <tbody>
+                                {{#each users}}
                                 <tr>
                                     <td>{{id}}</td>
-                                    <td>{{name}} </td>
-                                    <td>{{email}}</td>
-                                    <td>{{password}}</td>
-                                    <td><a href="/admin/usertablelist/edit/{{id}}">Update</a></td>
-                                    <td> <a href="/admin/usertablelist/delete/{{id}}"
+                                    <td>&nbsp;{{name}} </td>
+                                    <td>&nbsp;{{email}}</td>
+                                    <td>&nbsp;<a href="/admin/usertablelist/edit/{{id}}">Update</a></td>
+                                    <td> &nbsp;<a href="/admin/usertablelist/delete/{{id}}"
                                             onclick="return confirm('Are you sure you want to delete {{name}}?');">Delete</a>
                                 </tr>
+                                  {{/each}}
                                 </tbody>
-                            {{/each}}
                         </table>
                     </div>
                 </div>
@@ -45,5 +46,9 @@
 {{/if}}
     </div>
 </div>
+<script>$(document).ready(function () {
+        $.noConflict();
+        $('#table').DataTable();
+    });</script>
 
 {{>_adminfooter}}

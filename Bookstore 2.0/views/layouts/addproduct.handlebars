@@ -9,12 +9,12 @@
                         <h4 class="card-title">Add New Product</h4>
                     </div>
                     <div class="card-body">
-                        <form action="/admin/addproduct" method="POST">
+                        <form action="/admin/addproduct" method="POST" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6 pr-1">
                                     <div class="form-group">
                                         <label>Title</label>
-                                        <input type="text" name="title" class="form-control" placeholder="Enter title">
+                                        <input type="text" name="title" class="form-control" placeholder="Enter title" required>
                                     </div>
                                 </div>
                             </div>
@@ -23,7 +23,7 @@
                                     <div class="form-group">
                                         <label>Author</label>
                                         <input type="text" name="author" class="form-control"
-                                            placeholder="Enter author's name">
+                                            placeholder="Enter author's name" required>
                                     </div>
                                 </div>
                             </div>
@@ -31,8 +31,14 @@
                                 <div class="col-md-5 pr-1">
                                     <div class="form-group">
                                         <label>Category</label>
-                                        <input type="text" name="category" class="form-control"
-                                            placeholder="Enter author's name">
+                                            <select name ="category" class="form-control">
+                                                <option >Select your option</option>
+                                                <option value="adventure">Adventure</option>
+                                                <option value="horror">Horror</option>
+                                                <option value="kids">Kids</option>
+                                                <option value="fiction">Fiction</option>
+                                                <option value="non-fiction">Non-Fiction</option>
+                                                </select>
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +47,7 @@
                                     <div class="form-group">
                                         <label>Price ($)</label>
                                         <input type="number" name="price" class="form-control"
-                                            placeholder="Enter price">
+                                            placeholder="Enter price" required>
                                     </div>
                                 </div>
                             </div>
@@ -50,7 +56,7 @@
                                     <div class="form-group">
                                         <label>Num of copies</label>
                                         <input type="number" name="qty" class="form-control"
-                                            placeholder="Enter number of copies">
+                                            placeholder="Enter number of copies" required>
                                     </div>
                                 </div>
                             </div>
@@ -59,11 +65,16 @@
                                     <div class="form-group">
                                         <label>Picture
                                         </label>
-                                        <input type="file" id="posterUpload" name="url" accept="image/png,
-															image/jpeg,image/jpg,image/gif" class="form-control">
-                                        <div class="font-weight-bold text-danger small" id="posterErr"
-                                            style="display:none"></div>
-
+                                        <input type="file" name="image" accept="image/*" class="form-control" required>                                       
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Description
+                                        </label>
+                                        <textarea name="description" placeholder="Enter your description" class="form-control" required></textarea>                                      
                                     </div>
                                 </div>
                             </div>

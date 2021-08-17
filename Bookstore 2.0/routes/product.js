@@ -1,27 +1,59 @@
 const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger');
-const fs = require('fs');
-const upload = require('../helpers/imageUpload');
-
-
-router.post('/upload',(req, res) => {
-    // Creates user id directory for upload if not exist
-    if (!fs.existsSync('./public/uploads/' + req.user.id)){
-    fs.mkdirSync('./public/uploads/' + req.user.id);
-    }
-    upload(req, res, (err) => {
-    if (err) {
-    res.json({file: '/img/no-image.jpg', err: err});
-    } else {
-    if (req.file === undefined) {
-    res.json({file: '/img/no-image.jpg', err: err});
-    } else {
-    res.json({file: `/uploads/${req.user.id}/${req.file.filename}`});
-    }
-    }
-    });
-    })
-    
-
+const Product = require('../models/Product');
+router.get('/adventure',(req,res)=>{
+	Product.findAll({
+		where:{category:'adventure'}
+	}).then((adventure) => {
+		res.render('product', {
+            adventure:adventure
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/fiction',(req,res)=>{
+	Product.findAll({
+		where:{category:'fiction'}
+	}).then((fiction) => {
+		res.render('product', {
+            fiction:fiction
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/horror',(req,res)=>{
+	Product.findAll({
+		where:{category:'horror'}
+	}).then((horror) => {
+		res.render('product', {
+            horror:horror
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/kids',(req,res)=>{
+	Product.findAll({
+		where:{category:'kids'}
+	}).then((kids) => {
+		res.render('product', {
+            kids:kids
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/nonfiction',(req,res)=>{
+	Product.findAll({
+		where:{category:'nonfiction'}
+	}).then((nonfiction) => {
+		res.render('product', {
+            nonfiction:nonfiction
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/popular',(req,res)=>{
+	Product.findAll({
+		where:{category:'popular'}
+	}).then((popular) => {
+		res.render('product', {
+            popular:popular
+		});
+	}).catch(err => console.log(err));
+});
 module.exports = router;

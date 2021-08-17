@@ -54,16 +54,21 @@
                                     </div>
                                 </div>
                             </div>
-                           <div class="row">
+                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Picture
                                         </label>
-                                        <input type="file" id="posterUpload" name="url" accept="image/png,
-															image/jpeg,image/jpg,image/gif" class="form-control">
-                                        <div class="font-weight-bold text-danger small" id="posterErr"
-                                            style="display:none"></div>
-
+                                        <input type="file" name="image" accept="image/*" class="form-control" required>                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Description
+                                        </label>
+                                        <textarea name="description" value="{{product.description}}" class="form-control" required></textarea>                                      
                                     </div>
                                 </div>
                             </div>

@@ -13,6 +13,7 @@ const flash = require('connect-flash');
 const FlashMessenger = require('flash-messenger');
 const passport = require('passport');
 
+
 // // Bring in database connection
 const bookstoreDB = require('./config/DBConnection');
 // // Connects to MySQL database
@@ -38,6 +39,7 @@ const adminRoute = require('./routes/admin');
 const userRoute = require('./routes/user');
 const productRoute = require('./routes/product');
 const cartRoute = require('./routes/cart');
+const searchRoute = require('./routes/search');
 
 /*
 * Creates an Express server - Express is a web application framework for creating web applications
@@ -117,6 +119,7 @@ app.use(function(req, res, next){
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');
 	res.locals.user = req.user || null;
+	res.locals.session=req.session;
 	next();
 	});
 	
@@ -138,6 +141,7 @@ app.use('/admin', adminRoute);
 app.use('/user', userRoute); // Add this line
 app.use('/product', productRoute);
 app.use('/cart', cartRoute);
+app.use('/search', searchRoute);
 
 
 /*

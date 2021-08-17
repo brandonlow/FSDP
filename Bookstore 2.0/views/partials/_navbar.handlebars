@@ -75,7 +75,7 @@
 						<div class="top-search"><a href="#0"><i class="ti-search"></i></a></div>
 						<!-- Search Form -->
 						<div class="search-top">
-							<form class="search-form">
+							<form class="search-form" action="/search/" method="POST">
 								<input type="text" placeholder="Search here..." name="search">
 								<button value="search" type="submit"><i class="ti-search"></i></button>
 							</form>
@@ -112,22 +112,24 @@
 						</div>
 						<div class="sinlge-bar shopping">
 							<a href="#" class="single-icon"><i class="ti-bag"></i> <span
-									class="total-count">2</span></a>
+									class="total-count">{{session.cart.totalQty}}</span></a>
 							<!-- Shopping Item -->
 							<div class="shopping-item">
 								<div class="dropdown-cart-header">
-									<span>2 Items</span>
-									<a href="/showcart">View Cart</a>
+									<span></span>
+									<a href="/cart/shopping-cart">View Cart</a>
 								</div>
 								<ul class="shopping-list">
+									{{#each products}}
 									<li>
 										<a href="#" class="remove" title="Remove this item"><i
 												class="fa fa-remove"></i></a>
 										<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
 												alt="#"></a>
-										<h4><a href="#">Legend of blue sea</a></h4>
+										<h4><a href="#"></a></h4>
 										<p class="quantity">1x - <span class="amount">$99.00</span></p>
 									</li>
+									{{/each}}
 									<li>
 										<a href="#" class="remove" title="Remove this item"><i
 												class="fa fa-remove"></i></a>
@@ -142,7 +144,7 @@
 										<span>Total</span>
 										<span class="total-amount">$134.00</span>
 									</div>
-									<a href="/showcheckout" class="btn animate">Checkout</a>
+									<a href="/cart/checkout" class="btn animate">Checkout</a>
 								</div>
 							</div>
 							<!--/ End Shopping Item -->
@@ -263,8 +265,8 @@
 											<li><a href="#">Shop<i class="ti-angle-down"></i><span
 														class="new">New</span></a>
 												<ul class="dropdown">
-													<li><a href="/showcart">Cart</a></li>
-													<li><a href="/showcheckout">Checkout</a></li>
+													<li><a href="/cart/shopping-cart">Cart</a></li>
+													<li><a href="/cart/checkout">Checkout</a></li>
 												</ul>
 											</li>
 											<li><a href="/showfeedback">Feedback</a></li>

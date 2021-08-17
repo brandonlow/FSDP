@@ -6,39 +6,42 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-plain table-plain-bg">
+                    
                     <div class="card-header ">
-                        <h4 class="card-title">Product Table</h4>
+                        <h2 class="card-title">Product Table</h2>
+                        <br>
+
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <table class="table table-hover">
+                        <table  id="table">
                             <thead>
-                                <th>ID</th>
+                                 <th>Image</th>
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>Category</th>
                                 <th>Num of copies</th>
                                 <th>Price</th>
-                                <th>ImageUrl</th>
                                 <th>Action</th>
                                 <th>Action</th>
                             </thead>
-                            {{#each products}}
+                           
                             <tbody>
+                                 {{#each products}}
                                 <tr>
-                                    <td>{{id}}</td>
-                                    <td>{{title}}</td>
-                                    <td>{{author}}</td>
-                                    <td>{{category}}</td>
-                                    <td>{{qty}}</td>
-                                    <td>{{price}}</td>
-                                    <td>{{url}}</td>
-                                    <td><a href="./showupdateproduct/{{id}}">Update</a></td>
-                                    <td> <a href="./deleteproduct/{{id}}"
+                                    <td><img src="/img/{{imagename}}"  width="100" height="100" alt=""></td>
+                                    
+                                    <td>&nbsp;&nbsp;{{title}}</td>
+                                    <td>&nbsp;{{author}}</td>
+                                    <td>&nbsp;{{category}}</td>
+                                    <td>&nbsp;&nbsp;{{qty}}</td>
+                                    <td>&nbsp;{{price}}</td>
+                                    <td>&nbsp;&nbsp;<a href="./showupdateproduct/{{id}}">Update</a></td> 
+                                    <td> &nbsp;&nbsp;<a href="./deleteproduct/{{id}}"
                                             onclick="return confirm('Are you sure you want to delete {{title}}?');">Delete</a>
                                     </td>
                                 </tr>
+                                 {{/each}}
                             </tbody>
-                            {{/each}}
                         </table>
                     </div>
                 </div>
@@ -52,4 +55,8 @@
         </form>
     </div>
 </div>
+<script>$(document).ready(function () {
+        $.noConflict();
+        $('#table').DataTable();
+    });</script>
 {{>_adminfooter}}

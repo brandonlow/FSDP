@@ -18,10 +18,13 @@ const Product = db.define('product', {
         type:Sequelize.INTEGER
     },
     price: {
-        type: Sequelize.DECIMAL(10,2)
+        type: Sequelize.FLOAT
     },
-    url: {
-		type: Sequelize.STRING(512),
+    imagename: {
+		type: Sequelize.STRING
 	},
+    description:{
+        type:Sequelize.STRING
+    },
 });
 module.exports = Product;

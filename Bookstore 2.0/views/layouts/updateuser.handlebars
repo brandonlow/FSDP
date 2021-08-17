@@ -1,12 +1,14 @@
 {{>_sidenav}}
 {{>_adminnavbar}}
+{{>_flashmsg}}
+{{>_errors}}
 
-{{#if user}}
+
  <div class="card-body">
             <div class="e-profile">
 <div class="tab-content pt-3">
        <div class="tab-pane active">
-                   
+                   {{#if user}}
                   <form class="form" method="post" action="/admin/usertablelist/update/{{user.id}}">
                     <div class="row">
                       <div class="col">
@@ -64,11 +66,12 @@
               <a href="/admin/usertablelist" class="btn btn-primary">Cancel</a>
                     </div>
                   </form>
+                   {{/if}}
 
                 </div>
 </div>
 </div>
  </div>
- {{/if}}
+
 
 {{>_adminfooter}}

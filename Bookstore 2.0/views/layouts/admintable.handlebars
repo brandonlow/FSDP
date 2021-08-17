@@ -4,22 +4,22 @@
 <div class="content">
 
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card strpied-tabled-with-hover">
                     <div class="card-header ">
-                        {{#ifEqual admin.email 'superadmin@gmail.com'}}
-                        <h4 class="card-title">Admin Table &nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/showadd"><i
-                                    class="ti-plus"></i></a></h4>
+                        {{#ifEqual admin.role 'superadmin'}}
+                        <h3 class="card-title">Admin Table &nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/showadd"><i
+                                    class="ti-plus"></i></a></h3>
                         {{else}}
-                        <h4 class="card-title">Admin Table </h4>
+                        <h3 class="card-title">Admin Table </h3>
                         {{/ifEqual}}
+                        <br>
 
                         {{!-- <p class="card-category">Edit Here</p> --}}
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped table-white" id="table" >
 
                             {{#if superadmin}}
                             <thead>
@@ -27,31 +27,31 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Password</th>
                                 <th>Action</th>
                                 <th>Action</th>
 
                             </thead>
 
-                            {{#each admins}}
-                            <tbody>
-                                <tr>
 
+                            <tbody>
+                                {{#each admins}}
+                                <tr>
+                                    
                                     <td>{{id}}</td>
-                                    <td>{{name}} </td>
-                                    <td>{{email}}</td>
-                                    <td>{{role}}</td>
-                                    <td>{{password}}</td>
-                        
-                                    <td><a href="/admin/admintablelist/edit/{{id}}">Update</a></td>
-                                    <td> <a href="/admin/admintablelist/delete/{{id}}"
+                                    <td>&nbsp;{{name}} </td>
+                                    <td>&nbsp;{{email}}</td>
+                                    <td>&nbsp;{{role}}</td>
+
+                                    <td>&nbsp;&nbsp;<a href="/admin/admintablelist/edit/{{id}}">Update</a></td>
+                                    <td>&nbsp;&nbsp; <a href="/admin/admintablelist/delete/{{id}}"
                                             onclick="return confirm('Are you sure you want to delete {{name}}?');">Delete</a>
                                     </td>
                                     
+
                                     {{!-- <td><a href="/admin/admintablelist/delete/{{id}}">Delete</a></button> --}}
                                 </tr>
+                                  {{/each}}
                             </tbody>
-                            {{/each}}
 
                             {{else}}
                             <thead>
@@ -59,19 +59,21 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Password</th>
+                               
                             </thead>
-                            {{#each admins}}
+                          
                             <tbody>
-                                <tr>
+                                 {{#each admins}}
+                                <tr>    
+                                     
                                     <td>{{id}}</td>
                                     <td>{{name}} </td>
                                     <td>{{email}}</td>
                                     <td>{{role}}</td>
-                                    <td>{{password}}</td>
                                 </tr>
+                                {{/each}}
                             </tbody>
-                            {{/each}}
+
                             {{/if}}
                         </table>
                     </div>
@@ -80,4 +82,9 @@
         </div>
     </div>
 </div>
+
+<script>$(document).ready(function () {
+        $.noConflict();
+        $('#table').DataTable();
+    });</script>
 {{>_adminfooter}}

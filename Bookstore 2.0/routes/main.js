@@ -8,12 +8,10 @@ const alertMessage = require('../helpers/messenger');
 const User = require('../models/User');
 const Feedback = require('../models/Feedback');
 const Admin = require('../models/Admin');
-const product=require('../models/Product');
 const Product = require('../models/Product');
 
 router.get('/', (req, res) => {
-	var product=Product.findAll({raw:true});
-	res.render('index',{product:product}) // renders views/index.handlebars
+	res.render('index') // renders views/index.handlebars
 });
 router.get('/showlogin', (req, res) => {
 	res.render('user/login');
@@ -44,24 +42,23 @@ router.get('/logout', (req, res) => {
 	res.redirect('/');
 });
 
-router.get('/showproduct', async(req, res) => {
-	Product.findAll({raw:true}).then((products)=>{
-	res.render('product',{products:products});
-	})
+router.get('/showproduct', (req, res) => {
+
+	Product.findAll({
+		where:{category:'adventure'}
+	}).then((adventure) => {
+		res.render('product', {
+            adventure:adventure
+		});
+	}).catch(err => console.log(err));
 });
 
 router.get('/showproductdetail', (req, res) => {
 	res.render('product-details')
 });
+
 router.get('/showcontact',(req,res)=>{
 	res.render('contact')
-});
-router.get('/showcart',(req,res)=>{
-	res.render('cart')
-});
-
-router.get('/showcheckout',(req,res)=>{
-	res.render('checkout')
 });
 router.get('/about', (req, res) => {
 	let error="This is an error in erros.handlebars";
