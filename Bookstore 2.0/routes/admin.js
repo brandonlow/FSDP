@@ -9,6 +9,7 @@ const Contact = require('../models/Contact');
 const alertMessage2 = require('../helpers/messenger2');
 const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
+const sgMail = require('@sendgrid/mail');
 const multer = require('multer');
 const fileStorageEngine = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -123,19 +124,15 @@ router.get('/showabout', (req, res) => {
 });
 
 router.get('/dashboard', async(req, res) => {
-	Admin.findOne({
-		where: { id: req.session.admin }
-	}).then((admin) => {
-		User.findAll({
-			raw: true
-		}).then((users) => {
+	var admin= await Admin.findOne({where:{id:req.session.admin}});
+	var users=await User.findAll({raw:true});
+	var products=await Product.findAll({raw:true});
 			res.render('', {
 				layout: 'dashboard',
 				admin: admin,
-				users: users
+				users: users,
+				products:products
 			})
-		});
-	}).catch(err => console.log(err));
 });
 
 router.get('/userinfo', (req, res) => {
@@ -360,7 +357,7 @@ router.get('/respondcontacttable/:id', async (req, res) => {
 	});
 });
 
-router.post('/responsecontacttable', async (req, res) => {
+router.post('/responsecontacttable',  (req, res) => {
 	// let title = req.body.title;
 	let { email, name, subject, response } = req.body;
 	const sgMail = require('@sendgrid/mail');
@@ -368,7 +365,6 @@ router.post('/responsecontacttable', async (req, res) => {
 
 	const sgMailApiKey = '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';
 	sgMail.setApiKey(sgMailApiKey);
-	console.log(req.body);
 	sgMail.send({
 		to: email,
 		from: 'bookstorehelpline@gmail.com',
