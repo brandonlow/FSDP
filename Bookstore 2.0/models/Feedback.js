@@ -15,6 +15,9 @@ const feedback = db.define('feedback', {
     },
     date : {
         type: Sequelize.STRING
+    },
+    review : {
+        type: Sequelize.BOOLEAN
     }
 });
 module.exports = feedback;

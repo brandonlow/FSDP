@@ -485,7 +485,7 @@ router.get('/feedbacktable', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 });
-router.get('/deletefeedbacktable/:id', (req, res) => {
+router.get('/deletefeedback/:id', (req, res) => {
 	Feedback.destroy({
 		where: {
 			id: req.params.id
@@ -494,7 +494,30 @@ router.get('/deletefeedbacktable/:id', (req, res) => {
 		res.redirect('../feedbacktable');
 	}).catch(err => console.log(err));
 });
-
+router.get('/addreview/:id', (req, res) => {
+	review = true
+	Feedback.update({
+		review: review
+	}, {
+		where: {
+			id: req.params.id
+		}
+	}).then(() => {
+		res.redirect('../feedbacktable');
+	}).catch(err => console.log(err));
+});
+router.get('/removereview/:id', (req, res) => {
+	review = false
+	Feedback.update({
+		review: review
+	}, {
+		where: {
+			id: req.params.id
+		}
+	}).then(() => {
+		res.redirect('../feedbacktable');
+	}).catch(err => console.log(err));
+});
 router.post('/add', (req, res) => {
 	let errors = [];
 	let { name, email, password, password2, role } = req.body;

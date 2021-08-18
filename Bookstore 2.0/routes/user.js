@@ -252,11 +252,13 @@ router.post('/feedback', (req, res) => {
 	m = n.getMonth() + 1;
 	d = n.getDate();
 	date = m + "/" + d + "/" + y;
+	review = false
     Feedback.create({
         name,
         feedback,
         options,
-		date
+		date,
+		review
     });
     alertMessage(res, 'success', "We received your feedback. Thank you for your time!", " ", true);
 
