@@ -234,7 +234,19 @@ router.post('/contact',(req, res) => {
 
 });
 router.post('/feedback', (req, res) => {
-    let { name, feedback, options,review } = req.body;
+	let errors = []
+    let { name, feedback, options} = req.body;
+	if (!(4 < name.length < 20)) {
+		errors.push({ text: 'Name must be between 4 - 20 characters' });
+	}
+	if (!(8 < name.length < 50)) {
+		errors.push({ text: 'Feedback must be between 8 - 50 characters' });
+	}
+	if (errors.length > 0) {
+		res.render('/showfeedback', {
+			errors
+		});
+	} else {
 	n =  new Date();
 	y = n.getFullYear();
 	m = n.getMonth() + 1;
@@ -249,6 +261,7 @@ router.post('/feedback', (req, res) => {
     alertMessage(res, 'success', "We received your feedback. Thank you for your time!", " ", true);
 
 	res.render('index')
+	}
 });
 
 module.exports = router;

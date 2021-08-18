@@ -14,45 +14,31 @@
     </div>
 </div>
 <!-- End Breadcrumbs -->
-
+<style>
+.review{
+    width: 750px;
+    border: 1px solid #000000;
+    word-wrap: break-word;
+}
+</style>
 <section>
     <div class="container">
         <div>
             <div class="row">
                 <div class="col-lg-8 col-md-12">
                     {{#each feedbacks}}
-                        <div class="col-lg-8 col-md-4">
+                        <div class="review">
                             <div>
                                 <img src="images/profile.png" alt="img"
                                     width="40px" height="40px">
                                 <h4>{{name}}</h4>
-                                    <h6>Rating: {{options}}/5</h6>
-                                    <h5>{{feedback}}</h5>
-                                    <h6>{{date}}<h6>
+                                <h6>Rating: {{options}}/5</h6>
+                                <h5>{{feedback}}</h5>
+                                <h6>{{date}}<h6>
                             </div>
                         </div>
                         <hr>
                     {{/each}}
-                </div>
-                <div class="col-lg-4 col-12">
-                    <span class="heading">User Rating</span>
-                    <p>4.1 average based on 254 reviews.</p>
-
-                    <div class="side">
-                        <div>5 star: 150</div>
-                    </div>
-                    <div class="side">
-                        <div>4 star: 63</div>
-                    </div>
-                    <div class="side">
-                        <div>3 star: 15</div>
-                    </div>
-                    <div class="side">
-                        <div>2 star: 6</div>
-                    </div>
-                    <div class="side">
-                        <div>1 star: 20</div>
-                    </div>
                 </div>
             </div>
         </div>
