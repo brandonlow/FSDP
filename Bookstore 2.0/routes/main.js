@@ -11,7 +11,7 @@ const Admin = require('../models/Admin');
 const Product = require('../models/Product');
 
 router.get('/', (req, res) => {
-	res.render('index') // renders views/index.handlebars
+	res.render('index');
 });
 router.get('/showlogin', (req, res) => {
 	res.render('user/login');

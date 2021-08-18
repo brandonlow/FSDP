@@ -11,26 +11,25 @@ const Feedback = require('../models/Feedback');
 const Admin = require('../models/Admin');
 const sgMail = require('@sendgrid/mail');
 var otpGenerator = require('otp-generator');
-
 const newotp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-
 
 router.get('/showprofilesuccess', (req, res) => {
 	res.render('/user/profile')
 });
 router.post('/forget', (req, res) => {
 	let { email } = req.body;
-	const sgMailApiKey = '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';
+	const sgMailApiKey = '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';
 	sgMail.setApiKey(sgMailApiKey);
 	User.findOne({ where: { email: email } }).then(user => {
 		if (user) {
-			sgMail.send({
+			const msg = {
 				to: email,
-				from: 'bookstorehelpline@gmail.com',
+				from: 'bookstoretestpage@gmail.com',
 				subject: 'Reset password bookstore',
 				text: 'Dear Sir/Madam <br> Your email Otp:<b>' + newotp + '</b><br> please Enter this otp to reset your password.',
 				html: '<p>Dear Sir/Madam <br><br> Your email Otp:<b>' + newotp + '</b><br> Please enter this otp to reset your password.</p>',
-			}).then(() => {
+			  }
+			sgMail.send(msg).then(() => {
 				alertMessage(res, 'success', 'Email' + ' sent. Please check your email for otp', 'fas fa-sign-in-alt', true);
 				res.render('otp', { forgetuser: user });
 			})
@@ -204,7 +203,7 @@ router.get('/showadmin', (req, res) => {
 router.post('/contact',(req, res) => {
 
 	let { name, subject, email, phone, message } = req.body;
-	const sgMailApiKey = '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';
+	const sgMailApiKey = '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';
 	sgMail.setApiKey(sgMailApiKey);
 	try {
 		contact.create({
@@ -218,7 +217,7 @@ router.post('/contact',(req, res) => {
 
 		sgMail.send({
 			to: email,
-			from: 'bookstorehelpline@gmail.com',
+			from: 'bookstoretestpage@gmail.com',
 			subject: 'Recieved contact',
 			text: 'Reviewing  item you want to contact us about ',
 			html: "Hello,<br> thank you for contacting us, we will reply to you shortly.<br> Sincerely: Bookstore admin staff",

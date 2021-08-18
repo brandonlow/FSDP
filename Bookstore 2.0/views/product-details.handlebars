@@ -1,8 +1,10 @@
+    {{#if product}}
     <section class="product-sec">
         <div class="container">
-            <h3>7 Day Self publish How to Write a Book</h3>
             <br>
+            <h3>{{product.title}}k</h3>
             <br>
+            
 
             <div class="row">
                 <div class="col-md-6 slider-sec">
@@ -11,7 +13,7 @@
                         <!-- main slider carousel items -->
                         <div class="carousel-inner">
                             <div class="active item carousel-item" data-slide-number="0">
-                                <img src="images/product1.jpg" class="img-fluid">
+                                <img src="/img/{{product.imagename}}" class="img-fluid">
                             </div>
                             <div class="item carousel-item" data-slide-number="1">
                                 <img src="images/product2.jpg" class="img-fluid">
@@ -42,26 +44,22 @@
                     <!--/main slider carousel-->
                 </div>
                 <div class="col-md-6 slider-content">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. Lorem Ipsum has been the book. </p>
-                    <p>t has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and</p>
+                    <p> {{product.description}} </p>
+                   
                     <ul>
+                       
+                        
                         <li>
-                            <span class="name">Digital List Price</span><span class="clm">:</span>
-                            <span class="price">$4.71</span>
+                            <span class="name">Price</span><span class="clm">:</span>
+                            <span class="price final">{{product.price}}</span>
                         </li>
-                        <li>
-                            <span class="name">Print List Price</span><span class="clm">:</span>
-                            <span class="price">$10.99</span>
-                        </li>
-                        <li>
-                            <span class="name">Kindle Price</span><span class="clm">:</span>
-                            <span class="price final">$3.37</span>
-                        </li>
-                        <li><span class="save-cost">Save $7.62 (69%)</span></li>
                     </ul>
                     <div class="btn-sec">
-                        <button class="btn ">Add To cart</button>
-                        <button class="btn black">Buy Now</button>
+                         <br>
+                    <br>
+                    <br>
+                        <button class="btn "><a href="/cart/add-to-cart/{{product.id}}">Add To cart</a></button>
+                        <button class="btn black"><a href="/cart/add-to-cart/{{product.id}}">Buy Now</a></button>
                     </div>
                 </div>
             </div>
@@ -70,3 +68,9 @@
 <br>
 <br>
 <br>
+{{else}}
+<h2>NO product found</h2>
+<br>
+<br>
+<br>
+{{/if}}

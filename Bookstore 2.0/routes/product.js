@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger');
 const Product = require('../models/Product');
+
+
+
 router.get('/adventure',(req,res)=>{
 	Product.findAll({
 		where:{category:'adventure'}
@@ -40,7 +43,7 @@ router.get('/kids',(req,res)=>{
 });
 router.get('/nonfiction',(req,res)=>{
 	Product.findAll({
-		where:{category:'nonfiction'}
+		where:{category:'non-fiction'}
 	}).then((nonfiction) => {
 		res.render('product', {
             nonfiction:nonfiction
@@ -56,4 +59,14 @@ router.get('/popular',(req,res)=>{
 		});
 	}).catch(err => console.log(err));
 });
+router.get('/:id',(req,res)=>{
+	Product.findOne({
+		where:{id:req.params.id}
+	}).then((product) => {
+		res.render('product-details', {
+            product:product
+		});
+	}).catch(err => console.log(err));
+});
+
 module.exports = router;

@@ -1,0 +1,59 @@
+{{>_sidenav}}
+{{>_adminnavbar}}
+<div class="content">
+    <div class="container-fluid">
+        {{#if orders}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    
+                    <div class="card-header ">
+                        <h2 class="card-title">Order Table</h2>
+                        <br>
+
+                    </div>
+                    <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover table-striped table-white" id="table">
+                            <thead>
+                                 <th>Order ID</th>
+                                <th>Buyer Name</th>
+                                <th>Address</th>
+                                <th>Postal Code</th>
+                                <th>Product Name</th>
+                                <th>Num of copies</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                                <th>Action</th>
+                            </thead>
+                           
+                            <tbody>
+                                 {{#each orders}}
+                                <tr>
+                                    <td>&nbsp;&nbsp;{{id}}</td>
+                                    <td>&nbsp;&nbsp;{{name}}</td>
+                                    <td>&nbsp;{{address}}</td>
+                                    <td>&nbsp;{{postalcode}}</td>
+                                    <td>&nbsp;&nbsp;{{product.name}}</td>
+                                    <td>&nbsp;{{product.qty}}</td>
+                                    <td>&nbsp;&nbsp;<a href="/admin/updateorder/{{id}}">Update</a></td> 
+                                    <td> &nbsp;&nbsp;<a href="/admin/deleteorder/{{id}}"
+                                            onclick="return confirm('Are you sure you want to delete {{name}} Orders?');">Delete</a>
+                                    </td>
+                                </tr>
+                                 {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <h2>No Order found in table</h2>
+        {{/if}}
+    </div>
+</div>
+<script>$(document).ready(function () {
+        $.noConflict();
+        $('#table').DataTable();
+    });</script>
+{{>_adminfooter}}

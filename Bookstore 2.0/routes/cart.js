@@ -22,6 +22,14 @@ router.get('/add-to-cart/:id', ensureAuthenticated, (req, res) => {
         }
     }).catch(err => console.log(err));
 });
+router.get('/delete/:id', ensureAuthenticated, (req, res) => {
+    var productId=req.params.id;
+    var cart =new Cart(req.session.cart ? req.session.cart:{});
+    cart.delete(productId);
+    req.session.cart=cart;
+    res.redirect('/cart/shopping-cart');
+
+})
 router.get('/shopping-cart', ensureAuthenticated, (req, res) => {
     if (!req.session.cart) {
         return res.render('cart', { products: null });
@@ -30,6 +38,8 @@ router.get('/shopping-cart', ensureAuthenticated, (req, res) => {
     res.render('cart', { products: cart.output(), totalprice: cart.totalPrice })
 
 })
+
+
 router.get('/checkout', ensureAuthenticated, (req, res) => {
     if (!req.session.cart) {
         alertMessage(res, 'danger', '' + 'No item in cart', 'fas fa-sign-in-alt', false);
@@ -38,7 +48,7 @@ router.get('/checkout', ensureAuthenticated, (req, res) => {
     var cart = new Cart(req.session.cart);
     res.render('checkout', { total: cart.totalPrice });
 });
-router.post('/checkout', (req, res) => {
+router.post('/checkout',ensureAuthenticated,(req, res) => {
     let { name, address, postalcode, cardholder, cc, em, cvc } = req.body
     if (!req.session.cart) {
         alertMessage(res, 'danger', '' + 'No item in cart', 'fas fa-sign-in-alt', false);
@@ -54,8 +64,8 @@ router.post('/checkout', (req, res) => {
         datetime
     }).then(() => {
         alertMessage(res, 'success', '' + 'Order successful!', 'fas fa-sign-in-alt', false);
-        req.session.cart==null
-        res.redirect('/success');
+        req.session.cart=null
+        res.render('index',{});
     })
 
 });

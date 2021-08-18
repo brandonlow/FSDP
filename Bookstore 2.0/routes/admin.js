@@ -11,6 +11,7 @@ const Product = require('../models/Product');
 const Feedback = require('../models/Feedback');
 const sgMail = require('@sendgrid/mail');
 const multer = require('multer');
+const Order = require('../models/Order');
 const fileStorageEngine = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, './public/img')
@@ -19,6 +20,7 @@ const fileStorageEngine = multer.diskStorage({
 		cb(null, file.originalname);
 	}
 });
+
 const upload = multer({ storage: fileStorageEngine })
 
 router.get('/', (req, res) => {
@@ -127,11 +129,13 @@ router.get('/dashboard', async(req, res) => {
 	var admin= await Admin.findOne({where:{id:req.session.admin}});
 	var users=await User.findAll({raw:true});
 	var products=await Product.findAll({raw:true});
+	var orders=await Order.findAll({raw:true});
 			res.render('', {
 				layout: 'dashboard',
 				admin: admin,
 				users: users,
-				products:products
+				products:products,
+				orders:orders
 			})
 });
 
@@ -156,6 +160,78 @@ router.get('/usertablelist', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 });
+router.get('/usertablelist/delete/:id', (req, res) => {
+	User.destroy({
+		where: { id: req.params.id }
+	}).then(deleteuser => {
+		alertMessage2(res, 'success', 'User deleted successfully!', 'ti-trash', true);
+		res.redirect('/admin/usertablelist');
+	});
+});
+router.get('/usertablelist/edit/:id', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		User.findOne({
+			where: {
+				id: req.params.id
+			}
+		}).then((user) => {
+			res.render('', {
+				layout: 'updateuser',
+				user: user,
+				admin: admin
+			});
+		});
+	}).catch(err => console.log(err));
+
+});
+router.post('/usertablelist/update/:id', async (req, res) => {
+	let { name, email, password, password1, password2 } = req.body;
+	var checkuser = await User.findOne({ where: { email } })
+	var user = await User.findOne({ where: { 'id': req.params.id } })
+	if (checkuser && user.email != email) {
+		res.render('', {
+			layout: 'updateuser',
+			error: email + ' already used!',
+			user: user
+		});
+	}
+	else {
+		bcrypt.compare(password, user.password, (err, isMatch) => {
+			if (!isMatch) {
+				res.render('', { layout: 'updateuser', error: 'Wrong current password', user: user });
+			}
+			else {
+
+				if (password1 != password2) {
+					res.render('', { layout: 'updateuser', user: user, error: 'New and confirm password must be the same' })
+				}
+				else {
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(password1, salt, (err, hash) => {
+							if (err) throw err;
+							password1 = hash;
+							User.update({
+								name: name,
+								email: email,
+								password: password1
+							}, {
+								where: {
+									id: req.params.id
+								}
+							}).then(() => {
+								alertMessage2(res, 'success', user.name + ' updated successfully', 'ti-reload  ', true)
+								res.redirect('/admin/usertablelist');
+							}).catch(err => console.log(err));
+						})
+					});
+				}
+			}
+		})
+
+	}
+});
 router.get('/admintablelist', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
@@ -178,6 +254,19 @@ router.get('/admintablelist', (req, res) => {
 	}).catch(err => console.log(err));
 });
 
+router.get('/admintablelist/edit/:id', (req, res) => {
+	Admin.findOne({
+		where: {
+			id: req.params.id
+		}
+	}).then((currentadmin) => {
+		res.render('', {
+			layout: 'updateadmin',
+			currentadmin: currentadmin
+		});
+	}).catch(err => console.log(err));
+
+});
 router.get('/showadd', (req, res) => {
 	Admin.findOne({
 		where: {
@@ -190,6 +279,122 @@ router.get('/showadd', (req, res) => {
 		});
 	}).catch(err => console.log(err));
 
+});
+router.post('/add', (req, res) => {
+	let errors = [];
+	let { name, email, password, password2, role } = req.body;
+	if (password !== password2) {
+		errors.push({ text: 'Passwords do not match' });
+	}
+	if (password.length < 4) {
+		errors.push({ text: 'Password must be at least 4 characters' });
+	}
+	if (errors.length > 0) {
+		res.render('', {
+			layout: 'add',
+			errors
+		});
+	} else {
+		Admin.findOne({
+			where: { email }
+		})
+			.then(admin => {
+				if (admin) {
+					res.render('', {
+						layout: 'add',
+						error: admin.email + ' already added',
+					});
+				} else {
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(password, salt, (err, hash) => {
+							if (err) throw err;
+							password = hash;
+							Admin.create({
+								name,
+								email,
+								password,
+								role
+							})
+								.then(admin => {
+									alertMessage2(res, 'success', admin.name + ' added successfully', 'fas fa-sign-in-alt', true);
+									res.redirect('/admin/admintablelist');
+								})
+								.catch(err => console.log(err));
+						})
+					});
+
+				}
+			});
+	}
+});
+router.post('/admintablelist/update/:id', async (req, res) => {
+	let { name, email, password, password1, password2 } = req.body;
+	var checkadmin = await Admin.findOne({ where: { email: email } })
+	var currentadmin = await Admin.findOne({ where: { id: req.params.id } })
+	if (checkadmin && currentadmin.email != email) {
+		res.render('', {
+			layout: 'updateadmin',
+			error: email + ' already used!',
+			currentadmin: currentadmin
+		});
+	}
+	else {
+		bcrypt.compare(password, req.user.password, (err, isMatch) => {
+			if (!isMatch) {
+				res.render('', { layout: 'updateadmin', error: 'Wrong current password', currentadmin: currentadmin });
+			}
+			else {
+				if (password1 != password2) {
+					res.render('', { layout: 'updateadmin', currentadmin: currentadmin, error: 'New and confirm password must be the same' })
+				}
+				else {
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(password1, salt, (err, hash) => {
+							if (err) throw err;
+							password1 = hash;
+							Admin.update({
+								name: name,
+								email: email,
+								password: password1
+							}, {
+								where: {
+									id: req.params.id
+								}
+							}).then(() => {
+								alertMessage2(res, 'success', currentadmin.name + ' updated successfully', 'ti-reload  ', true)
+								res.redirect('/admin/admintablelist');
+							}).catch(err => console.log(err));
+						})
+					});
+				}
+			}
+		})
+
+
+	}
+});
+router.get('/admintablelist/delete/:id1', (req, res) => {
+	Admin.destroy({
+		where: { id: req.params.id1 }
+	}).then(deleteuser => {
+		alertMessage2(res, 'success', 'Admin deleted successfully!', 'ti-trash', true);
+		res.redirect('/admin/admintablelist');
+	}).catch(err => console.log(err));
+});
+router.get('/feedbacktable', (req, res) => {
+	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		Feedback.findAll({
+			raw: true
+		}).then((feedbacks) => {
+			res.render('', {
+				layout: "feedbacktable",
+				feedbacks: feedbacks,
+				admin: admin
+			});
+		});
+	}).catch(err => console.log(err));
 });
 router.get('/producttable', (req, res) => {
 	Admin.findOne({
@@ -265,74 +470,32 @@ router.get('/deleteproduct/:id', (req, res) => {
 		res.redirect('../producttable');
 	}).catch(err => console.log(err));
 });
-router.get('/usertablelist/delete/:id', (req, res) => {
-	User.destroy({
-		where: { id: req.params.id }
-	}).then(deleteuser => {
-		alertMessage2(res, 'success', 'User deleted successfully!', 'ti-trash', true);
-		res.redirect('/admin/usertablelist');
-	});
-});
-
-router.get('/admintablelist/edit/:id', (req, res) => {
+router.get('/ordertable',(req,res)=>{
 	Admin.findOne({
+		where: { id: req.session.admin }
+	}).then((admin) => {
+		Order.findAll({
+			raw: true
+		}).then((orders) => {
+			res.render('', {
+				layout: "ordertable",
+				orders: orders,
+				admin: admin
+			});
+		});
+	}).catch(err => console.log(err));
+});
+router.get('/deleteorder/:id', (req, res) => {
+	Order.destroy({
 		where: {
 			id: req.params.id
 		}
-	}).then((currentadmin) => {
-		res.render('', {
-			layout: 'updateadmin',
-			currentadmin: currentadmin
-		});
+	}).then(() => {
+		res.redirect('/admin/ordertable');
 	}).catch(err => console.log(err));
-
 });
-router.post('/admintablelist/update/:id', async (req, res) => {
-	let { name, email, password, password1, password2 } = req.body;
-	var checkadmin = await Admin.findOne({ where: { email: email } })
-	var currentadmin = await Admin.findOne({ where: { id: req.params.id } })
-	if (checkadmin && currentadmin.email != email) {
-		res.render('', {
-			layout: 'updateadmin',
-			error: email + ' already used!',
-			currentadmin: currentadmin
-		});
-	}
-	else {
-		bcrypt.compare(password, req.user.password, (err, isMatch) => {
-			if (!isMatch) {
-				res.render('', { layout: 'updateadmin', error: 'Wrong current password', currentadmin: currentadmin });
-			}
-			else {
-				if (password1 != password2) {
-					res.render('', { layout: 'updateadmin', currentadmin: currentadmin, error: 'New and confirm password must be the same' })
-				}
-				else {
-					bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(password1, salt, (err, hash) => {
-							if (err) throw err;
-							password1 = hash;
-							Admin.update({
-								name: name,
-								email: email,
-								password: password1
-							}, {
-								where: {
-									id: req.params.id
-								}
-							}).then(() => {
-								alertMessage2(res, 'success', currentadmin.name + ' updated successfully', 'ti-reload  ', true)
-								res.redirect('/admin/admintablelist');
-							}).catch(err => console.log(err));
-						})
-					});
-				}
-			}
-		})
 
 
-	}
-});
 router.get('/deletecontacttable/:id', (req, res) => {
 	Contact.destroy({
 		where: {
@@ -363,11 +526,11 @@ router.post('/responsecontacttable',  (req, res) => {
 	const sgMail = require('@sendgrid/mail');
 
 
-	const sgMailApiKey = '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';
+	const sgMailApiKey = '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';
 	sgMail.setApiKey(sgMailApiKey);
 	sgMail.send({
 		to: email,
-		from: 'bookstorehelpline@gmail.com',
+		from: 'bookstoretestpage@gmail.com',
 		subject: subject,
 		text: response,
 
@@ -398,94 +561,7 @@ router.get('/contacttable', async (req, res) => {
 	}
 });
 
-router.get('/usertablelist/edit/:id', (req, res) => {
-	Admin.findOne({
-		where: { id: req.session.admin }
-	}).then((admin) => {
-		User.findOne({
-			where: {
-				id: req.params.id
-			}
-		}).then((user) => {
-			res.render('', {
-				layout: 'updateuser',
-				user: user,
-				admin: admin
-			});
-		});
-	}).catch(err => console.log(err));
-
-});
-router.post('/usertablelist/update/:id', async (req, res) => {
-	let { name, email, password, password1, password2 } = req.body;
-	var checkuser = await User.findOne({ where: { email } })
-	var user = await User.findOne({ where: { 'id': req.params.id } })
-	if (checkuser && user.email != email) {
-		res.render('', {
-			layout: 'updateuser',
-			error: email + ' already used!',
-			user: user
-		});
-	}
-	else {
-		bcrypt.compare(password, user.password, (err, isMatch) => {
-			if (!isMatch) {
-				res.render('', { layout: 'updateuser', error: 'Wrong current password', user: user });
-			}
-			else {
-
-				if (password1 != password2) {
-					res.render('', { layout: 'updateuser', user: user, error: 'New and confirm password must be the same' })
-				}
-				else {
-					bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(password1, salt, (err, hash) => {
-							if (err) throw err;
-							password1 = hash;
-							User.update({
-								name: name,
-								email: email,
-								password: password1
-							}, {
-								where: {
-									id: req.params.id
-								}
-							}).then(() => {
-								alertMessage2(res, 'success', user.name + ' updated successfully', 'ti-reload  ', true)
-								res.redirect('/admin/usertablelist');
-							}).catch(err => console.log(err));
-						})
-					});
-				}
-			}
-		})
-
-	}
-});
-router.get('/admintablelist/delete/:id1', (req, res) => {
-	Admin.destroy({
-		where: { id: req.params.id1 }
-	}).then(deleteuser => {
-		alertMessage2(res, 'success', 'Admin deleted successfully!', 'ti-trash', true);
-		res.redirect('/admin/admintablelist');
-	}).catch(err => console.log(err));
-});
-router.get('/feedbacktable', (req, res) => {
-	Admin.findOne({
-		where: { id: req.session.admin }
-	}).then((admin) => {
-		Feedback.findAll({
-			raw: true
-		}).then((feedbacks) => {
-			res.render('', {
-				layout: "feedbacktable",
-				feedbacks: feedbacks,
-				admin: admin
-			});
-		});
-	}).catch(err => console.log(err));
-});
-router.get('/deletefeedback/:id', (req, res) => {
+router.get('/deletefeedbacktable/:id', (req, res) => {
 	Feedback.destroy({
 		where: {
 			id: req.params.id
@@ -517,53 +593,6 @@ router.get('/removereview/:id', (req, res) => {
 	}).then(() => {
 		res.redirect('../feedbacktable');
 	}).catch(err => console.log(err));
-});
-router.post('/add', (req, res) => {
-	let errors = [];
-	let { name, email, password, password2, role } = req.body;
-	if (password !== password2) {
-		errors.push({ text: 'Passwords do not match' });
-	}
-	if (password.length < 4) {
-		errors.push({ text: 'Password must be at least 4 characters' });
-	}
-	if (errors.length > 0) {
-		res.render('', {
-			layout: 'add',
-			errors
-		});
-	} else {
-		Admin.findOne({
-			where: { email }
-		})
-			.then(admin => {
-				if (admin) {
-					res.render('', {
-						layout: 'add',
-						error: admin.email + ' already added',
-					});
-				} else {
-					bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(password, salt, (err, hash) => {
-							if (err) throw err;
-							password = hash;
-							Admin.create({
-								name,
-								email,
-								password,
-								role
-							})
-								.then(admin => {
-									alertMessage2(res, 'success', admin.name + ' added successfully', 'fas fa-sign-in-alt', true);
-									res.redirect('/admin/admintablelist');
-								})
-								.catch(err => console.log(err));
-						})
-					});
-
-				}
-			});
-	}
 });
 router.get('/success', (req, res) => {
 	Admin.findOne({

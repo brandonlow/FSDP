@@ -1,9 +1,25 @@
 1)Add user superuser@gmail.com
 -Superuser is for creating admin account and gain access to login page for all admins but only superadmin should be able to access this account
-2)Add User subuser@gmail.com
--For the purpose of allowing admins to login through the subuser account so that admins do not have superadmin rights
+//code:
 
-Message: create and add your admin accounts at the superuser account
-	Wether you want continue from here or log into subuser dosent matter 
-	cause it does not affect your work unless you have to sperate rights between the super admin or normal admin   
-	Continue by loging into subuser@gmail.com to continue your admin work
+var name='superadmin'
+var password='1234'
+var email='superadmin@gmail.com'
+var role='superadmin'
+bcrypt.genSalt(10, (err, salt) => {
+	bcrypt.hash(password, salt, (err, hash) => {
+		if (err) throw err;
+		password = hash;
+		Admin.create({
+			name,
+			email,
+			password,
+			role
+		})
+	})
+});
+
+
+
+
+2)Add admin to be able to log in as normal admin
