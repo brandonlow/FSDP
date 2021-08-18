@@ -1,7 +1,10 @@
-1)Add user superuser@gmail.com
+1)Add user with email superuser@gmail.com
 -Superuser is for creating admin account and gain access to login page for all admins but only superadmin should be able to access this account
-//code:
 
+
+
+To create an superadmin that has access to creating other superadmin and admins
+//code:
 var name='superadmin'
 var password='1234'
 var email='superadmin@gmail.com'

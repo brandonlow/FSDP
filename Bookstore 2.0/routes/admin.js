@@ -23,6 +23,27 @@ const fileStorageEngine = multer.diskStorage({
 
 const upload = multer({ storage: fileStorageEngine })
 
+//code to add a superadmin
+//uncomment and run this once
+//comment back after run one time  
+
+// var name='superadmin'
+// var password='1234'
+// var email='superadmin@gmail.com'
+// var role='superadmin'
+// bcrypt.genSalt(10, (err, salt) => {
+// 	bcrypt.hash(password, salt, (err, hash) => {
+// 		if (err) throw err;
+// 		password = hash;
+// 		Admin.create({
+// 			name,
+// 			email,
+// 			password,
+// 			role
+// 		})
+// 	})
+// });
+
 router.get('/', (req, res) => {
 	Admin.findOne({
 		where: { id: req.session.admin }
